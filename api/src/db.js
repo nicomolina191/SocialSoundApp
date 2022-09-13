@@ -57,10 +57,40 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-//  const {  } = sequelize.models;
+const { Users, Posts, Likes, Genres, Comments, Message, Chat } = sequelize.models;
 
 // Aca vendrian las relaciones
 
+// USERS - POSTS
+
+Users.belongsToMany(Posts, {through: "users_posts", timestamps: false});
+Posts.belongsTo(Users, {through: "users_posts", timestamps: false});
+
+// USERS - LIKES
+
+Users.belongsToMany(Likes, {through: "users_likes", timestamps: false});
+Likes.belongsTo(Users, {through: "users_likes", timestamps: false});
+
+//POSTS - LIKES
+
+Posts.belongsToMany(Likes, {through: "posts_likes", timestamps: false});
+Likes.belongsTo(Posts, {through: "posts_likes", timestamps: false});
+
+
+// POSTS - GENRES
+
+Posts.belongsToMany(Genres, {through: "posts_genres", timestamps: false});
+Genres.belongsToMany(Posts, {through: "posts_genres", timestamps: false});
+
+// POSTS - COMMENTS
+
+Posts.belongsToMany(Comments, {through: "posts_comments", timestamps: false});
+Comments.belongsTo(Posts, {through: "posts_comments", timestamps: false});
+
+// CHAT - MESSAGE
+
+Chat.belongsToMany(Message, {through: "chat_messages", timestamps: false});
+Message.belongsTo(Chat, {through: "chat_messages", timestamps: false});
 
 
 module.exports = {
