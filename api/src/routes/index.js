@@ -1,5 +1,4 @@
 const { Users, Posts } = require('../db');
-
 const { Router } = require('express');
 
 // Importar todos los routers;
@@ -26,6 +25,24 @@ router.post('/users', async (req, res) => {
     }
 });
 
+router.put('/users/:nickname', async (req, res) => {
+    const { nickname } = req.params;
+    const { name, username, avatar } = req.body;
+    try {
+        let user = await Users.findOne({ where: {username: nickname} });
+        user.update({
+            name,
+            username,
+            avatar
+        })
+        await user.save();
+        res.json(user);
+    } catch (err) {
+        res.status(404).send(err);
+    }
+});
+
+
 router.post('/posts', async (req, res) => {
     const { description, title, content, email } = req.body;
     try {
@@ -42,15 +59,26 @@ router.post('/posts', async (req, res) => {
     }
 });
 
+router.put('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    const { description, title, content } = req.body;
+    try {
+        let post = await Posts.findOne({ where: {id} });
+        post.update({
+            description,
+            title,
+            content,
+        })
+        await post.save();
+        res.json(post);
+    } catch (err) {
+        res.status(404).send(err);
+    }
+});
+
+
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
 module.exports = router;
 
-
-// {
-//     "description" : "asdasdasdasdasdasdasdasdasdasdasdasd",
-//     "title" : "zxcaxzczxczxczxc",
-//     "content" : "ghjghjghjghjghjghjghjghjghj",
-//     "email" : "nicomolina191@hotmail.com"
-// }
