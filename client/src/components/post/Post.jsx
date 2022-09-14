@@ -17,7 +17,7 @@ export default function Post({post}) {
                     <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" />
                 </Grid>
                 <Grid item container xs={4} direction="column">
-                    <Typography variant='body1'>
+                    <Typography variant='body1'> 
                         Account Name
                     </Typography>
                     <Typography variant='body2'>
