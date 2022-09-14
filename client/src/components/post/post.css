@@ -1,0 +1,27 @@
+.post {
+    display: grid;
+    grid-auto-flow: column;
+    grid-row-gap: 10px;
+}
+
+.post button {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.player-wrapper {
+    position: relative;
+    padding-top: 56.25%;
+    border-radius: 5px; 
+    display: flex;
+}
+
+.react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 13px;
+    overflow: hidden;
+}
