@@ -1,9 +1,10 @@
-const { Users, Posts } = require("../db");
 const { Router } = require("express");
 const createUser = require("../Controller/createUser");
 const updateUser = require("../Controller/updateUser");
 const createPost = require("../Controller/createPost");
 const updatePost = require("../Controller/updatePost");
+const deleteUser = require("../Controller/deleteUser");
+const deletePost = require("../Controller/deletePost");
 const getUser = require("../Controller/getUser");
 const getPost = require("../Controller/getPost");
 
@@ -14,8 +15,9 @@ const router = Router();
 
 // router.use()
 
-router.get("/user", getUser);
-router.get("/post", getPost);
+router.get("/users", getUser);
+router.get("/posts", getPost);
+
 // router.post("/users", async (req, res) => {
 //   const { name, role, email, password, username, avatar } = req.body;
 //   try {
@@ -90,6 +92,10 @@ router.post("/posts", createPost);
 // });
 
 router.put("/posts/:id", updatePost);
+
+router.delete("/users/:nickname", deleteUser);
+
+router.delete("/posts/:id", deletePost);
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
