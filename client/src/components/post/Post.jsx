@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import ReactPlayer from 'react-player';
-import video from '../../video.mp4';
+// import video from '../../video.mp4';
 import './post.css'
 
 export default function Post({post}) {
