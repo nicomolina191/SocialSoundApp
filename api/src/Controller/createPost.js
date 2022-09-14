@@ -10,7 +10,7 @@ const createPost = async (req, res) => {
     });
     let user = await Users.findOne({ where: { email } });
     await post.setUser(user);
-    res.send(post);
+    res.json(post);
     return post;
   } catch (err) {
     res.status(404).send(err);

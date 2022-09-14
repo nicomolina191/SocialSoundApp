@@ -15,7 +15,11 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.ENUM("Regular", "Admin", "Premium"),
+        type: DataTypes.ENUM("User", "Admin"),
+        defaultValue: "User",
+      },
+      plan: {
+        type: DataTypes.ENUM("Regular", "Premium"),
         allowNull: false,
       },
       email: {
@@ -55,6 +59,10 @@ module.exports = (sequelize) => {
       followingCount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     {
