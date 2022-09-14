@@ -4,6 +4,8 @@ const createUser = require("../Controller/createUser");
 const updateUser = require("../Controller/updateUser");
 const createPost = require("../Controller/createPost");
 const updatePost = require("../Controller/updatePost");
+const getUser = require("../Controller/getUser");
+const getPost = require("../Controller/getPost");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -12,6 +14,8 @@ const router = Router();
 
 // router.use()
 
+router.get("/user", getUser);
+router.get("/post", getPost);
 // router.post("/users", async (req, res) => {
 //   const { name, role, email, password, username, avatar } = req.body;
 //   try {
