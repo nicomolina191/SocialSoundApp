@@ -1,8 +1,10 @@
-const { Users, Posts } = require("../db");
+const { Posts } = require("../db");
 
 const updatePost = async (req, res) => {
+
   const { id } = req.params;
   const { description, title, content } = req.body;
+
   try {
     let post = await Posts.findOne({ where: { id } });
     post.update({
@@ -12,8 +14,9 @@ const updatePost = async (req, res) => {
     });
     await post.save();
     res.send(post);
+
   } catch (err) {
-    res.status(404).send(err);
+    res.status(500).send(err);
   }
 };
 
