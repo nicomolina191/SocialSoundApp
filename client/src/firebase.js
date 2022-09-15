@@ -1,20 +1,26 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-
+import { getStorage } from "firebase/storage";
+require('dotenv').config();
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+const {
+  FIREBASE_API_KEY, REACT_APP_AUTH_DOMAIN, REACT_APP_PROJECT_ID, REACT_APP_STORAGE_BUCKET, REACT_APP_MESSAGING_SENDER_ID, REACT_APP_APP_ID
+} = process.env;
+console.log(FIREBASE_API_KEY)
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA8HzlrSlOGAVzYkamozTXx6L-TO1LcTAc",
-  authDomain: "fazt-code-firebase.firebaseapp.com",
-  projectId: "fazt-code-firebase",
-  storageBucket: "fazt-code-firebase.appspot.com",
-  messagingSenderId: "262828336303",
-  appId: "1:262828336303:web:26c0319dde70fde647605a",
+  apiKey: FIREBASE_API_KEY,
+  authDomain: REACT_APP_AUTH_DOMAIN,
+  projectId: REACT_APP_PROJECT_ID,
+  storageBucket: REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: REACT_APP_MESSAGING_SENDER_ID,
+  appId: REACT_APP_APP_ID,
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const storage = getStorage(app)
