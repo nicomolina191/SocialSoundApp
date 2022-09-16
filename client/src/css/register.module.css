@@ -1,0 +1,44 @@
+
+.containerRegisterDiv{
+    height: 100vh;
+     width: 100vw;
+      color: white;
+       display: flex;
+}
+
+.divBackground{ 
+    background-color: rgba(0, 0, 0, 0.46);
+    content: "";
+    width: 50%;
+    height: 100%;
+    position: relative;
+    top: 0;
+}
+.divBackground::before{
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    z-index: -1;
+    background-image: url("../images/original_2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.arrow{
+    position: absolute;
+    display: block;
+    color: rgb(255, 255, 255, 1);
+    margin: 40px;
+    height: 10px;
+}
+.registerContainer{
+    background-color:var(--main-page-color);
+    height: 100%;
+    width: 50%;
+    color: white;
+    padding: 0 10px;
+}
