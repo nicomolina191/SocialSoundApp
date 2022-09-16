@@ -7,7 +7,7 @@
 }
 
 .divBackground{ 
-    background-color: rgba(11, 76, 79, 0.726);
+    background-color: rgba(0, 0, 0, 0.46);
     content: "";
     width: 50%;
     height: 100%;
@@ -20,28 +20,23 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: 100%;
+    width: 50%;
     z-index: -1;
-    background-image: url("https://cdn.pixabay.com/photo/2021/01/28/19/37/vinyl-record-5958903_960_720.jpg");
+    background-image: url("../images/original_2.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .arrow{
-    transform: rotate(-135deg);
     position: absolute;
     display: block;
     color: rgb(255, 255, 255, 1);
-    box-sizing: border-box;
-    width: 20px;
-    height: 20px;
-    border-width: 4px 4px 0 0;
-    border-style: solid;
     margin: 40px;
+    height: 10px;
 }
 .registerContainer{
-    background-color:black;
+    background-color:var(--main-page-color);
     height: 100%;
     width: 50%;
     color: white;

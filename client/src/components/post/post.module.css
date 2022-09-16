@@ -2,6 +2,9 @@
     display: grid;
     grid-auto-flow: column;
     grid-row-gap: 10px;
+    background-color: #000714C4;
+    border-radius: 13px;
+    color: #C4C4C4;
 }
 
 .post button {
@@ -11,17 +14,21 @@
     cursor: pointer;
 }
 
-.player-wrapper {
+.post .playerWrapper {
     position: relative;
-    padding-top: 56.25%;
+    padding-top: 41.25%;
     border-radius: 5px; 
     display: flex;
 }
 
-.react-player {
+.post .reactPlayer {
     position: absolute;
     top: 0;
     left: 0;
     border-radius: 13px;
     overflow: hidden;
+}
+
+.post .icon{
+    color: #C4C4C4;
 }
