@@ -22,13 +22,13 @@ export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState({ login: false });
 
   useEffect(() => {
-    const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
+    /* const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
       setLoading(false);
     });
     return () => {
       unsuscribe();
-    };
+    }; */
   }, []);
 
   const signup = (email, password) => {

@@ -417,6 +417,7 @@ const Explore = () => {
           For you.
         </Typography>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
+
         <h1 style={{ color: "white", textAlign: "center", marginTop: "200px" }}>
           No results
         </h1>
@@ -487,6 +488,7 @@ const Explore = () => {
                       </div>
                       <div>
                         <p>{results.title}</p>
+
                         <Link className={styles.artistSong} to={results.userId}>
                           <p style={{ fontSize: "13px", marginTop: "20px" }}>
                             {songArtist(results)}
