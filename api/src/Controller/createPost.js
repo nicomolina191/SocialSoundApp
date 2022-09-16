@@ -1,20 +1,31 @@
-const { Users, Posts } = require("../db");
+const { Users, Posts, Genres } = require("../db");
 
 const createPost = async (req, res) => {
-  const { description, title, content, email } = req.body;
+
+  const { description, title, content, idUser, genres } = req.body;
+
   try {
-    let post = await Posts.create({
+    const post = await Posts.create({
       description,
       title,
       content,
     });
-    let user = await Users.findOne({ where: { email } });
+
+    const user = await Users.findByPk(idUser);
     await post.setUser(user);
-    res.json(post);
-    return post;
+
+    for (const genre of genres) {
+      const [genreDB, created] = await Genres.findOrCreate({
+        where: { name: genre }
+      });
+      await post.addGenre(genreDB);
+    };
+
+    return res.json(post);
   } catch (err) {
-    res.status(404).send(err);
-  }
+
+    return res.status(500).send(err);
+  };
 };
 
 module.exports = createPost;

@@ -4,26 +4,27 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     // defino el modelo
     sequelize.define('message', {
+
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
-            primaryKey: true,
+            primaryKey: true
         },
         content: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: false
         },
         dmDate: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
+            defaultValue: DataTypes.NOW
         },
         idSender: {
-            type: DataTypes.UUID,
+            type: DataTypes.UUID
         },
         idReceiver: {
-            type: DataTypes.UUID,
+            type: DataTypes.UUID
         },
     }, {
-        timestamps: false,
-    })
-}
+        timestamps: false
+    });
+};
