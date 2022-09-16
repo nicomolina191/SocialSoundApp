@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addUsers,deleteUsers,getUserError,getUserStart,getUserSuccess,updateUsers } from "./userSlice";
+import { addUsers,deleteUsers,getUserError,getUserStart,getUserSuccess,updateUsers } from "./usersSlice";
 
 //obtener los users
 export const getUser = () => {

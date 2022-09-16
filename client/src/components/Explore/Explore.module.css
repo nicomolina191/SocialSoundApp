@@ -10,7 +10,7 @@ h4 {
 }
 
 .fondo {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   background-color: rgba(0, 10, 31, 0.88);
@@ -28,34 +28,53 @@ h4 {
   font-weight: 600;
 }
 
-.modalContainer div ul {
+.sortContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.sortContainer input {
+  display: none;
+}
+
+.sortContainer label {
   padding: 0;
   line-height: 27px;
 }
 
-.modalContainer div ul li {
+.sortContainer label {
   cursor: pointer;
-  list-style: none;
-  width: 115px;
 }
 
-.modalContainer div ul li:hover {
+.sortContainer label:hover {
   color: rgba(0, 226, 190, 1);
 }
 
-.genresContainer button {
-  cursor: pointer;
-  height: 45px;
+.genresContainer label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 10, 31, 1);
+  background-color: rgba(163, 255, 240, 1);
+  height: 35px;
   width: 120px;
+  cursor: pointer;
   padding: 5px;
   margin-right: 15px;
-  margin-bottom: 10px;
   border-radius: 15px;
 }
 
-.genresContainer button:hover {
+.genresContainer label:hover {
   transform: scale(1.03);
   transition: 0.5s;
+}
+
+.genresContainer input:checked ~ label {
+  background-color: rgba(0, 255, 214, 1);
+}
+
+.genresContainer input {
+  display: none
 }
 
 .buttonPages {
