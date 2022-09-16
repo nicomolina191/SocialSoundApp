@@ -5,41 +5,69 @@ import { useTheme } from '@mui/material/styles';
 import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
-import { ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 
 export default function Upload() {
     const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = React.useState(false)
     const [postData, setPostData] = React.useState({
         title: '',
         description: '',
         content: '',
         cover: null,
         type: '',
-        genres: [],
-        userId: 5
+        genres: []
     })
-    const uploadImage = () => {
-      if(!postData.cover) return
-      const coverRef = ref(storage, `images/${postData.cover.name + Math.random()}`)
-      uploadBytes(coverRef, postData.cover).then(() => {
-        alert('image uploaded')
-      })
 
+    const uploadFile = (file) => {
+      setLoading(true)
+      const fileRef = ref(storage, `cover/${file.name + Math.random()}`)
+      return uploadBytes(fileRef, file)
+      .then((snapshot) => {
+        return getDownloadURL(snapshot.ref)
+      })
+      .then((url) => {
+        setLoading(false)
+        return url
+      })
+      .catch(err => console.log(err))
     }
-    const handleChange = (event) => {
+
+    const uploadMusic = (file) => {
+      setLoading(true)
+      const fileRef = ref(storage, `content/${file.name + Math.random()}`)
+      return uploadBytes(fileRef, file)
+      .then((snapshot) => {
+        return getDownloadURL(snapshot.ref)
+      })
+      .then((url) => {
+        setLoading(false)
+        return url
+      })
+    }
+
+    const handleChange = async (event) => {
         const {
           target: { value, name },
         } = event;
-        name === 'genres'
-        ? setPostData({...postData,
-          genres: typeof value === 'string' ? value.split(',') : value,
-          })
-        : name === 'cover'
-         ? setPostData({...postData, [name]: event.target.files[0]})
-         : setPostData({...postData, [name]: value})
-     };
-    const theme = useTheme('dark');
+        name === 'cover'
+        ? setPostData({...postData, [name]: await uploadFile(event.target.files[0])})
+          : name === 'content'
+          ? setPostData({...postData, [name]: await uploadMusic(event.target.files[0]), type: event.target.files[0].type.split('/')[0]}) 
+            : name === 'genres'
+            ? setPostData({...postData,
+            genres: typeof value === 'string' ? value.split(',') : value,
+            })
+              : setPostData({...postData, [name]: value})
+    };
+
+    async function handleSubmit(e){
+      e.preventDefault()
+      
+    }
+
+    const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -65,20 +93,18 @@ export default function Upload() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleSubmit = (e) => {
-      e.preventDefault()
-    }
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>New Post...</Button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
             <DialogTitle id="responsive-dialog-title">{"New Post"}</DialogTitle>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e)=>handleSubmit(e)}>
 
                 <DialogContent className={s.content} id='content'>
                     <ul className={s.formInputs}>
-                        <li><TextField name='title' onChange={handleChange} id="standard-basic" label="Song name" variant="standard" /></li>
-                        <li><TextField name='description' onChange={handleChange} id="outlined-multiline-static" label="Add a description" multiline rows={8}/></li>
+                        <li><TextField required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song name" variant="standard" /></li>
+                        <li><TextField required value={postData.description} name='description' onChange={handleChange} id="outlined-multiline-static" label="Add a description" multiline rows={8}/></li>
                         <li>
                             <Select className={s.selectGenres} name="genres" multiple displayEmpty value={postData.genres} onChange={handleChange} input={<OutlinedInput />} renderValue={(selected) => {
                                 if (selected.length === 0) {
@@ -93,12 +119,13 @@ export default function Upload() {
                                   ))}
                             </Select>
                         </li>
-                        <li><input onChange={handleChange} type="file" name="cover"/> <button onClick={uploadImage}>Confirm</button></li>
+                        <li>Upload a cover for your song<input disabled={loading} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></li>
+                        <li>Upload a Song<input disabled={loading} onChange={(e)=>handleChange(e)} type="file" name="content" accept='audio/mp3, video/mp4'/> </li>
                     </ul>
                 </DialogContent>
                 <DialogActions>
                 <Button autoFocus onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleClose} autoFocus>Post</Button>
+                <input disabled={!postData.title || !postData.cover || !postData.content || loading} type="submit" value="Post"/>
                 </DialogActions>
                                     {console.log(postData)}
             </form>
