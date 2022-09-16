@@ -1,12 +1,12 @@
-import React from 'react'
-import { Avatar, Grid, SvgIcon, Typography } from '@mui/material'
+import React from 'react';
+import { Avatar, Grid, SvgIcon, Typography } from '@mui/material';
 import ReactPlayer from 'react-player';
 // import video from '../../video.mp4';
-import style from './post.module.css'
+import style from './post.module.css';
 
-export default function Post({ post }) {
+export default function Post({post}) {
     return (
-        <Grid container direction="column" xs={8} className={style.post} p={`1%`}>
+        <Grid container direction="column" xs={11} className={style.post} p={`1%`} m={`4%`}>
             <Grid item container spacing={1}>
                 <Grid item>
                     <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" />
@@ -22,14 +22,14 @@ export default function Post({ post }) {
             </Grid>
             <Grid item>
                 <Typography variant='h6'>
-                    Tittle
+                    {`${post.title} - ${post.artist}`}
                 </Typography>
                 <Typography variant='body1'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod veniam repellendus rerum, deleniti eligendi nemo repudiandae consequuntur suscipit sequi. Quas id ullam mollitia minus maxime repellat delectus nobis autem odit.
+                    {post.description}
                 </Typography>
             </Grid>
             <Grid item className={style.playerWrapper}>
-                <ReactPlayer url='https://youtu.be/j0lSpNtjPM8' controls className={style.reactPlayer} width='100%' height='100%' />
+                <ReactPlayer url={post.content} controls className={style.reactPlayer} width='100%' height='100%' />
             </Grid>
             <Grid item container justifyContent="space-between">
                 <Grid item xs>
