@@ -7,11 +7,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import ReactPlayer from 'react-player';
 // import video from '../../video.mp4';
-import './post.css'
+import style from './post.module.css'
 
 export default function Post({post}) {
     return (
-        <Grid container direction="column" xs={6} className='post'>
+        <Grid container direction="column" xs={6} className={style.post}>
             <Grid item container spacing={1}>
                 <Grid item>
                     <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" />
@@ -33,8 +33,8 @@ export default function Post({post}) {
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod veniam repellendus rerum, deleniti eligendi nemo repudiandae consequuntur suscipit sequi. Quas id ullam mollitia minus maxime repellat delectus nobis autem odit.
                 </Typography>
             </Grid>
-            <Grid item className='player-wrapper'>
-                <ReactPlayer url={video} controls className='react-player' width='100%' height='100%' />
+            <Grid item className={style.playerWrapper}>
+                <ReactPlayer url='https://youtu.be/j0lSpNtjPM8' controls className={style.reactPlayer} width='100%' height='100%' />
             </Grid>
             <Grid item container justifyContent="space-between">
                 <Grid item xs>

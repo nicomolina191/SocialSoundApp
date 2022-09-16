@@ -1,0 +1,46 @@
+[
+    {
+      "id": "1",
+      "likesCount": 990,
+      "description": "ejemplo de texto, piriririririr",
+      "artistId": "1",
+      "artist": "Duko",
+      "title": "Givenchy",
+      "content": "ooooooooo",
+      "commentsCount": 639,
+      "postDate": "2015-01-01"
+    },
+    {
+        "id": "2",
+        "likesCount": 333,
+        "description": "ejemplo de texto, piriririririr",
+        "artistId": "2",
+        "artist": "Los Enanitos Verdes",
+        "title": "Tu Carcel",
+        "content": "ooooooooo",
+        "commentsCount": 44,
+        "postDate": "2013-01-01"
+      },
+      {
+        "id": "3",
+        "likesCount": 876,
+        "description": "ejemplo de texto, piriririririr",
+        "artistId": "3",
+        "artist": "Alan Gomez",
+        "title": "Mision 10",
+        "content": "ooooooooo",
+        "commentsCount": 23,
+        "postDate": "2014-01-01"
+      },
+      {
+        "id": "4",
+        "likesCount": 22,
+        "description": "ejemplo de texto, piriririririr",
+        "artistId": "4",
+        "artist": "Intoxicados",
+        "title": "Nunca Quise",
+        "content": "ooooooooo",
+        "commentsCount": 333,
+        "postDate": "2020-01-01"
+      }
+  ]

@@ -1,8 +1,16 @@
 import { createContext, useContext } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../firebase";
+import { useState, useEffect } from "react";
 
 export const authContext = createContext();
+
 export const useAuth = () => {
   const context = useContext(authContext);
   if (!context) throw new Error("There is not auth provider");
@@ -10,27 +18,54 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  /*   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userFirebase, setUserFirebase] = useState({ login: false });
+
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setUserFirebase(currentUser);
       setLoading(false);
     });
     return () => {
       unsuscribe();
     };
-  }, []); */
+  }, []);
 
   const signup = (email, password) => {
-    console.log(auth);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  /*   const login = (email, password) => {
+  const signupWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        setUserFirebase({ login: true });
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        return error;
+      });
+  };
+  const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  return (
+    <authContext.Provider
+      value={{
+        signup,
+        login,
+        signupWithGoogle,
+        userFirebase,
+        loading,
+      }}
+    >
+      {children}
+    </authContext.Provider>
+  );
+}
+
+/*  
   const resetPassword = (email) => {
     return sendPasswordResetEmail(auth, email);
   };
@@ -41,13 +76,3 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => signOut(auth); */
-  return (
-    <authContext.Provider
-      value={{
-        signup,
-      }}
-    >
-      {children}
-    </authContext.Provider>
-  );
-}
