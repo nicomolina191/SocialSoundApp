@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPosts, deletePosts, getPostError,getPostStart,getPostSuccess,updatePosts } from "./postSlice";
+import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre } from "./postSlice";
 
 //obtener los users
 export const getPost = () => {
@@ -17,7 +17,7 @@ export const getPost = () => {
 //crear users
 export const createdPost = (body) => {
   return async (dispatch) => {
-    let response = await axios.post("/post", body);
+    let response = await axios.post("/posts", body);
     dispatch(addPosts(response.data));
   };
 };
@@ -26,7 +26,7 @@ export const createdPost = (body) => {
 export const updatePost = (id, body) => {
   return async (dispatch) => {
     try {
-      const response = await axios.put(`/post/${id}`, body);
+      const response = await axios.put(`/posts/${id}`, body);
       if (response) {
         dispatch(updatePosts());
         dispatch(getPost());
@@ -41,7 +41,7 @@ export const updatePost = (id, body) => {
 export const deletePost = (id) => {
   return async (dispatch) => {
     try {
-      await axios.put(`/post/${id}`);
+      await axios.put(`/posts/${id}`);
       dispatch(deletePosts());
       dispatch(getPost());
     } catch (error) {
@@ -49,3 +49,15 @@ export const deletePost = (id) => {
     }
   };
 };
+
+//get post by genre
+export const getPostByGenre = (genre) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/posts/genre/${genre}`);
+      dispatch(getAllPostByGenre(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
