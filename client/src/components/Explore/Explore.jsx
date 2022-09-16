@@ -15,8 +15,8 @@ import { Button, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
-import { getUser } from "../features/users/usersGetSlice";
-import { getPost } from "../features/post/postGetSlice";
+import { getUser } from "../../redux/features/users/usersGetSlice";
+import { getPost } from "../../redux/features/post/postGetSlice";
 import { useEffect } from "react";
 
 const Explore = () => {
