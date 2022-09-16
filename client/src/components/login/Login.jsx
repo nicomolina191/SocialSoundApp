@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
+import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 
 const Login = () => {
@@ -41,13 +41,25 @@ const Login = () => {
     <Box>
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
-          <h1 style={{ fontSize: "5em", padding: "50px" }}>
+          <button onClick={() => navigate("/")} className={style.arrow}>
+            <Arrow />
+          </button>
+          <h1
+            style={{
+              fontSize: "5em",
+              padding: "5px 0 10px 10%",
+              position: "relative",
+              zIndex: "5",
+            }}
+          >
             Hey!
             <br />
             Welcome
             <br />
             Back.
           </h1>
+          <Box className={style.divBackgroundColor} />
+          <Box className={style.backgroundImage} />
         </Box>
 
         <Box className={style.registerContainer}>

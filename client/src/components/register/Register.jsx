@@ -47,7 +47,8 @@ const Register = () => {
       !user.email ||
       !user.username ||
       !user.password ||
-      !user.confirmPassword
+      !user.confirmPassword ||
+      user.password !== user.confirmPassword
     ) {
       for (const key in user) {
         if (!user[key]) {
@@ -243,12 +244,15 @@ const Register = () => {
                 container
               >
                 <h5 style={{ width: "auto" }}>or continue with</h5>
-                <button
-                  className={style.googleButton}
-                  onClick={() => handleSignUpGoogle()}
-                >
-                  <GoogleIcon />
-                </button>
+
+                <Box className={{ width: "auto" }}>
+                  <button
+                    className={style.googleButton}
+                    onClick={() => handleSignUpGoogle()}
+                  >
+                    <GoogleIcon />
+                  </button>
+                </Box>
               </Grid>
             </Box>
           </Box>
