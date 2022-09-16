@@ -2,10 +2,11 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
-import Explore from "./components/Explore";
+import Explore from "./components/Explore/Explore";
 import { AuthProvider } from "./context";
 import ProtectedRoute from "./context/ProtectedRoute";
 import "./App.css";
+
 function App() {
   return (
     <React.StrictMode>
