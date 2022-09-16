@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addUsers,deleteUsers,getUserError,getUserStart,getUserSuccess,updateUsers } from "./userSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById } from "./usersSlice";
 
 //obtener los users
 export const getUser = () => {
@@ -49,3 +49,14 @@ export const deleteUser = (id) => {
     }
   };
 };
+
+export const getUserById = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/users/${id}`)
+      dispatch(getById(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
