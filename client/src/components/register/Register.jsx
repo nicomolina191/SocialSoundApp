@@ -2,10 +2,11 @@ import axios from "axios";
 import React from "react";
 import style from "./register.module.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Box, Grid, TextField } from "@mui/material";
 import {
+  Arrow,
   EmailIcon,
   GoogleIcon,
   PadLock,
@@ -29,7 +30,7 @@ const Register = () => {
   });
   const [equal, setEqual] = useState(false);
   const { signup, signupWithGoogle } = useAuth();
-
+  const navigate = useNavigate();
   const handleSignUpGoogle = async () => {
     try {
       await signupWithGoogle();
@@ -92,10 +93,13 @@ const Register = () => {
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>
+            <button onClick={() => navigate("/")} className={style.arrow}>
+              <Arrow />
+            </button>
             <h1
               style={{
                 fontSize: "5em",
-                padding: "50px",
+                padding: "5px 0 10px 10%",
                 position: "relative",
                 zIndex: "5",
               }}
