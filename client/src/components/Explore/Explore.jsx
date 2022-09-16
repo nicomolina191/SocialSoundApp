@@ -1,24 +1,28 @@
 import React from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faChevronRight,
   faChevronLeft,
+  faChevronDown,
   faPlay,
+  faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
-import users from "../users.json";
-import posts from "../post.json";
-import image from "./Avatar.jpg";
+import { getUser } from "../../redux/features/users/usersGetSlice";
+import { getPost } from "../../redux/features/post/postGetSlice";
+import { useEffect } from "react";
 
 const Explore = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.usersList);
+  const posts = useSelector((state) => state.posts.postList);
   const genres = [
     "Pop",
     "Reggae",
@@ -28,13 +32,27 @@ const Explore = () => {
     "Blues",
     "Rock and Roll",
     "Country",
+    "Trap",
   ];
+  const [inputValue, setInputValue] = useState("");
+  let [artistsPerPage, setArtistsPerPage] = useState(8);
+  let currentArtists = posibleArtist().slice(0, artistsPerPage);
+  let [songsPerPage, setSongsPerPage] = useState(9);
+  let currentSongs = posibleSong().slice(0, songsPerPage);
+
+  const [open, setOpen] = useState(false);
+  const [orderChecked, setOrderChecked] = useState("relevance");
   const [currentPage, setCurrentPage] = useState(1);
   const genrePerPage = 6;
   const lastGenre = currentPage * genrePerPage;
   const firstGenre = lastGenre - genrePerPage;
   const currentGenres = genres.slice(firstGenre, lastGenre);
   const pageNumbers = Math.ceil(genres.length / genrePerPage);
+
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch(getPost());
+  }, []);
 
   function nextPage() {
     if (currentPage < pageNumbers) {
@@ -46,6 +64,21 @@ const Explore = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+  }
+
+  function handleChecked(el) {
+    setOrderChecked("");
+    setOrderChecked(el.target.value);
+  }
+
+  function handleArtistsPerPage() {
+    setArtistsPerPage(artistsPerPage + 8);
+    currentArtists = posibleArtist().slice(0, artistsPerPage);
+  }
+
+  function handleSongsPerPage() {
+    setSongsPerPage(songsPerPage + 8);
+    currentSongs = posibleSong().slice(0, songsPerPage);
   }
 
   function handleOpen() {
@@ -72,12 +105,20 @@ const Explore = () => {
   function posibleSong() {
     const posibles = [];
     posts.map((post) => {
-      if (post.title.toLowerCase().includes(inputValue.toLowerCase())) {
+      if (
+        post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
+        songArtist(post).toLowerCase().includes(inputValue.toLowerCase())
+      ) {
         posibles.push(post);
       }
       return null;
     });
     return posibles;
+  }
+
+  function songArtist(el) {
+    const artist = users.filter((user) => user.id === el.userId);
+    return artist[0].username;
   }
 
   function handleInputChange(e) {
@@ -193,32 +234,18 @@ const Explore = () => {
                     </button>
                   )}
                   <Stack
-                    className={styles.genresContainer}
                     direction="row"
                     justifyContent="center"
                     flexWrap="wrap"
                     sx={{ marginBottom: "-10px" }}
                   >
                     {currentGenres.map((genre) => {
-                      if (genre.length > 6) {
-                        return (
-                          <button
-                            style={{ backgroundColor: "rgba(0, 255, 214, 1)" }}
-                          >
-                            {genre}
-                          </button>
-                        );
-                      } else {
-                        return (
-                          <button
-                            style={{
-                              backgroundColor: "rgba(163, 255, 240, 1)",
-                            }}
-                          >
-                            {genre}
-                          </button>
-                        );
-                      }
+                      return (
+                        <div className={styles.genresContainer}>
+                          <input id={genre} type="checkbox"></input>
+                          <label htmlFor={genre}>{genre}</label>
+                        </div>
+                      );
                     })}
                   </Stack>
                   {currentPage !== pageNumbers ? (
@@ -237,13 +264,144 @@ const Explore = () => {
                 </Stack>
               </div>
               <div>
-                <h2 style={{ marginBottom: "-7px" }}>Sort by</h2>
-                <ul>
-                  <li>Most Recent</li>
-                  <li>Oldest</li>
-                  <li>Popularity</li>
-                  <li>Relevance</li>
-                </ul>
+                <h2 style={{ marginBottom: "15px" }}>Sort by</h2>
+                <div className={styles.sortContainer}>
+                  <input
+                    onClick={(e) => handleChecked(e)}
+                    name="order"
+                    id="mostRecent"
+                    type="radio"
+                    value="mostRecent"
+                  />
+                  {orderChecked === "mostRecent" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <label
+                        style={{ color: "rgba(0, 226, 190, 1)" }}
+                        htmlFor="mostRecent"
+                      >
+                        Most Recent
+                      </label>
+                      <FontAwesomeIcon
+                        style={{
+                          fontSize: "18px",
+                          marginLeft: "8px",
+                          color: "rgba(0, 226, 190, 1)",
+                        }}
+                        icon={faCircleCheck}
+                      />
+                    </div>
+                  ) : (
+                    <label htmlFor="mostRecent">Most Recent</label>
+                  )}
+
+                  <input
+                    onClick={(e) => handleChecked(e)}
+                    name="order"
+                    id="oldest"
+                    type="radio"
+                    value="oldest"
+                  />
+                  {orderChecked === "oldest" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <label
+                        style={{ color: "rgba(0, 226, 190, 1)" }}
+                        htmlFor="oldest"
+                      >
+                        Oldest
+                      </label>
+                      <FontAwesomeIcon
+                        style={{
+                          fontSize: "18px",
+                          marginLeft: "8px",
+                          color: "rgba(0, 226, 190, 1)",
+                        }}
+                        icon={faCircleCheck}
+                      />
+                    </div>
+                  ) : (
+                    <label htmlFor="oldest">Oldest</label>
+                  )}
+
+                  <input
+                    onClick={(e) => handleChecked(e)}
+                    name="order"
+                    id="popularity"
+                    type="radio"
+                    value="popularity"
+                  />
+                  {orderChecked === "popularity" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <label
+                        style={{ color: "rgba(0, 226, 190, 1)" }}
+                        htmlFor="popularity"
+                      >
+                        Popularity
+                      </label>
+                      <FontAwesomeIcon
+                        style={{
+                          fontSize: "18px",
+                          marginLeft: "8px",
+                          color: "rgba(0, 226, 190, 1)",
+                        }}
+                        icon={faCircleCheck}
+                      />
+                    </div>
+                  ) : (
+                    <label htmlFor="popularity">Popularity</label>
+                  )}
+
+                  <input
+                    onClick={(e) => handleChecked(e)}
+                    name="order"
+                    id="relevance"
+                    type="radio"
+                    value="relevance"
+                  />
+                  {orderChecked === "relevance" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <label
+                        style={{ color: "rgba(0, 226, 190, 1)" }}
+                        htmlFor="relevance"
+                      >
+                        Relevance
+                      </label>
+                      <FontAwesomeIcon
+                        style={{
+                          fontSize: "18px",
+                          marginLeft: "8px",
+                          color: "rgba(0, 226, 190, 1)",
+                        }}
+                        icon={faCircleCheck}
+                      />
+                    </div>
+                  ) : (
+                    <label htmlFor="relevance">Relevance</label>
+                  )}
+                </div>
               </div>
             </Stack>
           </Modal>
@@ -259,7 +417,9 @@ const Explore = () => {
           For you.
         </Typography>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
-        <h1>No results</h1>
+        <h1 style={{ color: "white", textAlign: "center", marginTop: "200px" }}>
+          No results
+        </h1>
       ) : (
         <div style={{ marginTop: "30px" }}>
           <div>
@@ -286,7 +446,7 @@ const Explore = () => {
                 alignItems="center"
                 flexWrap="wrap"
               >
-                {posibleSong().map((results) => {
+                {currentSongs.map((results) => {
                   return (
                     <Stack
                       direction="row"
@@ -327,17 +487,33 @@ const Explore = () => {
                       </div>
                       <div>
                         <p>{results.title}</p>
-                        <Link className={styles.artistSong} to={results.artistId}>
+                        <Link className={styles.artistSong} to={results.userId}>
                           <p style={{ fontSize: "13px", marginTop: "20px" }}>
-                            {results.artist}
+                            {songArtist(results)}
                           </p>
                         </Link>
                       </div>
-                      <p className={styles.songDate}>{results.postDate}</p>
+                      <p className={styles.songDate}>
+                        {results.postDate.slice(0, 10)}
+                      </p>
                     </Stack>
                   );
                 })}
               </Stack>
+            </div>
+          ) : null}
+
+          {currentSongs.length < posibleSong().length ? (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <FontAwesomeIcon
+                onClick={handleSongsPerPage}
+                style={{
+                  fontSize: "50px",
+                  margin: "20px auto 30px",
+                  color: "white",
+                }}
+                icon={faChevronDown}
+              />
             </div>
           ) : null}
 
@@ -356,8 +532,8 @@ const Explore = () => {
                 alignItems="center"
                 flexWrap="wrap"
               >
-                {posibleArtist().map((results) => {
-                  if (results.role === "Premium") {
+                {currentArtists.map((results) => {
+                  if (results.plan === "Premium") {
                     return (
                       <Link
                         to={`/home/explore/${results.id}`}
@@ -392,7 +568,7 @@ const Explore = () => {
                                 borderRadius: "50px",
                                 marginTop: "5px",
                               }}
-                              src={image}
+                              src={results.avatar}
                               alt=""
                             />
                           </div>
@@ -413,7 +589,7 @@ const Explore = () => {
                         </Stack>
                       </Link>
                     );
-                  } else if (results.role === "Regular") {
+                  } else {
                     return (
                       <Link
                         to={`/home/explore/${results.id}`}
@@ -448,7 +624,7 @@ const Explore = () => {
                                 borderRadius: "50px",
                                 marginTop: "5px",
                               }}
-                              src={image}
+                              src={results.avatar}
                               alt=""
                             />
                           </div>
@@ -470,8 +646,18 @@ const Explore = () => {
                       </Link>
                     );
                   }
-                  return null;
                 })}
+                {currentArtists.length < posibleArtist().length ? (
+                  <FontAwesomeIcon
+                    onClick={handleArtistsPerPage}
+                    style={{
+                      fontSize: "50px",
+                      margin: "30px auto 0",
+                      color: "white",
+                    }}
+                    icon={faChevronDown}
+                  />
+                ) : null}
               </Stack>
             </div>
           ) : null}
