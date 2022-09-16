@@ -1,0 +1,18 @@
+.home .sideBar {
+    background-color: #000717ED;
+}
+
+.home .text {
+    color: white;
+}
+
+.home .posts {
+    font-weight: bold;
+    background-color: #000A1FE0;
+    backdrop-filter: blur(15px);
+}
+
+.home .posts .text {
+    padding: 1%;
+    font-weight: bold;
+}
