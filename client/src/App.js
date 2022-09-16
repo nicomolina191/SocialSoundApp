@@ -6,15 +6,18 @@ import Explore from "./components/Explore/Explore";
 import { AuthProvider } from "./context";
 import ProtectedRoute from "./context/ProtectedRoute";
 import "./App.css";
+import Landing from "./components/landing/Landing";
+import Home from "./components/home/Home";
 
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<ProtectedRoute></ProtectedRoute>} />
+          <Route path="/" element={<Landing/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path='/home' element={<ProtectedRoute><Home/></ProtectedRoute> }/>
           <Route path="/home/explore" element={<Explore />} />
         </Routes>
       </AuthProvider>

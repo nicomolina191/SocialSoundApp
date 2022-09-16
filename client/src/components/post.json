@@ -6,7 +6,7 @@
       "artistId": "1",
       "artist": "Duko",
       "title": "Givenchy",
-      "content": "ooooooooo",
+      "content": "https://www.youtube.com/watch?v=ymvYySd_P2E",
       "commentsCount": 639,
       "postDate": "2015-01-01"
     },
@@ -17,7 +17,7 @@
         "artistId": "2",
         "artist": "Los Enanitos Verdes",
         "title": "Tu Carcel",
-        "content": "ooooooooo",
+        "content": "https://www.youtube.com/watch?v=BQAKKp6ziD0",
         "commentsCount": 44,
         "postDate": "2013-01-01"
       },
@@ -28,7 +28,7 @@
         "artistId": "3",
         "artist": "Alan Gomez",
         "title": "Mision 10",
-        "content": "ooooooooo",
+        "content": "https://www.youtube.com/watch?v=ZQNY17UsU6M",
         "commentsCount": 23,
         "postDate": "2014-01-01"
       },
@@ -39,7 +39,7 @@
         "artistId": "4",
         "artist": "Intoxicados",
         "title": "Nunca Quise",
-        "content": "ooooooooo",
+        "content": "https://www.youtube.com/watch?v=bdqvUwn1tbE",
         "commentsCount": 333,
         "postDate": "2020-01-01"
       }
