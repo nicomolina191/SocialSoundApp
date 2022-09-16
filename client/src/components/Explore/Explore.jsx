@@ -15,6 +15,7 @@ import logoIcon from "../../images/logoicon.png";
 import users from "../users.json";
 import posts from "../post.json";
 import image from "./Avatar.jpg";
+import Loading from "../loading/Loading";
 
 const Explore = () => {
   const [inputValue, setInputValue] = useState("");
@@ -259,7 +260,7 @@ const Explore = () => {
           For you.
         </Typography>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
-        <h1>No results</h1>
+        <Loading width="200px" height="200px" />
       ) : (
         <div style={{ marginTop: "30px" }}>
           <div>
@@ -327,7 +328,10 @@ const Explore = () => {
                       </div>
                       <div>
                         <p>{results.title}</p>
-                        <Link className={styles.artistSong} to={results.artistId}>
+                        <Link
+                          className={styles.artistSong}
+                          to={results.artistId}
+                        >
                           <p style={{ fontSize: "13px", marginTop: "20px" }}>
                             {results.artist}
                           </p>

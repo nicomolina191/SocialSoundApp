@@ -1,11 +1,12 @@
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
-
+import logo from "../../images/logoicon.png";
+//alinear titulo del form y cambiar los colores de los botones //color
 const Login = () => {
   const [user, setUser] = useState({ password: "", email: "" });
   const [error, setError] = useState({ password: "", email: "" });
@@ -41,15 +42,17 @@ const Login = () => {
     <Box>
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
-          <button onClick={() => navigate("/")} className={style.arrow}>
+          <Button onClick={() => navigate("/")} className={style.arrow}>
             <Arrow />
-          </button>
+          </Button>
+
           <h1
             style={{
               fontSize: "5em",
-              padding: "5px 0 10px 10%",
+              padding: "5px 0 5px 10%",
               position: "relative",
               zIndex: "5",
+              margin: "5px",
             }}
           >
             Hey!
@@ -60,6 +63,7 @@ const Login = () => {
           </h1>
           <Box className={style.divBackgroundColor} />
           <Box className={style.backgroundImage} />
+          <img className={style.logo} src={logo} alt="logo" />
         </Box>
 
         <Box className={style.registerContainer}>
@@ -81,8 +85,8 @@ const Login = () => {
               </h4>
             </Box>
 
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <Box className={style.containerTitle}>
+            <form style={{ width: "100%" }} onSubmit={(e) => handleSubmit(e)}>
+              <Box className={style.orderForm}>
                 <Box
                   sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
                 >
@@ -118,9 +122,9 @@ const Login = () => {
                 </Box>
 
                 <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <button className={style.btnRL} type="submit">
+                  <Button className={style.btnRL} type="submit">
                     Login
-                  </button>
+                  </Button>
                 </Box>
               </Box>
             </form>
@@ -132,13 +136,14 @@ const Login = () => {
               direction="column"
               container
             >
-              <h5 style={{ width: "auto" }}>or continue with</h5>
-              <button
+              <h5 style={{ width: "auto", margin: "5px" }}>or continue with</h5>
+              <Button
+                sx={{ padding: "20px", borderRadius: "50%" }}
+                onClick={() => handleSignInGoogle("/")}
                 className={style.googleButton}
-                onClick={() => handleSignInGoogle()}
               >
                 <GoogleIcon />
-              </button>
+              </Button>
             </Grid>
           </Box>
         </Box>
