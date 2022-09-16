@@ -1,17 +1,12 @@
+
 .App {
   text-align: center;
   font-family: 'Inter', sans-serif;
 
 }
-
-body {
+body{
   font-family: 'Inter', sans-serif;
 }
-
-html {
-  scroll-behavior: smooth;
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -23,6 +18,7 @@ html {
   color: white;
 }
 
+
 .MuiInputBase-input{
   color: white !important;
   border-color: white !important;
@@ -30,9 +26,7 @@ html {
 .MuiInputBase-input::placeholder{
   color: white !important;
 }
-.MuiInput{
-  color: red;
-}
+
 .MuiInput-underline:before{
   left: 0;
   right: 0;
@@ -44,7 +38,7 @@ html {
   pointer-events: none;
 }
 .MuiInput-underline:after{
-  border-bottom: 2px solid #3f51b5 !important;
+  border-bottom: 2px solid #00FFD6 !important;
 }
 .MuiInputLabel-animated{
   color: white !important;
@@ -53,3 +47,6 @@ html {
   --main-page-color: #000A1F
 }
 
+body{
+  margin: 0;
+}
