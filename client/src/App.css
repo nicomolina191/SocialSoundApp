@@ -1,12 +1,17 @@
-
 .App {
   text-align: center;
   font-family: 'Inter', sans-serif;
 
 }
-body{
+
+body {
   font-family: 'Inter', sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -17,7 +22,6 @@ body{
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 
 .MuiInputBase-input{
   color: white !important;
@@ -48,5 +52,4 @@ body{
 :root{
   --main-page-color: #000A1F
 }
-
 
