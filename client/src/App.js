@@ -12,7 +12,6 @@ function App() {
     <React.StrictMode>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<ProtectedRoute></ProtectedRoute>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home/explore" element={<Explore />} />
