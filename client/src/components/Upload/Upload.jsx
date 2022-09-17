@@ -6,9 +6,11 @@ import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, Dial
 import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-
+import { useDispatch } from 'react-redux';
+import { createdPost } from '../../redux/features/post/postGetSlice';
 
 export default function Upload() {
+    const dispatch = useDispatch()
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false)
     const [postData, setPostData] = React.useState({
@@ -64,7 +66,9 @@ export default function Upload() {
 
     async function handleSubmit(e){
       e.preventDefault()
-      
+      postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading
+      ? dispatch(createdPost({title: postData.title, description: postData.description, content: postData.content, cover: postData.cover, genres: postData.genres}))
+      : alert('Check the information')
     }
 
     const theme = useTheme();
