@@ -260,7 +260,7 @@ const Explore = () => {
           For you.
         </Typography>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
-        <Loading width="200px" height="200px" />
+        <h1>No results</h1>
       ) : (
         <div style={{ marginTop: "30px" }}>
           <div>
