@@ -11,6 +11,8 @@ const createLike = require("../Controller/createLike.js");
 const getByTime = require("../Controller/getByTime.js");
 const getUserById = require("../Controller/getUserById.js");
 const getGenres = require("../Controller/getGenres.js");
+const updateUser = require("../Controller/updateUser.js");
+const updatePost = require("../Controller/updatePost.js");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -31,5 +33,8 @@ router.post("/comments", createComment);
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
+
+router.put("/users/:nickname", updateUser);
+router.put("/posts/:id", updatePost);
 
 module.exports = router;
