@@ -39,6 +39,7 @@ const Register = () => {
       console.log(err);
       return;
     }
+    navigate("/home");
   };
 
   const handleSubmit = async (e) => {
