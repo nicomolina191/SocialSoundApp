@@ -8,6 +8,7 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import "./App.css";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
+import Pay from "./components/pay/Pay";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path='/home' element={<Home/>}/>
           <Route path="/home/explore" element={<Explore />} />
+          <Route path='/pay' element={<Pay />}/>
+
         </Routes>
       </AuthProvider>
     </React.StrictMode>

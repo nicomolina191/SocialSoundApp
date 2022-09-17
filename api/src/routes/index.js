@@ -10,9 +10,12 @@ const createComment = require("../Controller/createComment.js");
 const createLike = require("../Controller/createLike.js");
 const getByTime = require("../Controller/getByTime.js");
 const getUserById = require("../Controller/getUserById.js");
+const postPayment = require("../Controller/stripe");
+
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
+//se instancia a la clase, y devuelve un objeto de stripe, que tiene metodos para registrar un pago
 
 const router = Router();
 
@@ -29,5 +32,7 @@ router.post("/comments", createComment);
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
+
+router.post('/payment', postPayment);
 
 module.exports = router;
