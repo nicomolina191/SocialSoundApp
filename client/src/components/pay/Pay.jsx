@@ -13,44 +13,61 @@ const CheckoutForm = () => {
  const stripe = useStripe();
  //funcion que puede acceder a los elementos de stripe
  const element = useElements();
+ 
  const [loading, setLoading] = useState(false);
 
-const handleSubmit = async(e) => {
-e.preventDefault();
-//desde el objeto de stripe
-const {error, paymentMethod} = await stripe.createPaymentMethod({
-  type: 'card',
-  card: element.getElement(CardElement)
-});
-setLoading(true);
-if(!error){
-  const { id } = paymentMethod;
+// const handleSubmit = async(e) => {
+// e.preventDefault();
+// //desde el objeto de stripe
+// const {error, paymentMethod} = await stripe.createPaymentMethod({
+//   type: 'card',
+//   card: element.getElement(CardElement)
+// });
+// setLoading(true);
+// if(!error){
+//   const { id } = paymentMethod;
+//   try {
+//     const data = await axios.post("http://localhost:3001/payment", {
+//       id,
+//       amount: 1000
+//     });
+//     console.log(data.data.message);
+//     element.getElement(CardElement).clear();
+    
+//   } catch (error) {
+//     console.log(error.message);
+//   };
+// setLoading(false);
+// };
+
+// }; 
+
+const handleCheckOut = async(e) => {
+  e.preventDefault()
   try {
-    const data = await axios.post("http://localhost:3001/payment", {
-      id,
-      amount: 1000
-    });
-    console.log(data.data.message);
-    element.getElement(CardElement).clear();
+    const data = await axios.post('http://localhost:3001/create-checkout-session')
+    console.log(data);
+         if (data.data.url) {
+          return window.location.href = data.data.url;
+         }
     
   } catch (error) {
-    console.log(error.message);
-  };
-setLoading(false);
-};
+    console.log(error);
+  }
+ 
+      
+}
 
-}; 
-
-return <form onSubmit={handleSubmit} className={style.card}>
+return <form  className={style.card}>
        <img src={"https://www.tegendraads.nl/wp-content/uploads/2018/04/TD_Case_PSS1.jpg"} alt="" />
-       <h4>Price : $10</h4>
-       <CardElement className={style.cardElement}/>
+       <h4>Price : USD$20.00</h4>
+       {/* <CardElement className={style.cardElement}/> */}
        <div className={style.divBtn}>
-       <button className={style.button} disabled={!stripe}>
+       <button className={style.button} disabled={!stripe} onClick={(e)=>handleCheckOut(e)}>
          {
            loading 
            ?  (<span className={style.spinner}><CircularProgress /></span>)
-           : "Buy"
+           : "Check-out"
          }
        </button>
        </div>
@@ -58,6 +75,7 @@ return <form onSubmit={handleSubmit} className={style.card}>
 };
 
 const Pay = () => {
+
   return (
     <Elements stripe = {stripePromise}>
       <div className={style.container}>
@@ -68,5 +86,7 @@ const Pay = () => {
     </Elements>
   )
 }
+
+
 
 export default Pay;

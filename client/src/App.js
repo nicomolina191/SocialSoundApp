@@ -9,6 +9,7 @@ import "./App.css";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import Pay from "./components/pay/Pay";
+import Success from "./components/pay/Success";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path='/home' element={<Home/>}/>
           <Route path="/home/explore" element={<Explore />} />
           <Route path='/pay' element={<Pay />}/>
-
+          <Route path='/success' element={<Success />}/>
         </Routes>
       </AuthProvider>
     </React.StrictMode>

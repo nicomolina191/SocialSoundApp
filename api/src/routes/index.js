@@ -33,6 +33,6 @@ router.post("/comments", createComment);
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
 
-router.post('/payment', postPayment);
+router.post('/create-checkout-session', postPayment);
 
 module.exports = router;
