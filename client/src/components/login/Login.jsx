@@ -42,9 +42,9 @@ const Login = () => {
     <Box>
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
-          <Button onClick={() => navigate("/")} className={style.arrow}>
+          <button onClick={() => navigate("/")} className={style.arrow}>
             <Arrow />
-          </Button>
+          </button>
 
           <h1
             style={{

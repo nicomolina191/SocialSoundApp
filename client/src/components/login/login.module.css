@@ -79,12 +79,14 @@ height: auto;
 .btnRL {
   position: relative;
   height: 50px;
-  color: #FFF;
+  color: #000A1F !important;
   font-size: 15px;
-  background-color: rgb(8, 155, 89);
+  background-color:#00FFD6 !important;
   transition: all 0.5s;
   border-radius: 40px;
   width: 100%;
+  font-weight: bold !important;
+  font-family: inherit !important;
 }
 
 
@@ -97,14 +99,19 @@ height: auto;
   border-radius: 100%;
 
 }
-  .arrow{
-    position: relative;
-    display: block;
-    color: rgb(255, 255, 255, 1);
-    margin: 40px 0 0 40px;
-    z-index: 10;
-    background-color: rgba(255, 255, 255, 0);
+.arrow{
+  position: relative;
+  display: block;
+  z-index: 10;
   border: 0px;
+  color: rgb(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0);
+  opacity: 0.5;
+  padding: 15px;
+}
+.arrow:hover{
+
+  opacity: 1;
 
 }
 

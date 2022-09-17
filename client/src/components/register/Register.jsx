@@ -39,6 +39,7 @@ const Register = () => {
       console.log(err);
       return;
     }
+    navigate("/home");
   };
 
   const handleSubmit = async (e) => {
@@ -91,9 +92,9 @@ const Register = () => {
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>
-            <Button onClick={() => navigate("/")} className={style.arrow}>
+            <button onClick={() => navigate("/")} className={style.arrow}>
               <Arrow />
-            </Button>
+            </button>
             <h1
               style={{
                 fontSize: "5em",
