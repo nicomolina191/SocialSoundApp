@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./register.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,9 +13,9 @@ import {
   UserIcon,
 } from "../componentsIcons/index";
 import logo from "../../images/logoicon.png";
-import Loading from "../loading/Loading";
 
 const Register = () => {
+  
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -30,15 +30,23 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const { signup, signupWithGoogle } = useAuth();
+
+  const { signup, signupWithGoogle, userFirebase, logout } = useAuth();
   const navigate = useNavigate();
-  const handleSignUpGoogle = async () => {
+  
+  useEffect(()=>{
+    if (userFirebase !== null) navigate("/home");
+})
+  const handleSignUpGoogle = async () => {  
     try {
+      /// span si el usuario ya esta registrado
       await signupWithGoogle();
+      logout()
     } catch (err) {
       console.log(err);
       return;
     }
+    navigate("/login");
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +69,6 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-    //registro fallido manda a home: arreglar
     try {
       await signup(user.email, user.password);
       axios
@@ -74,6 +81,7 @@ const Register = () => {
         .catch(function (error) {
           console.log(error);
         });
+      navigate("/home");
     } catch (err) {
       return console.log(err);
     }
@@ -91,9 +99,9 @@ const Register = () => {
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>
-            <Button onClick={() => navigate("/")} className={style.arrow}>
+            <button onClick={() => navigate("/")} className={style.arrow}>
               <Arrow />
-            </Button>
+            </button>
             <h1
               style={{
                 fontSize: "5em",

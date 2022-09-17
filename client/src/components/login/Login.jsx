@@ -1,18 +1,22 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
-//alinear titulo del form y cambiar los colores de los botones //color
+
 const Login = () => {
   const [user, setUser] = useState({ password: "", email: "" });
   const [error, setError] = useState({ password: "", email: "" });
-  const { login, signupWithGoogle } = useAuth();
+  const { login, loginWithGoogle, userFirebase } = useAuth();
   const navigate = useNavigate();
 
+    useEffect(()=>{
+      console.log(userFirebase)
+        if (userFirebase !== null) navigate("/home");
+    })
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user.password || !user.email) {
@@ -28,11 +32,12 @@ const Login = () => {
 
   const handleSignInGoogle = async () => {
     try {
-      await signupWithGoogle();
+      await loginWithGoogle();
     } catch (err) {
       console.log(err);
       return;
     }
+    navigate("/home");
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -40,11 +45,11 @@ const Login = () => {
   };
   return (
     <Box>
-      <Box className={style.containerRegisterDiv}>
+      <Box className={style.containerLoginDiv}>
         <Box className={style.divBackground}>
-          <Button onClick={() => navigate("/")} className={style.arrow}>
+          <button onClick={() => navigate("/")} className={style.arrow}>
             <Arrow />
-          </Button>
+          </button>
 
           <h1
             style={{
@@ -66,8 +71,10 @@ const Login = () => {
           <img className={style.logo} src={logo} alt="logo" />
         </Box>
 
-        <Box className={style.registerContainer}>
+        <Box className={style.loginContainer}>
           <Box className={style.containAll}>
+            <Box className={style.space} />
+
             <Box className={style.containerTitle}>
               <h1 style={{ fontSize: "40px" }}>Sign up</h1>
               <h4 style={{ margin: "5px 0", height: "20px" }}>
