@@ -18,7 +18,6 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [loading, setLoading] = useState(true);
   const [userFirebase, setUserFirebase] = useState({ login: false });
 
   useEffect(() => {
@@ -57,7 +56,6 @@ export function AuthProvider({ children }) {
         login,
         signupWithGoogle,
         userFirebase,
-        loading,
       }}
     >
       {children}

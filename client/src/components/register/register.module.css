@@ -106,6 +106,13 @@ height: auto;
   border: 0px;
   color: rgb(255, 255, 255, 1);
   background-color: rgba(255, 255, 255, 0);
+  opacity: 0.5;
+  padding: 15px;
+}
+.arrow:hover{
+
+  opacity: 1;
+
 }
 
 .logo{
@@ -115,4 +122,8 @@ height: auto;
   position: absolute;
   right: 40px;
   bottom: 10px;
+}
+button{
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
 }
