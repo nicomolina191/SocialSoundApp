@@ -1,10 +1,10 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./register.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import {
   Arrow,
   EmailIcon,
@@ -12,8 +12,10 @@ import {
   PadLock,
   UserIcon,
 } from "../componentsIcons/index";
+import logo from "../../images/logoicon.png";
 
 const Register = () => {
+  
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -28,31 +30,34 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const [equal, setEqual] = useState(false);
-  const { signup, signupWithGoogle } = useAuth();
+
+  const { signup, signupWithGoogle, userFirebase, logout } = useAuth();
   const navigate = useNavigate();
-  const handleSignUpGoogle = async () => {
+  
+  useEffect(()=>{
+    if (userFirebase !== null) navigate("/home");
+})
+  const handleSignUpGoogle = async () => {  
     try {
+      /// span si el usuario ya esta registrado
       await signupWithGoogle();
+      logout()
     } catch (err) {
       console.log(err);
       return;
     }
+    navigate("/login");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !user.name ||
-      !user.email ||
-      !user.username ||
-      !user.password ||
-      !user.confirmPassword ||
-      user.password !== user.confirmPassword
-    ) {
+    if (user.password !== user.confirmPassword) {
       for (const key in user) {
         if (!user[key]) {
-          setErrors({ ...errors, [key]: `${key} most have a value` });
+          setErrors({
+            ...errors,
+            confirmPassword: "The two passwords have to be the same",
+          });
         }
       }
       return;
@@ -64,7 +69,6 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-    //registro fallido manda a home: arreglar
     try {
       await signup(user.email, user.password);
       axios
@@ -77,6 +81,7 @@ const Register = () => {
         .catch(function (error) {
           console.log(error);
         });
+      navigate("/home");
     } catch (err) {
       return console.log(err);
     }
@@ -100,9 +105,10 @@ const Register = () => {
             <h1
               style={{
                 fontSize: "5em",
-                padding: "5px 0 10px 10%",
+                padding: "5px 0 5px 10%",
                 position: "relative",
                 zIndex: "5",
+                margin: "5px",
               }}
             >
               Welcome,
@@ -113,11 +119,12 @@ const Register = () => {
           </Box>
           <Box className={style.divBackgroundColor} />
           <Box className={style.backgroundImage} />
+          <img className={style.logo} src={logo} alt="logo" />
         </Box>
 
         <Box className={style.registerContainer}>
           <Box className={style.containAll}>
-            <Box className={style.containerTitle}>
+            <Box className={style.containerTitleRegister}>
               <h1 style={{ fontSize: "40px" }}>Sign up</h1>
               <h4 style={{ margin: "5px 0", height: "20px" }}>
                 if you already have an account
@@ -228,11 +235,10 @@ const Register = () => {
                       value={user.confirmPassword}
                     />
                   </Box>
-
                   <Box style={{ display: "flex", justifyContent: "center" }}>
-                    <button className={style.btnRL} type="submit">
+                    <Button className={style.btnRL} type="submit">
                       Register
-                    </button>
+                    </Button>
                   </Box>
                 </Box>
               </form>
@@ -246,12 +252,13 @@ const Register = () => {
                 <h5 style={{ width: "auto" }}>or continue with</h5>
 
                 <Box className={{ width: "auto" }}>
-                  <button
-                    className={style.googleButton}
+                  <Button
+                    sx={{ padding: "10px" }}
                     onClick={() => handleSignUpGoogle()}
+                    className={style.googleButton}
                   >
                     <GoogleIcon />
-                  </button>
+                  </Button>
                 </Box>
               </Grid>
             </Box>
