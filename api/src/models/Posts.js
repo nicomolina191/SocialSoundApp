@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
+        type: {
+            type: DataTypes.ENUM("video", "audio"),
+            allowNull: false
+        },
         commentsCount: {
             type: DataTypes.INTEGER,
             defaultValue: 0
