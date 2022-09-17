@@ -3,14 +3,15 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useState, useEffect } from "react";
 
 export const authContext = createContext();
-
 export const useAuth = () => {
   const context = useContext(authContext);
   if (!context) throw new Error("There is not auth provider");
@@ -18,43 +19,50 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const [userFirebase, setUserFirebase] = useState({ login: false });
-
-  useEffect(() => {
-    /* const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUserFirebase(currentUser);
-      setLoading(false);
-    });
-    return () => {
-      unsuscribe();
-    }; */
-  }, []);
+  const [userFirebase, setUserFirebase] = useState(null);
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  const logout = () => {
+    signOut(auth)};
+
   const signupWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        setUserFirebase({ login: true });
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        return error;
-      });
+    return signInWithPopup(auth, provider);
   };
+
   const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const loginWithGoogle = () => {
+    const googleProvider = new GoogleAuthProvider();
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  const resetPassword = (email) => {
+    return sendPasswordResetEmail(auth, email);
+  };
+
+  useEffect(() => {
+    const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUserFirebase(currentUser);
+    });
+    return () => {
+      unsuscribe();
+    };
+  }, []);
   return (
     <authContext.Provider
       value={{
         signup,
         login,
         signupWithGoogle,
+        logout,
+        loginWithGoogle,
+        resetPassword,
         userFirebase,
       }}
     >
@@ -62,15 +70,3 @@ export function AuthProvider({ children }) {
     </authContext.Provider>
   );
 }
-
-/*  
-  const resetPassword = (email) => {
-    return sendPasswordResetEmail(auth, email);
-  };
-
-  const loginWithGoogle = (email, password) => {
-    const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
-  };
-
-  const logout = () => signOut(auth); */
