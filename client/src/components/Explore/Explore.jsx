@@ -101,12 +101,15 @@ const Explore = () => {
     } else {
       dispatch(getPostByGenre(newChecked.map((el) => el)));
     }
-    setOrderChecked("relevance")
+    
+    setOrderChecked("relevance") // borrar al hacer filtrado y orden combinado
   }
 
   function handleChecked(el) {
     setOrderChecked(el.target.value);
     dispatch(getPostByTime(el.target.value));
+
+    setGenresFiltered([]) // borrar al hacer filtrado y orden combinado
   }
 
   function handleArtistsPerPage() {
