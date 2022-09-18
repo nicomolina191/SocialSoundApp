@@ -127,12 +127,15 @@ const Login = () => {
                     value={user.password}
                   />
                 </Box>
-
+                <Box textAlign={"right"}>
+                  <Link style={{ color: "#00FFD6", textDecoration: "none" }} to="/resetpassword">Forgot your password?</Link>
+                </Box>
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <Button className={style.btnRL} type="submit">
                     Login
                   </Button>
                 </Box>
+               
               </Box>
             </form>
 
