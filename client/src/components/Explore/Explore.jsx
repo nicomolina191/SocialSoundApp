@@ -21,7 +21,7 @@ import {
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
-import { getUser } from "../../redux/features/users/usersGetSlice";
+import { getUser, getUserById } from "../../redux/features/users/usersGetSlice";
 import {
   getPost,
   getPostByGenre,
@@ -34,6 +34,7 @@ import Post from "../post/Post";
 const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
+  const user = useSelector((state) => state.users.user);
   const posts = useSelector((state) => state.posts.postList);
   const genres = useSelector((state) => state.genres.genreList).slice(1);
   const [inputValue, setInputValue] = useState("");
@@ -52,11 +53,14 @@ const Explore = () => {
   const currentGenres = genres.slice(firstGenre, lastGenre);
   const pageNumbers = Math.ceil(genres.length / genrePerPage);
 
+  console.log(posts)
+
   useEffect(() => {
     dispatch(getUser());
     dispatch(getPost());
     dispatch(getGenre());
-  }, []);
+    dispatch(getUserById(posts.userId));
+  }, [dispatch]);
 
   const theme = createTheme({
     typography: {
@@ -97,10 +101,10 @@ const Explore = () => {
     } else {
       dispatch(getPostByGenre(newChecked.map((el) => el)));
     }
+    setOrderChecked("relevance")
   }
 
   function handleChecked(el) {
-    setOrderChecked("");
     setOrderChecked(el.target.value);
     dispatch(getPostByTime(el.target.value));
   }
@@ -142,20 +146,13 @@ const Explore = () => {
     posts.map((post) => {
       if (
         post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        songArtistUserName(post)
-          .toLowerCase()
-          .includes(inputValue.toLowerCase())
+        user && user.username.toLowerCase().includes(inputValue.toLowerCase())
       ) {
         posibles.push(post);
       }
       return null;
     });
     return posibles;
-  }
-
-  function songArtistUserName(el) {
-    const artist = users.filter((user) => user.id === el.userId);
-    return artist[0].username;
   }
 
   function handleInputChange(e) {
@@ -481,7 +478,15 @@ const Explore = () => {
             </Typography>
 
             {genresFiltered.length > 0 && posts.length === 0 ? (
-              <Typography>No results</Typography>
+              <h1
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  marginTop: "200px",
+                }}
+              >
+                No results
+              </h1>
             ) : (
               <Stack spacing={0}>
                 {posts.length > 0 &&
@@ -571,7 +576,7 @@ const Explore = () => {
                               <p
                                 style={{ fontSize: "13px", marginTop: "20px" }}
                               >
-                                {songArtistUserName(results)}
+                                {user && user.username}
                               </p>
                             </Link>
                           </div>
