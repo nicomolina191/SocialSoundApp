@@ -76,7 +76,7 @@ const Login = () => {
             <Box className={style.space} />
 
             <Box className={style.containerTitle}>
-              <h1 style={{ fontSize: "40px" }}>Sign up</h1>
+              <h1 style={{ fontSize: "40px" }}>Log in</h1>
               <h4 style={{ margin: "5px 0", height: "20px" }}>
                 If you don’t have an account{" "}
               </h4>
@@ -127,12 +127,15 @@ const Login = () => {
                     value={user.password}
                   />
                 </Box>
-
+                <Box textAlign={"right"}>
+                  <Link style={{ color: "#00FFD6", textDecoration: "none" }} to="/resetpassword">Forgot your password?</Link>
+                </Box>
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <Button className={style.btnRL} type="submit">
                     Login
                   </Button>
                 </Box>
+               
               </Box>
             </form>
 

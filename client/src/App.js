@@ -9,6 +9,7 @@ import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
+import ResetPassword from "./components/resetPassword/ResetPassword";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-<Route
+          <Route path="/resetpassword" element={<ResetPassword/>}/>
+          <Route
             path="/home"
             element={
               <ProtectedRoute>
