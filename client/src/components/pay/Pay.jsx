@@ -58,9 +58,9 @@ const handleCheckOut = async(e) => {
       
 }
 
-return <form  className={style.card}>
+return <form action="/create-checkout-session" method="POST" className={style.card}>
        <img src={"https://www.tegendraads.nl/wp-content/uploads/2018/04/TD_Case_PSS1.jpg"} alt="" />
-       <h4>Price : USD$20.00</h4>
+       <h4>PRICE : USD$20.00</h4>
        {/* <CardElement className={style.cardElement}/> */}
        <div className={style.divBtn}>
        <button className={style.button} disabled={!stripe} onClick={(e)=>handleCheckOut(e)}>
