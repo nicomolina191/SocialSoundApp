@@ -34,7 +34,7 @@ const payment = async(req, res) => {
       res.send({ url: session.url });
     }catch(err) {
         console.log(err.message);
-        res.status(401).json({err: 'Error number card'});
+        res.status(401).json({err: 'Error card'});
     }
 }
 

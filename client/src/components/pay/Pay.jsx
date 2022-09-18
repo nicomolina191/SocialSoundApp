@@ -54,8 +54,6 @@ const handleCheckOut = async(e) => {
   } catch (error) {
     console.log(error);
   }
- 
-      
 }
 
 return <form action="/create-checkout-session" method="POST" className={style.card}>
@@ -63,7 +61,7 @@ return <form action="/create-checkout-session" method="POST" className={style.ca
        <h4>PRICE : USD$20.00</h4>
        {/* <CardElement className={style.cardElement}/> */}
        <div className={style.divBtn}>
-       <button className={style.button} disabled={!stripe} onClick={(e)=>handleCheckOut(e)}>
+       <button type='submit' className={style.button} disabled={!stripe} onClick={(e)=>handleCheckOut(e)}>
          {
            loading 
            ?  (<span className={style.spinner}><CircularProgress /></span>)
@@ -75,6 +73,7 @@ return <form action="/create-checkout-session" method="POST" className={style.ca
 };
 
 const Pay = () => {
+  
 
   return (
     <Elements stripe = {stripePromise}>

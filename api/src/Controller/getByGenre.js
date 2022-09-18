@@ -3,6 +3,7 @@ const { Posts, Genres } = require("../db");
 const getByGenre = async (req, res) => {
 
     const { genre } = req.params;
+    
     let filterPosts = [];
 
     try {
