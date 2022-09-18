@@ -54,10 +54,11 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   color: rgba(0, 10, 31, 1);
   background-color: rgba(163, 255, 240, 1);
   height: 35px;
-  width: 120px;
+  width: 125px;
   cursor: pointer;
   padding: 5px;
   margin-right: 15px;
@@ -67,10 +68,6 @@ h4 {
 .genresContainer label:hover {
   transform: scale(1.03);
   transition: 0.5s;
-}
-
-.genresContainer input:checked ~ label {
-  background-color: rgba(0, 255, 214, 1);
 }
 
 .genresContainer input {
@@ -132,4 +129,13 @@ h4 {
 
 .artistSong:hover {
   color: rgba(0, 226, 190, 1);
+}
+
+.showMoreButton {
+  color: rgba(129, 129, 129, 1);
+}
+
+.showMoreButton:hover {
+  cursor: pointer;
+  color: white;
 }

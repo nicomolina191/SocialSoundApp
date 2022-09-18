@@ -10,6 +10,7 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
+import ResetPassword from "./components/resetPassword/ResetPassword"; ee90ee1f2ddc2745498006299dafa5bab14cfc25
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
+          <Route path="/resetpassword" element={<ResetPassword/>}/>
           <Route
             path="/home"
             element={

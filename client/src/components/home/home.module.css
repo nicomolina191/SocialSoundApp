@@ -10,9 +10,10 @@
     font-weight: bold;
     background-color: #000A1FE0;
     backdrop-filter: blur(15px);
+    padding: 1%;
 }
 
 .home .posts .text {
-    padding: 1%;
+    padding: 1% 0;
     font-weight: bold;
 }
