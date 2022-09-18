@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/resetpassword" element={<ResetPassword/>}/>
+          <Route path="/resetpassword" element={<ResetPassword />} />
           <Route
             path="/home"
             element={
@@ -42,17 +42,12 @@ function App() {
               <ProtectedRoute>
                 {" "}
                 <Upload />
-              </ProtectedRoute>} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </React.StrictMode>
   );
 }
 export default App;
-{
-  /*           
-                   <Route path="/home" element={<Home />} />
-          <Route path="/home/explore" element={<Explore />} />
-          <Route path="/upload" element={<Upload />} />
-          /> */
-}

@@ -26,11 +26,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    signOut(auth)};
-
-  const signupWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    signOut(auth);
   };
 
   const login = (email, password) => {
@@ -59,7 +55,6 @@ export function AuthProvider({ children }) {
       value={{
         signup,
         login,
-        signupWithGoogle,
         logout,
         loginWithGoogle,
         resetPassword,
