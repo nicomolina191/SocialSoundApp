@@ -6,17 +6,17 @@ import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
+import axios from "axios";
 
 const Login = () => {
   const [user, setUser] = useState({ password: "", email: "" });
-  const [error, setError] = useState({ password: "", email: "" });
+  //const [error, setError] = useState({ password: "", email: "" });
   const { login, loginWithGoogle, userFirebase } = useAuth();
   const navigate = useNavigate();
 
-    useEffect(()=>{
-      console.log(userFirebase)
-        if (userFirebase !== null) navigate("/home");
-    })
+  useEffect(() => {
+    if (userFirebase !== null) navigate("/home");
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user.password || !user.email) {
@@ -32,7 +32,25 @@ const Login = () => {
 
   const handleSignInGoogle = async () => {
     try {
-      await loginWithGoogle();
+      let googleUser;
+      await loginWithGoogle().then(
+        (data) =>
+          (user = {
+            email: data.user.email,
+            idgoogle: data.user.uid,
+            avatar: data.user.photoURL,
+          })
+      );
+      axios
+        .post("/users", {
+          ...googleUser,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     } catch (err) {
       console.log(err);
       return;
@@ -128,14 +146,18 @@ const Login = () => {
                   />
                 </Box>
                 <Box textAlign={"right"}>
-                  <Link style={{ color: "#00FFD6", textDecoration: "none" }} to="/resetpassword">Forgot your password?</Link>
+                  <Link
+                    style={{ color: "#00FFD6", textDecoration: "none" }}
+                    to="/resetpassword"
+                  >
+                    Forgot your password?
+                  </Link>
                 </Box>
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <Button className={style.btnRL} type="submit">
                     Login
                   </Button>
                 </Box>
-               
               </Box>
             </form>
 
