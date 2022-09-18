@@ -9,14 +9,18 @@ import {
   faChevronLeft,
   faChevronDown,
   faPlay,
-  faCircleCheck
+  faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
 import { getUser } from "../../redux/features/users/usersGetSlice";
-import { getPost } from "../../redux/features/post/postGetSlice";
+import {
+  getPost,
+  getPostByGenre,
+} from "../../redux/features/post/postGetSlice";
+import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import { useEffect } from "react";
 import Post from "../post/Post";
 
@@ -24,17 +28,7 @@ const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
   const posts = useSelector((state) => state.posts.postList);
-  const genres = [
-    "Pop",
-    "Reggae",
-    "Cumbia",
-    "Reggaeton",
-    "Jazz",
-    "Blues",
-    "Rock and Roll",
-    "Country",
-    "Trap",
-  ];
+  const genres = useSelector((state) => state.genres.genreList).slice(1);
   const [inputValue, setInputValue] = useState("");
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
@@ -54,7 +48,8 @@ const Explore = () => {
   useEffect(() => {
     dispatch(getUser());
     dispatch(getPost());
-  }, [dispatch]);
+    dispatch(getGenre());
+  }, []);
 
   function nextPage() {
     if (currentPage < pageNumbers) {
@@ -69,9 +64,20 @@ const Explore = () => {
   }
 
   function handleGenresSelected(e) {
-    !genresFiltered.find((el) => el === e.target.value)
-      ? setGenresFiltered([...genresFiltered, e.target.value])
-      : setGenresFiltered(genresFiltered.filter((el) => el !== e.target.value));
+    const currentGenresChecked = genresFiltered.indexOf(e.target.value)
+    const newChecked = [...genresFiltered]
+
+    if(currentGenresChecked === -1) {
+      newChecked.push(e.target.value);
+    } else {
+      newChecked.splice(currentGenresChecked, 1);
+    }
+    setGenresFiltered(newChecked);
+    if(newChecked.length === 0) {
+      dispatch(getPost());
+    } else {
+      dispatch(getPostByGenre(newChecked.map((el) => el)));
+    }
   }
 
   function handleChecked(el) {
@@ -116,7 +122,9 @@ const Explore = () => {
     posts.map((post) => {
       if (
         post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        songArtistUserName(post).toLowerCase().includes(inputValue.toLowerCase())
+        songArtistUserName(post)
+          .toLowerCase()
+          .includes(inputValue.toLowerCase())
       ) {
         posibles.push(post);
       }
@@ -255,20 +263,20 @@ const Explore = () => {
                         <div className={styles.genresContainer}>
                           <input
                             onClick={handleGenresSelected}
-                            id={genre}
+                            id={genre.id}
                             type="checkbox"
-                            value={genre}
+                            value={genre.name}
                           ></input>
-                          {!genresFiltered.find((el) => el === genre) ? (
-                            <label htmlFor={genre}>{genre}</label>
+                          {!genresFiltered.find((el) => el === genre.name) ? (
+                            <label htmlFor={genre.id}>{genre.name}</label>
                           ) : (
                             <label
                               style={{
                                 backgroundColor: "rgba(0, 255, 214, 1)",
                               }}
-                              htmlFor={genre}
+                              htmlFor={genre.id}
                             >
-                              {genre}
+                              {genre.name}
                             </label>
                           )}
                         </div>
@@ -451,10 +459,9 @@ const Explore = () => {
             For you.
           </Typography>
 
-          <Stack spacing={0} >
+          <Stack spacing={0}>
             {posts.length > 0 &&
-              posts.map((post, i) => <Post key={i} post={post} />)
-            }
+              posts.map((post, i) => <Post key={i} post={post} />)}
           </Stack>
         </Stack>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
@@ -563,7 +570,7 @@ const Explore = () => {
             </div>
           ) : null}
 
-          {posibleArtist().length > 0 ? (
+          {posibleArtist().length > 0 && genresFiltered.length === 0 ? (
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
               <Typography
                 variant="h5"
