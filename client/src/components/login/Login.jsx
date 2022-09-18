@@ -35,7 +35,7 @@ const Login = () => {
       let googleUser;
       await loginWithGoogle().then(
         (data) =>
-          (user = {
+          (googleUser = {
             email: data.user.email,
             idgoogle: data.user.uid,
             avatar: data.user.photoURL,
