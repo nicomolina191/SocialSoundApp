@@ -8,7 +8,7 @@ const Loading = ({ width, height }) => {
       className={style.spin}
       style={{ width, height }}
       src={loading}
-      alt="Loading..."
+      alt="loading"
     />
   );
 };
