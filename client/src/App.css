@@ -71,5 +71,6 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 :root {
-  --main-page-color: #000A1F
+  --main-page-color: #000A1F;
+  --second-page-color: #00FFD6
 }
