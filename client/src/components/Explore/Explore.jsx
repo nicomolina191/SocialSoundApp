@@ -9,10 +9,7 @@ import {
   faChevronLeft,
   faChevronDown,
   faPlay,
-  faCircleCheck,
-  faHeart,
-  faComment,
-  faShare,
+  faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { Button, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -21,6 +18,7 @@ import logoIcon from "../../images/logoicon.png";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { useEffect } from "react";
+import Post from "../post/Post";
 
 const Explore = () => {
   const dispatch = useDispatch();
@@ -118,7 +116,7 @@ const Explore = () => {
     posts.map((post) => {
       if (
         post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        songArtistName(post).toLowerCase().includes(inputValue.toLowerCase())
+        songArtistUserName(post).toLowerCase().includes(inputValue.toLowerCase())
       ) {
         posibles.push(post);
       }
@@ -127,19 +125,9 @@ const Explore = () => {
     return posibles;
   }
 
-  function songArtistName(el) {
-    const artist = users.filter((user) => user.id === el.userId);
-    return artist[0].name;
-  }
-
   function songArtistUserName(el) {
     const artist = users.filter((user) => user.id === el.userId);
     return artist[0].username;
-  }
-
-  function songArtistAvatar(el) {
-    const artist = users.filter((user) => user.id === el.userId);
-    return artist[0].avatar;
   }
 
   function handleInputChange(e) {
@@ -463,111 +451,10 @@ const Explore = () => {
             For you.
           </Typography>
 
-          <Stack spacing={3}>
-            {posts.map((results) => {
-              return (
-                <Stack
-                  direction="column"
-                  justifyContent="start"
-                  alignItems="start"
-                  className={styles.containerForYouPosts}
-                >
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Link to={results.userId}>
-                      <img
-                        src={songArtistAvatar(results)}
-                        alt=""
-                        style={{
-                          height: "55px",
-                          width: "55px",
-                          borderRadius: "50px",
-                        }}
-                      />
-                    </Link>
-                    <div className={styles.nameAndUsername}>
-                      <Link
-                        style={{ color: "white", textDecoration: "none" }}
-                        to={results.userId}
-                      >
-                        <p>{songArtistName(results)}</p>
-                      </Link>
-                      <Link
-                        style={{
-                          color: "rgba(129, 129, 129, 0.532)",
-                          textDecoration: "none",
-                        }}
-                        to={results.userId}
-                      >
-                        <p
-                          style={{
-                            color: "rgba(129, 129, 129, 0.532)",
-                            margin: "-14px 0 16px",
-                          }}
-                        >
-                          @{songArtistUserName(results)}
-                        </p>
-                      </Link>
-                    </div>
-                  </Stack>
-                  <p style={{ color: "white", fontSize: "15px" }}>
-                    {results.description}
-                  </p>
-                  {/* Post content, audio or video */}
-                  <p className={styles.contentForYouPosts}>
-                    <iframe
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/6biv8AQcjNU"
-                      title="YouTube video player"
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    ></iframe>
-                  </p>
-
-                  {results.postDate.slice(11, 13) > 12 ? (
-                    <p className={styles.dateForYouPosts}>
-                      {results.postDate.slice(11, 16) +
-                        " PM" +
-                        "・" +
-                        results.postDate.slice(5, 10) +
-                        ", " +
-                        results.postDate.slice(0, 4)}
-                    </p>
-                  ) : (
-                    <p className={styles.dateForYouPosts}>
-                      {results.postDate.slice(11, 16) +
-                        " AM" +
-                        "・" +
-                        results.postDate.slice(0, 10)}
-                    </p>
-                  )}
-                  <div className={styles.containerSocialForYou}>
-                    <Stack direction="row" alignItems="center">
-                      <p className={styles.contLikesOnPosts}>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </p>
-                      <p className={styles.likesOnPosts}>
-                        {results.likesCount}
-                      </p>
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                      <p className={styles.contCommentsOnPosts}>
-                        <FontAwesomeIcon icon={faComment} />{" "}
-                      </p>
-                      <p className={styles.commentsOnPosts}>
-                        {results.commentsCount}
-                      </p>
-                    </Stack>
-                    <Stack direction="row" alignItems="center">
-                      <p className={styles.shareOnPosts}>
-                        <FontAwesomeIcon icon={faShare} />
-                      </p>
-                    </Stack>
-                  </div>
-                </Stack>
-              );
-            })}
+          <Stack spacing={0} >
+            {posts.length > 0 &&
+              posts.map((post, i) => <Post key={i} post={post} />)
+            }
           </Stack>
         </Stack>
       ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (

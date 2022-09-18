@@ -23,7 +23,7 @@ export default function Post({ post }) {
     }, [post])
 
     return (
-        <Grid container direction="column" xs={11} className={style.post} p={`1%`} m={`4%`}>
+        <Grid container direction="column" className={style.post} p={`1%`} >
             <Grid item container spacing={1}>
                 <Grid item>
                     <Avatar src={user && user.avatar} />
