@@ -52,11 +52,17 @@ export const postSlice = createSlice({
         ...state,
         postList: action.payload,
       }
+    }, 
+    getAllPostByTime: (state, action) => {
+      return {
+        ...state,
+        postList: action.payload,
+      }
     }
   }
 });
 
 
-export const { addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre } = postSlice.actions;
+export const { addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime } = postSlice.actions;
 
 export default postSlice.reducer;

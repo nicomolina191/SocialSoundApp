@@ -23,7 +23,7 @@ export default function Post({ post }) {
     }, [post])
 
     return (
-        <Grid container direction="column" xs={11} className={style.post} p={`1%`} m={`4%`}>
+        <Grid container direction="column" className={style.post} p={`1%`} >
             <Grid item container spacing={1}>
                 <Grid item>
                     <Avatar src={user && user.avatar} />
@@ -51,7 +51,7 @@ export default function Post({ post }) {
             <Grid item container justifyContent="space-between">
                 <Grid item xs>
                     <Typography variant='body2'>
-                        {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1])]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
+                        {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1])-1]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
                     </Typography>
                 </Grid>
                 <Grid item container xs={4} justifyContent="flex-end" spacing={2}>
