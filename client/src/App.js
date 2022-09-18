@@ -10,7 +10,7 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
-import ResetPassword from "./components/resetPassword/ResetPassword"; ee90ee1f2ddc2745498006299dafa5bab14cfc25
+import ResetPassword from "./components/resetPassword/ResetPassword";
 
 function App() {
   return (
