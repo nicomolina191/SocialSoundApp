@@ -4,24 +4,18 @@ import style from "./register.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
-import { Box, Button, Grid, TextField } from "@mui/material";
-import {
-  Arrow,
-  EmailIcon,
-  GoogleIcon,
-  PadLock,
-  UserIcon,
-} from "../componentsIcons/index";
+import { Box, Button, TextField } from "@mui/material";
+import { Arrow, EmailIcon, PadLock, UserIcon } from "../componentsIcons/index";
 import logo from "../../images/logoicon.png";
 
 const Register = () => {
-  
   const [user, setUser] = useState({
     name: "",
     email: "",
     username: "",
     password: "",
     confirmPassword: "",
+    idgoogle: "",
   });
   const [errors, setErrors] = useState({
     name: "",
@@ -30,24 +24,12 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
-  const { signup, signupWithGoogle, userFirebase, logout } = useAuth();
+  const { signup, userFirebase } = useAuth();
   const navigate = useNavigate();
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     if (userFirebase !== null) navigate("/home");
-})
-  const handleSignUpGoogle = async () => {  
-    try {
-      /// span si el usuario ya esta registrado
-      await signupWithGoogle();
-      logout()
-    } catch (err) {
-      console.log(err);
-      return;
-    }
-    navigate("/login");
-  };
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +52,7 @@ const Register = () => {
       confirmPassword: "",
     });
     try {
-      await signup(user.email, user.password);
+      await signup(user.email, user.password).then();
       axios
         .post("/users", {
           ...user,
@@ -242,25 +224,6 @@ const Register = () => {
                   </Box>
                 </Box>
               </form>
-              <Grid
-                className={style.googleBox}
-                alignItems="center"
-                justifyContent="center"
-                direction="column"
-                container
-              >
-                <h5 style={{ width: "auto" }}>or continue with</h5>
-
-                <Box className={{ width: "auto" }}>
-                  <Button
-                    sx={{ padding: "10px" }}
-                    onClick={() => handleSignUpGoogle()}
-                    className={style.googleButton}
-                  >
-                    <GoogleIcon />
-                  </Button>
-                </Box>
-              </Grid>
             </Box>
           </Box>
         </Box>
