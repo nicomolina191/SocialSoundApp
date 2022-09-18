@@ -23,7 +23,7 @@ const router = Router();
 router.get("/users", getUsers);
 router.get('/users/:userId', getUserById);
 router.get("/posts", getPosts);
-router.get("/posts/genre/:genre", getByGenre);
+router.get("/posts/genres/", getByGenre);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 

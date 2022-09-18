@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
       password,
       username,
       avatar,
-      idgoogle,
+      idgoogle
     });
 
     async function Mail() {
