@@ -1,13 +1,14 @@
 const { Users, Posts, Genres } = require("../db");
 
 const createPost = async (req, res) => {
-  const { description, title, content, idUser, genres } = req.body;
+  const { description, title, content, idUser, genres, type } = req.body;
 
   try {
     const post = await Posts.create({
       description,
       title,
       content,
+      type,
     });
 
     const user = await Users.findByPk(idUser);

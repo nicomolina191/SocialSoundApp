@@ -1,0 +1,22 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    min-width: 400px;
+}
+.formInputs{
+    list-style: none;
+}
+.formInputs li{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.selectGenres{
+    width: 350px;
+}
+.genreoptions{
+    background-color: black;
+}
+
+
+
