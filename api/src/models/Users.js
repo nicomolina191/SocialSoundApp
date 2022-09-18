@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
       },
       idgoogle: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       name: {
         type: DataTypes.STRING,
@@ -25,7 +25,6 @@ module.exports = (sequelize) => {
       plan: {
         type: DataTypes.ENUM("Regular", "Premium"),
         defaultValue: "Regular",
-        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
