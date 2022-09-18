@@ -17,6 +17,16 @@
 .genreoptions{
     background-color: black;
 }
+.newPostBtn{
+    border: none;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+}
 
 
 

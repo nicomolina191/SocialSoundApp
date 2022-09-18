@@ -8,6 +8,7 @@ import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
+import newpost from '../../images/svg/newpost.svg'
 
 export default function Upload() {
     const dispatch = useDispatch()
@@ -100,7 +101,7 @@ export default function Upload() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>New Post...</Button>
+      <button className={s.newPostBtn} onClick={handleClickOpen}> <img width='16px' src={newpost} alt="a" /> New Post...</button>
       <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
             <DialogTitle id="responsive-dialog-title">{"New Post"}</DialogTitle>
             <form onSubmit={(e)=>handleSubmit(e)}>
