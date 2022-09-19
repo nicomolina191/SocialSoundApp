@@ -2,11 +2,11 @@ const { Users } = require("../db");
 
 const updateUser = async (req, res) => {
 
-  const { nickname } = req.params;
+  const { id } = req.params;
   const { name, username, avatar } = req.body;
 
   try {
-    let user = await Users.findOne({ where: { username: nickname } });
+    let user = await Users.findOne({ where: { id } });
     user.update({
       name,
       username,

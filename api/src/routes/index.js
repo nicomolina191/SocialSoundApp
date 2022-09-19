@@ -36,7 +36,7 @@ router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
 router.delete("/comments/:id", deleteComment);
 
-router.put("/users/:nickname", updateUser);
+router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
 
 module.exports = router;
