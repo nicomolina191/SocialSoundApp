@@ -20,8 +20,11 @@ import axios from "axios";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+
 const Login = () => {
   const dispatch = useDispatch();
+  const users = useSelector(state => state.users.usersListAll)
+  const [googleUser, setGoogleUser] = useState()
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = React.useState(false);
   const [userToResetPassword, setUserToResetPassword] = useState("");
@@ -30,10 +33,13 @@ const Login = () => {
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
+  // useEffect(() => {
+  //   if (userFirebase !== null) navigate("/home");
+  // });
+
   useEffect(() => {
-    if (userFirebase !== null) navigate("/home");
-    // dispatch(getUser());
-  });
+    dispatch(getUser())
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,9 +52,7 @@ const Login = () => {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleClickOpen = () => {
+  }; const handleClickOpen = () => {
     setOpen(true);
   };
 
@@ -56,241 +60,247 @@ const Login = () => {
     setOpen(false);
   };
 
-  const handleSignInGoogle = async () => {
-    try {
-      let googleUser;
-      await loginWithGoogle().then(
-        (data) =>
-          (googleUser = {
-            email: data.user.email,
-            idgoogle: data.user.uid,
-            avatar: data.user.photoURL,
+      useEffect(() => {
+        if (googleUser && users.filter(u => u.email === googleUser.email).length === 0) {
+          axios
+            .post("/users", {
+              ...googleUser,
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+        if (userFirebase !== null) navigate("/home");
+
+      }, [googleUser])
+
+      const handleSignInGoogle = async () => {
+        try {
+          const res = await loginWithGoogle();
+          setGoogleUser({
+            name: res.user.email.split('@')[0],
+            username: res.user.email.split('@')[0],
+            password: res.user.email,
+            email: res.user.email,
+            idgoogle: res.user.uid,
+            avatar: res.user.photoURL,
           })
-      );
-      axios
-        .post("/users", {
-          ...googleUser,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } catch (err) {
-      console.log(err);
-      return;
-    }
-    navigate("/home");
-  };
+        } catch (err) {
+          console.log(err);
+          return;
+        }
+      };
 
-  const handleSendPasswordReset = async (email) => {
-    console.log(email);
-    try {
-      await resetPassword(email);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      const handleSendPasswordReset = async (email) => {
+        console.log(email);
+        try {
+          await resetPassword(email);
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
-  const handleChange = ({ target: { name, value } }) => {
-    setUser({ ...user, [name]: value });
-  };
+      const handleChange = ({ target: { name, value } }) => {
+        setUser({ ...user, [name]: value });
+      };
 
-  return (
-    <Box>
-      <Box className={style.containerLoginDiv}>
-        <Box className={style.divBackground}>
-          <button onClick={() => navigate("/")} className={style.arrow}>
-            <Arrow />
-          </button>
+      return (
+        <Box>
+          <Box className={style.containerLoginDiv}>
+            <Box className={style.divBackground}>
+              <button onClick={() => navigate("/")} className={style.arrow}>
+                <Arrow />
+              </button>
 
-          <h1
-            style={{
-              fontSize: "5em",
-              padding: "5px 0 5px 10%",
-              position: "relative",
-              zIndex: "5",
-              margin: "5px",
-            }}
-          >
-            Hey!
-            <br />
-            Welcome
-            <br />
-            Back.
-          </h1>
-          <Box className={style.divBackgroundColor} />
-          <Box className={style.backgroundImage} />
-          <img className={style.logo} src={logo} alt="logo" />
-        </Box>
-
-        <Box className={style.loginContainer}>
-          <Box className={style.containAll}>
-            <Box className={style.space} />
-
-            <Box className={style.containerTitle}>
-              <h1 style={{ fontSize: "40px" }}>Log in</h1>
-              <h4 style={{ margin: "5px 0", height: "20px" }}>
-                If you don’t have an account{" "}
-              </h4>
-              <h4 style={{ margin: "5px 0", height: "20px" }}>
-                you can
-                <Link
-                  style={{ color: "#00FFD6", textDecoration: "none" }}
-                  to="/register"
-                >
-                  {" "}
-                  Register here !
-                </Link>
-              </h4>
+              <h1
+                style={{
+                  fontSize: "5em",
+                  padding: "5px 0 5px 10%",
+                  position: "relative",
+                  zIndex: "5",
+                  margin: "5px",
+                }}
+              >
+                Hey!
+                <br />
+                Welcome
+                <br />
+                Back.
+              </h1>
+              <Box className={style.divBackgroundColor} />
+              <Box className={style.backgroundImage} />
+              <img className={style.logo} src={logo} alt="logo" />
             </Box>
 
-            <form style={{ width: "100%" }} onSubmit={(e) => handleSubmit(e)}>
-              <Box className={style.orderForm}>
-                <Box
-                  sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                >
-                  <EmailIcon />
-                  <TextField
-                    className={style.input}
-                    type="email"
-                    required={true}
-                    autoComplete="off"
-                    variant="standard"
-                    label="Email"
-                    name="email"
-                    onChange={(e) => handleChange(e)}
-                    value={user.email}
-                  />
+            <Box className={style.loginContainer}>
+              <Box className={style.containAll}>
+                <Box className={style.space} />
+
+                <Box className={style.containerTitle}>
+                  <h1 style={{ fontSize: "40px" }}>Log in</h1>
+                  <h4 style={{ margin: "5px 0", height: "20px" }}>
+                    If you don’t have an account{" "}
+                  </h4>
+                  <h4 style={{ margin: "5px 0", height: "20px" }}>
+                    you can
+                    <Link
+                      style={{ color: "#00FFD6", textDecoration: "none" }}
+                      to="/register"
+                    >
+                      {" "}
+                      Register here !
+                    </Link>
+                  </h4>
                 </Box>
 
-                <Box
-                  sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                <form style={{ width: "100%" }} onSubmit={(e) => handleSubmit(e)}>
+                  <Box className={style.orderForm}>
+                    <Box
+                      sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                    >
+                      <EmailIcon />
+                      <TextField
+                        className={style.input}
+                        type="email"
+                        required={true}
+                        autoComplete="off"
+                        variant="standard"
+                        label="Email"
+                        name="email"
+                        onChange={(e) => handleChange(e)}
+                        value={user.email}
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                    >
+                      <PadLock />
+                      <TextField
+                        className={style.input}
+                        type="password"
+                        required={true}
+                        autoComplete="off"
+                        variant="standard"
+                        label="Password"
+                        name="password"
+                        onChange={(e) => handleChange(e)}
+                        value={user.password}
+                      />
+                    </Box>
+                    <Box textAlign={"right"}>
+                      <Link
+                        onClick={handleClickOpen}
+                        style={{ color: "#00FFD6", textDecoration: "none" }}
+                      >
+                        Forgot your password?
+                      </Link>
+                    </Box>
+                    <Box style={{ display: "flex", justifyContent: "center" }}>
+                      <Button className={style.btnRL} type="submit">
+                        Login
+                      </Button>
+                    </Box>
+                  </Box>
+                </form>
+
+                <Grid
+                  className={style.googleBox}
+                  alignItems="center"
+                  justifyContent="center"
+                  direction="column"
+                  container
                 >
-                  <PadLock />
-                  <TextField
-                    className={style.input}
-                    type="password"
-                    required={true}
-                    autoComplete="off"
-                    variant="standard"
-                    label="Password"
-                    name="password"
-                    onChange={(e) => handleChange(e)}
-                    value={user.password}
-                  />
-                </Box>
-                <Box textAlign={"right"}>
-                  <Link
-                    onClick={handleClickOpen}
-                    style={{ color: "#00FFD6", textDecoration: "none" }}
+                  <h5 style={{ width: "auto", margin: "5px" }}>or continue with</h5>
+                  <Button
+                    sx={{ padding: "20px", borderRadius: "50%" }}
+                    onClick={() => handleSignInGoogle("/")}
+                    className={style.googleButton}
                   >
-                    Forgot your password?
-                  </Link>
-                </Box>
-                <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <Button className={style.btnRL} type="submit">
-                    Login
+                    <GoogleIcon />
                   </Button>
-                </Box>
+                </Grid>
               </Box>
-            </form>
-
-            <Grid
-              className={style.googleBox}
-              alignItems="center"
-              justifyContent="center"
-              direction="column"
-              container
-            >
-              <h5 style={{ width: "auto", margin: "5px" }}>or continue with</h5>
-              <Button
-                sx={{ padding: "20px", borderRadius: "50%" }}
-                onClick={() => handleSignInGoogle("/")}
-                className={style.googleButton}
-              >
-                <GoogleIcon />
-              </Button>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-      {open && (
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "var(--main-page-color)",
-              color: "white",
-            }}
-          >
-            Reset Password
-          </DialogTitle>
-          <DialogContent
-            sx={{
-              backgroundColor: "var(--main-page-color)",
-              color: "white",
-            }}
-          >
-            <DialogContentText
-              sx={{
-                backgroundColor: "var(--main-page-color)",
-                color: "white",
-              }}
-            >
-              an email will be sent to reset your password
-            </DialogContentText>
-            <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
-              <EmailIcon style={{ padding: "10px" }} />
-              <TextField
+          {open && (
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle
                 sx={{
                   backgroundColor: "var(--main-page-color)",
                   color: "white",
                 }}
-                className={style.input}
-                autoFocus
-                margin="dense"
-                id="Email"
-                label="Email Address"
-                type="email"
-                fullWidth
-                autoComplete="off"
-                variant="standard"
-                value={userToResetPassword}
-                onChange={(e) => setUserToResetPassword(e.target.value)}
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
-            <Button
-              sx={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "800",
-                backgroundColor: "var(--second-page-color)",
-                color: "black",
-              }}
-              className={style.btnDialog}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              sx={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "800",
-                backgroundColor: "var(--main-page-color)",
-                color: "black",
-              }}
-              className={style.btnDialog}
-              onClick={handleSendPasswordReset(userToResetPassword)}
-            >
-              Send
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
-    </Box>
-  );
-};
+              >
+                Reset Password
+              </DialogTitle>
+              <DialogContent
+                sx={{
+                  backgroundColor: "var(--main-page-color)",
+                  color: "white",
+                }}
+              >
+                <DialogContentText
+                  sx={{
+                    backgroundColor: "var(--main-page-color)",
+                    color: "white",
+                  }}
+                >
+                  an email will be sent to reset your password
+                </DialogContentText>
+                <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <EmailIcon style={{ padding: "10px" }} />
+                  <TextField
+                    sx={{
+                      backgroundColor: "var(--main-page-color)",
+                      color: "white",
+                    }}
+                    className={style.input}
+                    autoFocus
+                    margin="dense"
+                    id="Email"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                    autoComplete="off"
+                    variant="standard"
+                    value={userToResetPassword}
+                    onChange={(e) => setUserToResetPassword(e.target.value)}
+                  />
+                </Box>
+              </DialogContent>
+              <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
+                <Button
+                  sx={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: "800",
+                    backgroundColor: "var(--second-page-color)",
+                    color: "black",
+                  }}
+                  className={style.btnDialog}
+                  onClick={handleClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  sx={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: "800",
+                    backgroundColor: "var(--main-page-color)",
+                    color: "black",
+                  }}
+                  className={style.btnDialog}
+                  onClick={handleSendPasswordReset(userToResetPassword)}
+                >
+                  Send
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
+        </Box>
+      );
+    };
 
-export default Login;
+    export default Login;
