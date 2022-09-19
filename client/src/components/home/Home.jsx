@@ -7,6 +7,7 @@ import style from "./home.module.css";
 import { useEffect } from "react";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { useAuth } from "../../context";
+import SideBar from "../SideBar/SideBar";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -21,14 +22,14 @@ export default function Home() {
 
   return (
     <Grid container xs={12} className={style.home}>
-      <Grid
+      {/* <Grid
         item
         container
         xs={3}
         direction="column"
         className={style.sideBar}
         p={`1%`}
-      >
+       >
         <Grid item>
           <button
             style={{ backgroundColor: "white" }}
@@ -50,6 +51,9 @@ export default function Home() {
             </Typography>
           </Link>
         </Grid>
+      </Grid> */}
+      <Grid item>
+        <SideBar />
       </Grid>
       <Grid item xs={9} direction="column" className={style.posts}>
         <Typography variant="h3" className={style.text}>
