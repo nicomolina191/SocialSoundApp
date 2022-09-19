@@ -31,6 +31,7 @@ import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import { useEffect } from "react";
 import Post from "../post/Post";
 
+
 const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
@@ -52,8 +53,6 @@ const Explore = () => {
   const firstGenre = lastGenre - genrePerPage;
   const currentGenres = genres.slice(firstGenre, lastGenre);
   const pageNumbers = Math.ceil(genres.length / genrePerPage);
-
-  console.log(posts)
 
   useEffect(() => {
     dispatch(getUser());
@@ -88,7 +87,8 @@ const Explore = () => {
 
   function handleGenresSelected(e) {
     const currentGenresChecked = genresFiltered.indexOf(e.target.value);
-    const newChecked = [...genresFiltered];
+    // const newChecked = [...genresFiltered];
+    const newChecked = [];
 
     if (currentGenresChecked === -1) {
       newChecked.push(e.target.value);
@@ -101,7 +101,7 @@ const Explore = () => {
     } else {
       dispatch(getPostByGenre(newChecked.map((el) => el)));
     }
-    
+    setOpen(false);
     setOrderChecked("relevance") // borrar al hacer filtrado y orden combinado
   }
 
