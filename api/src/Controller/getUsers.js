@@ -1,7 +1,7 @@
 const { Users } = require("../db");
 
 const getUsers = async (req, res) => {
-console.log(req.user);
+
 
   try {
 

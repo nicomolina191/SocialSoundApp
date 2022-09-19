@@ -7,32 +7,22 @@ import style from './home.module.css'
 import { useEffect } from 'react';
 import { getPost } from '../../redux/features/post/postGetSlice';
 import { useAuth } from '../../context';
-import axios from "axios";
+
 
 export default function Home() {
     const dispatch = useDispatch()
     const posts = useSelector(state => state.posts.possListAll)
-    const { userFirebase, logout, token } = useAuth(); 
+    const { userFirebase, logout } = useAuth(); 
     const navigate = useNavigate();
 
     useEffect(() => {
          console.log(userFirebase)
-        // console.log(token);
-        if (typeof userFirebase !== "object" ) navigate("/login");
-        if(token) {
-           return getData(token)
-           }
-        dispatch(getPost())
-    }, [token])
 
-    const getData = async(token) => {
-        const res = await axios.get('/users',{
-            headers: {
-                Authorization: 'Bearer ' + token,
-            }
-        })
-		console.log(res.data);
-      }
+        if (typeof userFirebase !== "object" ) navigate("/login");
+        dispatch(getPost())
+    }, [])
+
+
 
     return (
         <Grid container xs={12} className={style.home}>
