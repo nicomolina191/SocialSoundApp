@@ -129,11 +129,38 @@
   bottom: 10px;
 }
 
-.containerModal h2{
-  color: white !important;
-  background-color: var(--main-page-color) !important;
+.btns button{
+  height: 50px;
+  color: #000A1F !important;
+  font-size: 15px;
+  background-color: #00FFD6 !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 50%;
+  font-weight: bold !important;
+  font-family: inherit !important;
 }
-.containerModal p{
+
+button[type=button] {
+  height: 50px;
   color: white !important;
-  background-color: var(--main-page-color) !important;
+  font-size: 15px;
+  background-color: #0b152a !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 25%;
+  font-weight: bold !important;
+  font-family: inherit !important;
+}
+
+button[type=submit] {
+  height: 50px;
+  color: #000A1F !important;
+  font-size: 15px;
+  background-color: #00FFD6 !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 25%;
+  font-weight: bold !important;
+  font-family: inherit !important;
 }

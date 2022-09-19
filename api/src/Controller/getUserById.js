@@ -1,4 +1,4 @@
-const { Users } = require("../db");
+const { Users, Genres } = require("../db");
 
 const getUserById = async (req, res) => {
 
@@ -6,7 +6,13 @@ const getUserById = async (req, res) => {
 
     try {
 
-        let user = await Users.findByPk(userId);
+        let user = await Users.findByPk(userId, {
+            include: [{
+                model: Genres,
+                attributes: ['name'],
+                through: { attributes: [] }
+            }]
+        });
 
         return res.json(user);
 
