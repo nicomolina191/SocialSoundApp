@@ -9,7 +9,9 @@ import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
+import SideBar from "./components/SideBar/SideBar";
 import ResetPassword from "./components/resetPassword/ResetPassword";
+
 
 function App() {
   return (
@@ -33,15 +35,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <Explore />{" "}
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/upload"
-            element={
-              <ProtectedRoute>
-                {" "}
-                <Upload />
               </ProtectedRoute>
             }
           />
