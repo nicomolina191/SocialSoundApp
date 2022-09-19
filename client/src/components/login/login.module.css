@@ -129,7 +129,5 @@
 
 .btnDialog Button{
   background-color: var(--secondary-page-color) !important;
-  color: black !important;
-  font-weight: 800;
   font-family: "Inter", sans-serif;
 }
