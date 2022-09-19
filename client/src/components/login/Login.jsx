@@ -60,18 +60,6 @@ const Login = () => {
     setOpen(false);
   };
 
-  const handleSignInGoogle = async () => {
-    try {
-      let googleUser;
-      await loginWithGoogle().then(
-        (data) =>
-        (googleUser = {
-          email: data.user.email,
-          idgoogle: data.user.uid,
-          avatar: data.user.photoURL,
-        })
-      );
-
       useEffect(() => {
         if (googleUser && users.filter(u => u.email === googleUser.email).length === 0) {
           axios
