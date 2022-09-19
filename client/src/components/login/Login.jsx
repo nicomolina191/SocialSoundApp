@@ -23,7 +23,9 @@ import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.usersListAll);
+  const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = useState(false);
   const [userToResetPassword, setUserToResetPassword] = useState("");
@@ -37,10 +39,13 @@ const Login = () => {
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
+  // useEffect(() => {
+  //   if (userFirebase !== null) navigate("/home");
+  // });
+
   useEffect(() => {
-    if (userFirebase !== null) navigate("/home");
-    // dispatch(getUser());
-  });
+    dispatch(getUser());
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +59,6 @@ const Login = () => {
       console.log(err);
     }
   };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -63,17 +67,11 @@ const Login = () => {
     setOpen(false);
   };
 
-  const handleSignInGoogle = async () => {
-    try {
-      let googleUser;
-      await loginWithGoogle().then(
-        (data) =>
-          (googleUser = {
-            email: data.user.email,
-            idgoogle: data.user.uid,
-            avatar: data.user.photoURL,
-          })
-      );
+  useEffect(() => {
+    if (
+      googleUser &&
+      users.filter((u) => u.email === googleUser.email).length === 0
+    ) {
       axios
         .post("/users", {
           ...googleUser,
@@ -84,15 +82,28 @@ const Login = () => {
         .catch(function (error) {
           console.log(error);
         });
+    }
+    if (userFirebase !== null) navigate("/home");
+  }, [googleUser]);
+
+  const handleSignInGoogle = async () => {
+    try {
+      const res = await loginWithGoogle();
+      setGoogleUser({
+        name: res.user.email.split("@")[0],
+        username: res.user.email.split("@")[0],
+        password: res.user.email,
+        email: res.user.email,
+        idgoogle: res.user.uid,
+        avatar: res.user.photoURL,
+      });
     } catch (err) {
       console.log(err);
       return;
     }
-    navigate("/home");
   };
 
   const handleSendPasswordReset = async (email) => {
-    console.log(email);
     try {
       await resetPassword(email);
       setOpenAlert({

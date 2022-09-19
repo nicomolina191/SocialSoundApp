@@ -4,6 +4,7 @@ const initialState = {
   usersListAll: [],
   user:{},
   isLoading: true,
+  currentUser: {}
 }
 
 const userSlice = createSlice({
@@ -51,12 +52,18 @@ const userSlice = createSlice({
         ...state,
         user: action.payload
       }
+    },
+    getByFirebaseId: (state, action)=>{
+      return {
+        ...state,
+        currentUser: action.payload
+      }
     }
   },
 });
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId } = userSlice.actions;
 
 export default userSlice.reducer;
 
