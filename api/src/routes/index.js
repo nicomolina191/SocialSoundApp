@@ -25,10 +25,10 @@ router.get("/users", getUsers);
 router.get('/users/:userId', getUserById);
 router.get('/users/idgoogle/:idgoogle', getUserByIdGoogle);
 router.get("/posts", getPosts);
-router.get("/posts/genres", getByGenre);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 
+router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
 router.post("/posts", createPost);
 router.post("/likes", createLike);
