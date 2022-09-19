@@ -11,10 +11,11 @@ const createLike = require("../Controller/createLike.js");
 const getByTime = require("../Controller/getByTime.js");
 const getUserById = require("../Controller/getUserById.js");
 const postPayment = require("../Controller/stripe");
-
 const getGenres = require("../Controller/getGenres.js");
 const updateUser = require("../Controller/updateUser.js");
 const updatePost = require("../Controller/updatePost.js");
+
+
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
