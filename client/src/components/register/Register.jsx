@@ -33,7 +33,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   // useEffect(() => {
-  //   if (userFirebase !== null) navigate("/home");
+  if (userFirebase !== null) navigate("/home");
   // });
 
   useEffect(() => {

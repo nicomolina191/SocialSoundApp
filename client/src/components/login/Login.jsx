@@ -44,6 +44,7 @@ const Login = () => {
   // });
 
   useEffect(() => {
+    if (userFirebase !== null) navigate("/home");
     dispatch(getUser());
   }, []);
 
