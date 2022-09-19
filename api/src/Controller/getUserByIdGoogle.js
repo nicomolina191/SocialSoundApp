@@ -1,12 +1,13 @@
 const { Users, Genres } = require("../db");
 
-const getUserById = async (req, res) => {
+const getUserByIdGoogle = async (req, res) => {
 
-    const { userId } = req.params;
+    const { idgoogle } = req.params;
 
     try {
 
-        let user = await Users.findByPk(userId, {
+        const user = await Users.findOne({
+            where: { idgoogle },
             include: [{
                 model: Genres,
                 attributes: ['name'],
@@ -22,4 +23,4 @@ const getUserById = async (req, res) => {
     };
 };
 
-module.exports = getUserById;
+module.exports = getUserByIdGoogle;

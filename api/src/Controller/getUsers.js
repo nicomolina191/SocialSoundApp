@@ -1,4 +1,4 @@
-const { Users } = require("../db");
+const { Users, Genres } = require("../db");
 
 const getUsers = async (req, res) => {
 
@@ -7,6 +7,11 @@ const getUsers = async (req, res) => {
     const users = await Users.findAll({
       where: {
         isActive: true
+      },
+      include: {
+        model: Genres,
+        attributes: ['name'],
+        through: { attributes: [] }
       }
     });
 
