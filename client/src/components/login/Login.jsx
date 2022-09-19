@@ -262,10 +262,25 @@ const Login = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
-            <Button className={style.btnDialog} onClick={handleClose}>
+            <Button
+              sx={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: "800",
+                backgroundColor: "var(--second-page-color)",
+                color: "black",
+              }}
+              className={style.btnDialog}
+              onClick={handleClose}
+            >
               Cancel
             </Button>
             <Button
+              sx={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: "800",
+                backgroundColor: "var(--main-page-color)",
+                color: "black",
+              }}
               className={style.btnDialog}
               onClick={handleSendPasswordReset(userToResetPassword)}
             >
