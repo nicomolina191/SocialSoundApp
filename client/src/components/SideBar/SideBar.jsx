@@ -3,9 +3,10 @@ import s from './SideBar.module.css'
 import { Link } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
-
+import { useAuth } from '../../context';
 
 const SideBar = () => {
+  const { userFirebase, logout } = useAuth();  
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
