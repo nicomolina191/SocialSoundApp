@@ -1,4 +1,4 @@
-const { Users, Posts, Comments, Likes } = require("../db");
+const { Users, Posts, Comments, Likes } = require('../../db.js');
 
 const createLike = async (req, res) => {
   const { statusLike, idPost, idUser, idComment } = req.body;
