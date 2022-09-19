@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Grid container xs={12} className={style.home}>
+    <Grid container xs={12} className={style.home} justifyContent="space-between">
       {/* <Grid
         item
         container
