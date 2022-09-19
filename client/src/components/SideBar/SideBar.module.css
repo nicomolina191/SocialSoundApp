@@ -59,6 +59,7 @@ a{
 }
 .profileItem{
     display: flex;
+    cursor: default !important;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -67,10 +68,21 @@ a{
 }
 .sidebar li{
     padding-left: 10px;
+    transition: all 0.3s ease;
 }
-.sidebar li:hover{
+.optionsContainer li:hover{
     color: #00E2BE;
     cursor: pointer;
+}
+.routescontainer li:hover{
+    color: #00E2BE;
+    cursor: pointer;
+}
+.sidebar li svg path{
+    transition: all 0.3s ease;
+}
+.sidebar li:hover svg path{
+    fill: aqua;
 }
 .profileItem button{
     font-family: 'Inter', sans-serif;
@@ -78,6 +90,8 @@ a{
     color: white;
     letter-spacing: 3px;
     opacity: 0.6;
+    cursor: pointer;
+    font-size: large;
 }
 .profileItem button:hover{
     opacity: 1;

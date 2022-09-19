@@ -9,11 +9,19 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
 import newpost from '../../images/svg/newpost.svg'
+import Loading from '../loading/Loading';
 
 export default function Upload() {
     const dispatch = useDispatch()
     const [open, setOpen] = React.useState(false);
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState({
+      cover: false,
+      content: false
+    })
+    const [fileNames, setFileNames] = React.useState({
+      cover: '',
+      content: ''
+    })
     const [postData, setPostData] = React.useState({
         title: '',
         description: '',
@@ -24,28 +32,30 @@ export default function Upload() {
     })
 
     const uploadFile = (file) => {
-      setLoading(true)
+      setLoading({...loading, cover: true})
       const fileRef = ref(storage, `cover/${file.name + Math.random()}`)
       return uploadBytes(fileRef, file)
       .then((snapshot) => {
+        setFileNames({...fileNames, cover: file.name})
         return getDownloadURL(snapshot.ref)
       })
       .then((url) => {
-        setLoading(false)
+        setLoading({...loading, cover: false})
         return url
       })
       .catch(err => console.log(err))
     }
 
     const uploadMusic = (file) => {
-      setLoading(true)
+      setLoading({...loading, content: true})
       const fileRef = ref(storage, `content/${file.name + Math.random()}`)
       return uploadBytes(fileRef, file)
       .then((snapshot) => {
+        setFileNames({...fileNames, content: file.name})
         return getDownloadURL(snapshot.ref)
       })
       .then((url) => {
-        setLoading(false)
+        setLoading({...loading, content: false})
         return url
       })
     }
@@ -67,7 +77,7 @@ export default function Upload() {
 
     async function handleSubmit(e){
       e.preventDefault()
-      postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading
+      postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover
       ? dispatch(createdPost({title: postData.title, description: postData.description, content: postData.content, cover: postData.cover, genres: postData.genres}))
       : alert('Check the information')
     }
@@ -80,8 +90,8 @@ export default function Upload() {
     PaperProps: {
         style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-        mode: 'dark'
+        backgroundColor: 'transparent',
+        borderRadius: '15px'
         },
     },
     };
@@ -101,15 +111,24 @@ export default function Upload() {
 
   return (
     <div>
-      <button className={s.newPostBtn} onClick={handleClickOpen}> <img width='16px' src={newpost} alt="a" /> New Post...</button>
-      <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
-            <DialogTitle id="responsive-dialog-title">{"New Post"}</DialogTitle>
+      <button className={s.newPostBtn} onClick={handleClickOpen}> <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
+        </svg> New Post...</button>
+      <Dialog className={s.dialog} fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+            <h2 className={s.title}>New Post</h2>
             <form onSubmit={(e)=>handleSubmit(e)}>
 
                 <DialogContent className={s.content} id='content'>
                     <ul className={s.formInputs}>
-                        <li><TextField required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song name" variant="standard" /></li>
-                        <li><TextField required value={postData.description} name='description' onChange={handleChange} id="outlined-multiline-static" label="Add a description" multiline rows={8}/></li>
+                        <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
+                        <li> <TextField
+                            className={s.description}
+                            id="standard-multiline-static"
+                            label="Description"
+                            multiline
+                            rows={6}
+                            variant="standard"
+                          /></li>
                         <li>
                             <Select className={s.selectGenres} name="genres" multiple displayEmpty value={postData.genres} onChange={handleChange} input={<OutlinedInput />} renderValue={(selected) => {
                                 if (selected.length === 0) {
@@ -118,19 +137,19 @@ export default function Upload() {
                                 return selected.join(', ')}}
                                 MenuProps={MenuProps}
                                 inputProps={{ 'aria-label': 'Without label' }}>
-                                <MenuItem disabled value=""><em>Placeholder</em></MenuItem>
+                                <MenuItem disabled value=""><em>Select Genres</em></MenuItem>
                                 {genres.map((genre) => (
                                     <MenuItem key={genre}value={genre}>{genre}</MenuItem>
                                   ))}
                             </Select>
                         </li>
-                        <li>Upload a cover for your song<input disabled={loading} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></li>
-                        <li>Upload a Song<input disabled={loading} onChange={(e)=>handleChange(e)} type="file" name="content" accept='audio/mp3, video/mp4'/> </li>
+                        <li className={s.fileContainer}><label className={s.btnRL} htmlFor="image">Upload an image for your song<input id='image' disabled={loading.cover || loading.content} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></label>{loading.cover ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.cover ? fileNames.cover : ''}</h3> } </li>
+                        <li className={s.fileContainer}><label className={s.btnRL} htmlFor="song">Upload a Song<input disabled={loading.cover || loading.content} onChange={(e)=>handleChange(e)} type="file" id='song' name="content" accept='audio/mp3, video/mp4'/></label> {loading.content ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.content ? fileNames.content : ''}</h3> } </li>
                     </ul>
                 </DialogContent>
                 <DialogActions>
-                <Button autoFocus onClick={handleClose}>Cancel</Button>
-                <input disabled={!postData.title || !postData.cover || !postData.content || loading} type="submit" value="Post"/>
+                <Button className={s.buttonSc} autoFocus onClick={handleClose}>Cancel</Button>
+                <Button className={s.buttonSc} type="submit">Post</Button>
                 </DialogActions>
                                     {console.log(postData)}
             </form>
