@@ -33,7 +33,7 @@ const SideBar = () => {
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>ME</h4>
                 <li className={s.optionItem}> <Upload/> </li>
-                <li onClick={() => {
+                <li className={s.optionItem} onClick={() => {
               logout();
               navigate("/login");
             }}><svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
