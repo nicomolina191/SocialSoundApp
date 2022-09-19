@@ -1,4 +1,14 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  Grid,
+  TextField,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,16 +17,24 @@ import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
 import axios from "axios";
+import { getUser } from "../../redux/features/users/usersGetSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({ password: "", email: "" });
-  //const [error, setError] = useState({ password: "", email: "" });
+  const [open, setOpen] = React.useState(false);
   const { login, loginWithGoogle, userFirebase } = useAuth();
   const navigate = useNavigate();
-
+  //const [error, setError] = useState({ password: "", email: "" });
+  const usersListAll = useSelector((state) => state.usersListAll);
   useEffect(() => {
     if (userFirebase !== null) navigate("/home");
+    dispatch(getUser());
   });
+
+  console.log(usersListAll);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user.password || !user.email) {
@@ -28,6 +46,14 @@ const Login = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleSignInGoogle = async () => {
@@ -147,8 +173,8 @@ const Login = () => {
                 </Box>
                 <Box textAlign={"right"}>
                   <Link
+                    onClick={handleClickOpen}
                     style={{ color: "#00FFD6", textDecoration: "none" }}
-                    to="/resetpassword"
                   >
                     Forgot your password?
                   </Link>
@@ -180,6 +206,35 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
+      {open && (
+        <Dialog
+          className={style.containerModal}
+          open={open}
+          onClose={handleClose}
+        >
+          <DialogTitle>Reset Password</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To subscribe to this website, please enter your email address
+              here. We will send updates occasionally.
+            </DialogContentText>
+            <TextField
+              className={style.input}
+              autoFocus
+              margin="dense"
+              id="Email"
+              label="Email Address"
+              type="Email"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose}>Send</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Box>
   );
 };

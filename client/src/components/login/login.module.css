@@ -128,3 +128,12 @@
   right: 40px;
   bottom: 10px;
 }
+
+.containerModal h2{
+  color: white !important;
+  background-color: var(--main-page-color) !important;
+}
+.containerModal p{
+  color: white !important;
+  background-color: var(--main-page-color) !important;
+}
