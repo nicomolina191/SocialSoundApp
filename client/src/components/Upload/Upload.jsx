@@ -125,7 +125,6 @@ export default function Upload() {
       <Dialog className={s.dialog} fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
             <h2 className={s.title}>New Post</h2>
             <form onSubmit={(e)=>handleSubmit(e)}>
-{console.log(currentUser)}
                 <DialogContent className={s.content} id='content'>
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
@@ -149,7 +148,6 @@ export default function Upload() {
                                 {genres.map((genre) => (
                                     <MenuItem key={genre.name}value={genre.name}>{genre.name}</MenuItem>
                                   ))}
-                                  {console.log(genres)}
                             </Select>
                         </li>
                         <li className={s.fileContainer}><label className={s.btnRL} htmlFor="image">Upload an image for your song<input id='image' disabled={loading.cover || loading.content} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></label>{loading.cover ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.cover ? fileNames.cover : ''}</h3> } </li>
@@ -160,7 +158,6 @@ export default function Upload() {
                 <Button className={s.buttonSc} autoFocus onClick={handleClose}>Cancel</Button>
                 <Button className={s.buttonSc} type="submit">Post</Button>
                 </DialogActions>
-                                    {console.log(postData)}
             </form>
       </Dialog>
     </div>

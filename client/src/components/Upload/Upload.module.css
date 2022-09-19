@@ -26,6 +26,10 @@
 .newPostBtn:hover{
     color:aqua;
 }
+.btnRL:hover{
+    background-color: #00FFD6;
+    color: #000A1F;
+  }
 .title {
     margin: 0;
     font-family: 'Inter', sans-serif;
@@ -137,10 +141,7 @@ input[type=file]{
     font-family: inherit;
     cursor: pointer;
   }
-  .btnRL:hover{
-    background-color: #00FFD6;
-    color: #000A1F;
-  }
+
   .fileContainer{
     display: flex;
     align-content: center;

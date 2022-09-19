@@ -51,11 +51,11 @@ export const deletePost = (id) => {
 };
 
 //get post by genre
-export const getPostByGenre = (genre) => {
+export const getPostByGenre = (genres) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/posts/genre/${genre}`);
-      dispatch(getAllPostByGenre(response.data))
+      let response =await axios.post('/posts/genres',  genres)
+      dispatch(getAllPostByGenre(response))
     } catch (error) {
       console.log(error);
     }

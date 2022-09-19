@@ -12,13 +12,13 @@ const {
 } = process.env;
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: REACT_APP_API_KEY || "AIzaSyBPKI7vQMDH5QRf0qkOPac0sPiz2LA-k5E",
-  authDomain: REACT_APP_AUTH_DOMAIN || "social-sound-58b2e.firebaseapp.com",
-  projectId: REACT_APP_PROJECT_ID || "social-sound-58b2e",
-  storageBucket: REACT_APP_STORAGE_BUCKET || "social-sound-58b2e.appspot.com",
-  messagingSenderId: REACT_APP_MESSAGING_SENDER_ID || "101040439284",
-  appId: REACT_APP_APP_ID || "1:101040439284:web:719ba7cf95f279117dc3a1",
-  measurementId: REACT_APP_MEASUREMENT_ID || ''
+  apiKey: REACT_APP_API_KEY,
+  authDomain: REACT_APP_AUTH_DOMAIN,
+  projectId: REACT_APP_PROJECT_ID,
+  storageBucket: REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: REACT_APP_MESSAGING_SENDER_ID,
+  appId: REACT_APP_APP_ID,
+  measurementId: REACT_APP_MEASUREMENT_ID
 };
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
