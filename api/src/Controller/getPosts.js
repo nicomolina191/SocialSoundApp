@@ -1,11 +1,12 @@
-const { Posts, Users } = require("../db");
+const { Posts, Genres } = require("../db");
 
 const getPosts = async (req, res) => {
   try {
     const findPost = await Posts.findAll({
       include: {
-        model: Users,
-        attributes: ["name", "email"],
+        model: Genres,
+        attributes: ["name"],
+        through: { attributes: [] }
       },
     });
     return res.json(findPost);
