@@ -6,6 +6,7 @@ import Upload from '../Upload/Upload'
 
 
 const SideBar = () => {
+  const { userFirebase, logout } = useAuth();  
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
