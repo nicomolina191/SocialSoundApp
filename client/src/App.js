@@ -41,11 +41,6 @@ function App() {
           
         </Routes>
       </AuthProvider>
-      <Routes>
-      <Route
-            path="/upload"
-            element={<SideBar />} />
-      </Routes>
     </React.StrictMode>
   );
 }
