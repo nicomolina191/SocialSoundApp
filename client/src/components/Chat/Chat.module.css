@@ -1,0 +1,85 @@
+.wholeContainer{
+    color: white;
+    display: flex;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+    background-color: #000A1F;
+    background-image: url(../../images/svg/polygons.svg);
+}
+.conversations{
+    background-color: #000a1fe0;
+    height: 100vh;
+    overflow-y: scroll;
+    width: 30%;
+    backdrop-filter: blur(50px);
+}
+
+.convHead{
+    background-color: #000a1fe0;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.convTitle{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: 50px;
+    margin: 0;
+}
+.chatSearch{
+    height: 10px;
+    padding: 10px;
+    width: 80%;
+    border: 0;
+    border-radius: 15px;
+}
+
+.chatContainer{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    backdrop-filter: blur(30px);
+    background-color: #000a1ff7;
+}
+.receiver{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 100px;
+    background-color: #08132a;
+}
+.recPc{
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.mCont{
+    width: 100%;
+    height: 70px;
+    background-color: #00081ae0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.messageInput{
+    width: calc(100% - 30px);
+    border-radius: 15px;
+    border: none;
+    height: 30px;
+}
+.messagesContainer{
+    width: 100%;
+    height: calc(100% - 130px);
+    overflow: scroll;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
