@@ -20,6 +20,7 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState(null);
+  const [token, setToken] = useState('');
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -54,6 +55,13 @@ export function AuthProvider({ children }) {
       unsuscribe();
     };
   }, []);
+
+  if(userFirebase){
+   userFirebase.getIdToken().then((tokn)=> {
+     setToken(tokn);
+    })
+  }
+  // console.log(token);
   return (
     <authContext.Provider
       value={{
@@ -64,6 +72,7 @@ export function AuthProvider({ children }) {
         loginWithGoogle,
         resetPassword,
         userFirebase,
+        token
       }}
     >
       {children}

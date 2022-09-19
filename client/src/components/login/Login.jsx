@@ -1,5 +1,5 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import React, {  useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
@@ -7,16 +7,21 @@ import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
 
+
+
 const Login = () => {
   const [user, setUser] = useState({ password: "", email: "" });
   const [error, setError] = useState({ password: "", email: "" });
   const { login, loginWithGoogle, userFirebase } = useAuth();
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+   
     useEffect(()=>{
-      console.log(userFirebase)
+       console.log(userFirebase)
         if (userFirebase !== null) navigate("/home");
-    })
+    },);
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user.password || !user.email) {
