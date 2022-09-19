@@ -1,0 +1,28 @@
+.supportForm{
+    background-color: #000A1F;
+    min-height: 100vh;
+}
+.supportForm .supportLogo img{
+    display: block;
+    max-width: 100%;
+    max-height: 38.415vh;
+    width: auto;
+    height: auto;
+}
+
+.supportForm .text{
+    color: white;
+    font-weight: bold;
+}
+
+.supportForm .form{
+    width: 40%;
+}
+
+.supportForm .form .select svg{
+    color: white;
+}
+
+.supportForm .input{
+    width: 100%;
+}
