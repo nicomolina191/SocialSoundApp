@@ -13,10 +13,13 @@ import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
 import { getAuth } from 'firebase/auth';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
+import { getGenre } from '../../redux/features/genres/genreGetSlice';
 
 
 export default function Upload() {
-    const currentUser = useSelector(state => state.currentUser)
+    const currentUser = useSelector(state => state.users.currentUser)
+    const genres = useSelector(state => state.genres.genreList)
+    const {userFirebase} = useAuth()
     const dispatch = useDispatch()
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState({
@@ -27,21 +30,20 @@ export default function Upload() {
       cover: '',
       content: ''
     })
-    const auth = getAuth();
-    const user = auth.currentUser;
-    React.useEffect(async () => {
-          dispatch(getUserByFirebaseId(user.uid))
-        }, [])
     const [postData, setPostData] = React.useState({
         title: '',
         description: '',
         content: '',
         cover: null,
         type: '',
-        genres: [],
-        idUser: currentUser.id
+        genres: []
     })
-    
+
+    React.useEffect(()=> {
+      dispatch(getGenre())
+      userFirebase?.uid && dispatch(getUserByFirebaseId(userFirebase?.uid))
+    }, [userFirebase])
+
     const uploadFile = (file) => {
       setLoading({...loading, cover: true})
       const fileRef = ref(storage, `cover/${file.name + Math.random()}`)
@@ -89,7 +91,7 @@ export default function Upload() {
     async function handleSubmit(e){
       e.preventDefault()
       postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover
-      ? dispatch(createdPost({postData}))
+      ? dispatch(createdPost({...postData, idUser: currentUser.id}))
       : alert('Check the information')
     }
 
@@ -106,11 +108,6 @@ export default function Upload() {
         },
     },
     };
-
-    const genres = ["Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge",
-    "Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B",
-    "Rap","Reggae","Rock","Techno","Industrial","Alternative"]
-
     
     const handleClickOpen = () => {
         setOpen(true);
@@ -150,8 +147,9 @@ export default function Upload() {
                                 inputProps={{ 'aria-label': 'Without label' }}>
                                 <MenuItem disabled value=""><em>Select Genres</em></MenuItem>
                                 {genres.map((genre) => (
-                                    <MenuItem key={genre}value={genre}>{genre}</MenuItem>
+                                    <MenuItem key={genre.name}value={genre.name}>{genre.name}</MenuItem>
                                   ))}
+                                  {console.log(genres)}
                             </Select>
                         </li>
                         <li className={s.fileContainer}><label className={s.btnRL} htmlFor="image">Upload an image for your song<input id='image' disabled={loading.cover || loading.content} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></label>{loading.cover ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.cover ? fileNames.cover : ''}</h3> } </li>

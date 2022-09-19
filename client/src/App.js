@@ -11,7 +11,7 @@ import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
 // import ResetPassword from "./components/resetPassword/ResetPassword";
-// import SideBar from "./components/SideBar/SideBar";
+import SideBar from "./components/SideBar/SideBar";
 
 function App() {
   return (
@@ -40,21 +40,13 @@ function App() {
           <Route
             path="/upload"
             element={
-<<<<<<< HEAD
+
               
                 <SideBar />
               
             }
           />
-=======
-              <ProtectedRoute>
-                {" "}
-                <Upload />
-              </ProtectedRoute>} />
-          <Route
-            path="/support"
-            element={<SupportForm />} />
->>>>>>> development
+
         </Routes>
       </AuthProvider>
     </React.StrictMode>
