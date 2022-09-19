@@ -10,6 +10,10 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      idgoogle: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -21,7 +25,6 @@ module.exports = (sequelize) => {
       plan: {
         type: DataTypes.ENUM("Regular", "Premium"),
         defaultValue: "Regular",
-        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
