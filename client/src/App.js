@@ -10,7 +10,10 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SideBar from "./components/SideBar/SideBar";
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 
 function App() {
   return (
