@@ -38,6 +38,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/upload"
+            element={
+              
+                <SideBar />
+              
+            }
+          />
         </Routes>
       </AuthProvider>
     </React.StrictMode>

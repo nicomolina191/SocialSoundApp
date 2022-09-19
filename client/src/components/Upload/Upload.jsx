@@ -6,14 +6,17 @@ import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, Dial
 import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
 import newpost from '../../images/svg/newpost.svg'
 import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
+import { getAuth } from 'firebase/auth';
+import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
 
 
 export default function Upload() {
+    const currentUser = useSelector(state => state.currentUser)
     const dispatch = useDispatch()
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState({
@@ -24,15 +27,21 @@ export default function Upload() {
       cover: '',
       content: ''
     })
+    const auth = getAuth();
+    const user = auth.currentUser;
+    React.useEffect(async () => {
+          dispatch(getUserByFirebaseId(user.uid))
+        }, [])
     const [postData, setPostData] = React.useState({
         title: '',
         description: '',
         content: '',
         cover: null,
         type: '',
-        genres: []
+        genres: [],
+        idUser: currentUser.id
     })
-
+    
     const uploadFile = (file) => {
       setLoading({...loading, cover: true})
       const fileRef = ref(storage, `cover/${file.name + Math.random()}`)
@@ -80,7 +89,7 @@ export default function Upload() {
     async function handleSubmit(e){
       e.preventDefault()
       postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover
-      ? dispatch(createdPost({title: postData.title, description: postData.description, content: postData.content, cover: postData.cover, genres: postData.genres}))
+      ? dispatch(createdPost({postData}))
       : alert('Check the information')
     }
 
@@ -119,7 +128,7 @@ export default function Upload() {
       <Dialog className={s.dialog} fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
             <h2 className={s.title}>New Post</h2>
             <form onSubmit={(e)=>handleSubmit(e)}>
-
+{console.log(currentUser)}
                 <DialogContent className={s.content} id='content'>
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
