@@ -14,6 +14,7 @@ const getUserById = require("../Controller/getUserById.js");
 const getGenres = require("../Controller/getGenres.js");
 const updateUser = require("../Controller/updateUser.js");
 const updatePost = require("../Controller/updatePost.js");
+const getUserByIdGoogle = require("../Controller/getUserByIdGoogle.js");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -22,6 +23,7 @@ const router = Router();
 
 router.get("/users", getUsers);
 router.get('/users/:userId', getUserById);
+router.get('/users/idgoogle/:idgoogle', getUserByIdGoogle);
 router.get("/posts", getPosts);
 router.get("/posts/genre/:genre", getByGenre);
 router.get("/posts/order/:order", getByTime);
