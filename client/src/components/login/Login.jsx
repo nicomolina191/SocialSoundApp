@@ -8,6 +8,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -21,10 +23,15 @@ import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const [user, setUser] = useState({ password: "", email: "" });
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [userToResetPassword, setUserToResetPassword] = useState("");
+  const [openAlert, setOpenAlert] = useState({
+    show: false,
+    msg: "",
+    severity: "",
+  });
   const { login, loginWithGoogle, userFirebase, resetPassword } = useAuth();
   const navigate = useNavigate();
   //const [error, setError] = useState({ password: "", email: "" });
@@ -88,8 +95,31 @@ const Login = () => {
     console.log(email);
     try {
       await resetPassword(email);
+      setOpenAlert({
+        show: true,
+        msg: "The email has been sent",
+        severity: "success",
+      });
+      setTimeout(function () {
+        setOpenAlert({
+          show: false,
+          msg: "",
+          severity: "",
+        });
+      }, 2000);
     } catch (err) {
-      console.log(err);
+      setOpenAlert({
+        show: true,
+        msg: "There is no account for this email",
+        severity: "error",
+      });
+      setTimeout(function () {
+        setOpenAlert({
+          show: false,
+          msg: "",
+          severity: "",
+        });
+      }, 2000);
     }
   };
 
@@ -99,6 +129,12 @@ const Login = () => {
 
   return (
     <Box>
+      <Snackbar open={openAlert.show && openAlert.severity === "success"}>
+        <Alert severity="success">{openAlert.msg}</Alert>
+      </Snackbar>
+      <Snackbar open={openAlert.show && openAlert.severity === "error"}>
+        <Alert severity="error">{openAlert.msg}</Alert>
+      </Snackbar>
       <Box className={style.containerLoginDiv}>
         <Box className={style.divBackground}>
           <button onClick={() => navigate("/")} className={style.arrow}>
@@ -262,27 +298,12 @@ const Login = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
-            <Button
-              sx={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "800",
-                backgroundColor: "var(--second-page-color)",
-                color: "black",
-              }}
-              className={style.btnDialog}
-              onClick={handleClose}
-            >
+            <Button className={style.btnDialog} onClick={handleClose}>
               Cancel
             </Button>
             <Button
-              sx={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "800",
-                backgroundColor: "var(--main-page-color)",
-                color: "black",
-              }}
               className={style.btnDialog}
-              onClick={handleSendPasswordReset(userToResetPassword)}
+              onClick={() => handleSendPasswordReset(userToResetPassword)}
             >
               Send
             </Button>
