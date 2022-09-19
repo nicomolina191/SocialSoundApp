@@ -2,7 +2,8 @@ const { Posts, Genres } = require("../db");
 
 const getByGenre = async (req, res) => {
 
-    const { genres } = req.body;
+    // const { genres } = req.body;
+    const { genre } = req.params;
     let filterPosts = [];
 
     try {
@@ -19,7 +20,8 @@ const getByGenre = async (req, res) => {
 
             for (const item of post.genres) {
 
-                if (genres.includes(item.name)) filterPosts.push(post);
+                // if (genres.includes(item.name)) filterPosts.push(post);
+                if (item.name === genre) filterPosts.push(post);
             };
         };
 

@@ -23,7 +23,7 @@ const router = Router();
 router.get("/users", getUsers);
 router.get('/users/:userId', getUserById);
 router.get("/posts", getPosts);
-router.get("/posts/genres/", getByGenre);
+router.get("/posts/genre/:genre", getByGenre);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 
@@ -36,7 +36,7 @@ router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
 router.delete("/comments/:id", deleteComment);
 
-router.put("/users/:nickname", updateUser);
+router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
 
 module.exports = router;
