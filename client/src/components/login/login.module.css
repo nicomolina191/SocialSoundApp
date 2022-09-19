@@ -115,9 +115,7 @@
 }
 
 .arrow:hover {
-
   opacity: 1;
-
 }
 
 .logo {
@@ -129,11 +127,11 @@
   bottom: 10px;
 }
 
-.containerModal h2{
-  color: white !important;
-  background-color: var(--main-page-color) !important;
-}
-.containerModal p{
-  color: white !important;
-  background-color: var(--main-page-color) !important;
+.btnDialog{
+  color: black !important;
+  background-color: var(--second-page-color) !important;
+  font-weight: bold;
+  font-family: inherit !important;
+  line-height: 1.75;
+  font-size: 0.875rem
 }

@@ -38,9 +38,7 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const resetPassword = (email) => {
-    return sendPasswordResetEmail(auth, email);
-  };
+  const resetPassword = async (email) => sendPasswordResetEmail(auth, email);
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (currentUser) => {

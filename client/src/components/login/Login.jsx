@@ -24,16 +24,16 @@ const Login = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = React.useState(false);
-  const { login, loginWithGoogle, userFirebase } = useAuth();
+  const [userToResetPassword, setUserToResetPassword] = useState("");
+  const { login, loginWithGoogle, userFirebase, resetPassword } = useAuth();
   const navigate = useNavigate();
   //const [error, setError] = useState({ password: "", email: "" });
-  const usersListAll = useSelector((state) => state.usersListAll);
+  //const usersListAll = useSelector((state) => state.usersListAll);
+
   useEffect(() => {
     if (userFirebase !== null) navigate("/home");
-    dispatch(getUser());
+    // dispatch(getUser());
   });
-
-  console.log(usersListAll);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,9 +84,19 @@ const Login = () => {
     navigate("/home");
   };
 
+  const handleSendPasswordReset = async (email) => {
+    console.log(email);
+    try {
+      await resetPassword(email);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
   };
+
   return (
     <Box>
       <Box className={style.containerLoginDiv}>
@@ -207,31 +217,60 @@ const Login = () => {
         </Box>
       </Box>
       {open && (
-        <Dialog
-          className={style.containerModal}
-          open={open}
-          onClose={handleClose}
-        >
-          <DialogTitle>Reset Password</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              To subscribe to this website, please enter your email address
-              here. We will send updates occasionally.
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle
+            sx={{
+              backgroundColor: "var(--main-page-color)",
+              color: "white",
+            }}
+          >
+            Reset Password
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              backgroundColor: "var(--main-page-color)",
+              color: "white",
+            }}
+          >
+            <DialogContentText
+              sx={{
+                backgroundColor: "var(--main-page-color)",
+                color: "white",
+              }}
+            >
+              an email will be sent to reset your password
             </DialogContentText>
-            <TextField
-              className={style.input}
-              autoFocus
-              margin="dense"
-              id="Email"
-              label="Email Address"
-              type="Email"
-              fullWidth
-              variant="standard"
-            />
+            <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+              <EmailIcon style={{ padding: "10px" }} />
+              <TextField
+                sx={{
+                  backgroundColor: "var(--main-page-color)",
+                  color: "white",
+                }}
+                className={style.input}
+                autoFocus
+                margin="dense"
+                id="Email"
+                label="Email Address"
+                type="email"
+                fullWidth
+                autoComplete="off"
+                variant="standard"
+                value={userToResetPassword}
+                onChange={(e) => setUserToResetPassword(e.target.value)}
+              />
+            </Box>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose}>Send</Button>
+          <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
+            <Button className={style.btnDialog} onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button
+              className={style.btnDialog}
+              onClick={(e) => handleSendPasswordReset(userToResetPassword)}
+            >
+              Send
+            </Button>
           </DialogActions>
         </Dialog>
       )}
