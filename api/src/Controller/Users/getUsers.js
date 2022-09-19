@@ -1,4 +1,4 @@
-const { Users, Genres } = require("../db");
+const { Users, Genres } = require('../../db.js');
 
 const getUsers = async (req, res) => {
 

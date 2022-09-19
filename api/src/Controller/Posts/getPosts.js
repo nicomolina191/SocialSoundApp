@@ -1,4 +1,4 @@
-const { Posts, Genres } = require("../db");
+const { Posts, Genres } = require('../../db.js');
 
 const getPosts = async (req, res) => {
   try {

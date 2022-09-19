@@ -1,4 +1,4 @@
-const { Users, Posts, Genres } = require("../db");
+const { Users, Posts, Genres } = require('../../db.js');
 
 const createPost = async (req, res) => {
   const { description, title, content, idUser, genres, type } = req.body;
