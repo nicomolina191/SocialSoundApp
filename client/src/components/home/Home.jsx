@@ -52,7 +52,14 @@ export default function Home() {
           </Link>
         </Grid>
       </Grid> */}
-      <Grid item>
+      <Grid
+        item
+        container
+        xs={3}
+        direction="column"
+        className={style.sideBar}
+        p={`1%`}
+       >
         <SideBar />
       </Grid>
       <Grid item xs={9} direction="column" className={style.posts}>
@@ -60,7 +67,7 @@ export default function Home() {
           Home.
         </Typography>
         {posts.length > 0 &&
-          posts.map((post, i) => <Post key={i} post={post} />)}
+          posts.map((post, i) => <Post key={i} post={post}/>)}
       </Grid>
     </Grid>
   );
