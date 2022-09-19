@@ -167,7 +167,7 @@ input[type=file]{
     font-weight: bold !important;
     font-family: inherit !important;
   }
-  button[type=button] {
+  DialogActions button[type=button] {
     height: 50px;
     color: white !important;
     font-size: 15px;
@@ -178,7 +178,7 @@ input[type=file]{
     font-weight: bold !important;
     font-family: inherit !important;
   }
-  button[type=submit] {
+ DialogActions button[type=submit] {
     height: 50px;
     color: #000A1F !important;
     font-size: 15px;

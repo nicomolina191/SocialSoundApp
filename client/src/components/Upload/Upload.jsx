@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
 import newpost from '../../images/svg/newpost.svg'
 import Loading from '../loading/Loading';
+import { useAuth } from '../../context';
+
 
 export default function Upload() {
     const dispatch = useDispatch()
