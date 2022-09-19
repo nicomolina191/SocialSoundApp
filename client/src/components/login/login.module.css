@@ -126,12 +126,36 @@
   right: 40px;
   bottom: 10px;
 }
-
-.btnDialog{
-  color: black !important;
-  background-color: var(--second-page-color) !important;
-  font-weight: bold;
+.btns button{
+  height: 50px;
+  color: #000A1F !important;
+  font-size: 15px;
+  background-color: #00FFD6 !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 50%;
+  font-weight: bold !important;
   font-family: inherit !important;
-  line-height: 1.75;
-  font-size: 0.875rem
+}
+button[type=button] {
+  height: 50px;
+  color: white !important;
+  font-size: 15px;
+  background-color: #0b152a !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 25%;
+  font-weight: bold !important;
+  font-family: inherit !important;
+}
+button[type=submit] {
+  height: 50px;
+  color: #000A1F !important;
+  font-size: 15px;
+  background-color: #00FFD6 !important;
+  transition: all 0.5s;
+  border-radius: 40px;
+  width: 25%;
+  font-weight: bold !important;
+  font-family: inherit !important;
 }

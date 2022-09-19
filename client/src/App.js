@@ -9,20 +9,13 @@ import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
-import { createTheme, ThemeProvider } from "@mui/material";
+import SideBar from "./components/SideBar/SideBar";
 
-const theme = createTheme({
-  palette: {
-    secondary: {
-      main: "#000A1F",
-    },
-  },
-});
+
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
-        <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/register" element={<Register />} />
@@ -53,7 +46,6 @@ function App() {
               }
             />
           </Routes>
-        </ThemeProvider>
       </AuthProvider>
     </React.StrictMode>
   );
