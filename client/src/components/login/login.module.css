@@ -22,6 +22,8 @@
   position: absolute;
   z-index: 2;
   top: 0;
+  border-radius: 0px 40px 40px 0px;
+
 }
 
 .backgroundImage {
@@ -127,7 +129,7 @@
   bottom: 10px;
 }
 
-.btnDialog Button{
+.btnDialog Button {
   background-color: var(--secondary-page-color) !important;
   font-family: "Inter", sans-serif;
 }

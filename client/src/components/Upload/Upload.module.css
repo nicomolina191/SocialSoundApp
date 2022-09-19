@@ -26,6 +26,10 @@
 .newPostBtn:hover{
     color:aqua;
 }
+.btnRL:hover{
+    background-color: #00FFD6;
+    color: #000A1F;
+  }
 .title {
     margin: 0;
     font-family: 'Inter', sans-serif;
