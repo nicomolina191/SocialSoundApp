@@ -10,45 +10,41 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SideBar from "./components/SideBar/SideBar";
-<<<<<<< HEAD
-
-=======
->>>>>>> development
 
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/home/explore"
-              element={
-                <ProtectedRoute>
-                  <Explore />{" "}
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/upload"
-              element={
-                <ProtectedRoute>
-                  {" "}
-                  <Upload />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home/explore"
+            element={
+              <ProtectedRoute>
+                <Explore />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <Upload />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </AuthProvider>
     </React.StrictMode>
   );
