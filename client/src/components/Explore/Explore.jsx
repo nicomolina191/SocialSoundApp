@@ -16,10 +16,9 @@ import {
   Modal,
   Typography,
   createTheme,
-  ThemeProvider,
-  Grid,
+  ThemeProvider
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
 import { getUser, getUserById } from "../../redux/features/users/usersGetSlice";
@@ -43,7 +42,7 @@ const Explore = () => {
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
   let [songsPerPage, setSongsPerPage] = useState(9);
-  let currentSongs = posibleSong().slice(0, songsPerPage);
+  // let currentSongs = posibleSong().slice(0, songsPerPage);
 
   const [open, setOpen] = useState(false);
   const [genresFiltered, setGenresFiltered] = useState([]);
@@ -89,7 +88,7 @@ const Explore = () => {
   function handleGenresSelected(e) {
     const currentGenresChecked = genresFiltered.indexOf(e.target.value);
     // const newChecked = [...genresFiltered];
-    const newChecked = [];
+    const newChecked = [...genresFiltered]
 
     if (currentGenresChecked === -1) {
       newChecked.push(e.target.value);
@@ -100,16 +99,15 @@ const Explore = () => {
     if (newChecked.length === 0) {
       dispatch(getPost());
     } else {
-      dispatch(getPostByGenre(newChecked.map((el) => el)));
+      dispatch(getPostByGenre(newChecked));
     }
-    setOpen(false);
+    // setOpen(false);
     setOrderChecked("relevance"); // borrar al hacer filtrado y orden combinado
   }
 
   function handleChecked(el) {
     setOrderChecked(el.target.value);
     dispatch(getPostByTime(el.target.value));
-
     setGenresFiltered([]); // borrar al hacer filtrado y orden combinado
   }
 
@@ -118,10 +116,10 @@ const Explore = () => {
     currentArtists = posibleArtist().slice(0, artistsPerPage);
   }
 
-  function handleSongsPerPage() {
-    setSongsPerPage(songsPerPage + 8);
-    currentSongs = posibleSong().slice(0, songsPerPage);
-  }
+  // function handleSongsPerPage() {
+  //   setSongsPerPage(songsPerPage + 8);
+  //   currentSongs = posibleSong().slice(0, songsPerPage);
+  // }
 
   function handleOpen() {
     setOpen(true);
@@ -145,32 +143,32 @@ const Explore = () => {
     return posibles;
   }
 
-  function posibleSong() {
-    const posibles = [];
-    posts.map((post) => {
-      if (
-        post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
-      ) {
-        posibles.push(post);
-      }
-      return null;
-    });
-    return posibles;
-  }
+  // function posibleSong() {
+  //   const posibles = [];
+  //   posts.map((post) => {
+  //     if (
+  //       post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
+  //       (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
+  //     ) {
+  //       posibles.push(post);
+  //     }
+  //     return null;
+  //   });
+  //   return posibles;
+  // }
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
     setSongsPerPage(8);
     setArtistsPerPage(10);
     posibleArtist();
-    posibleSong();
+    // posibleSong();
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row">
-        <div style={{minWidth: "270px"}}>
+        <div style={{ minWidth: "270px" }}>
           <SideBar />
         </div>
         <div
@@ -179,7 +177,7 @@ const Explore = () => {
             height: "100vh",
             paddingLeft: "15px",
             paddingRight: "15px",
-            width: "100%",
+            width: "100%"
           }}
         >
           <div className={styles.fondo}></div>
@@ -294,20 +292,18 @@ const Explore = () => {
                                 type="checkbox"
                                 value={genre.name}
                               ></input>
-                              {!genresFiltered.find(
-                                (el) => el === genre.name
-                              ) ? (
-                                <label htmlFor={genre.id}>{genre.name}</label>
-                              ) : (
-                                <label
-                                  style={{
-                                    backgroundColor: "rgba(0, 255, 214, 1)",
-                                  }}
-                                  htmlFor={genre.id}
-                                >
-                                  {genre.name}
-                                </label>
-                              )}
+                              {/* {!genresFiltered.find((el) => el === genre.name) ? (
+                              <label htmlFor={genre.id}>{genre.name}</label>
+                            ) : ( */}
+                              <label
+                                style={{
+                                  backgroundColor: "rgba(0, 255, 214, 1)",
+                                }}
+                                htmlFor={genre.id}
+                              >
+                                {genre.name}
+                              </label>
+                              {/* )} */}
                             </div>
                           );
                         })}
@@ -505,7 +501,8 @@ const Explore = () => {
                 </Stack>
               )}
             </Stack>
-          ) : posibleArtist().length === 0 && posibleSong().length === 0 ? (
+          ) : posibleArtist().length === 0 &&
+            /*posibleSong().length*/ posts.length === 0 ? (
             <h1
               style={{
                 color: "white",
@@ -526,101 +523,109 @@ const Explore = () => {
                   Results
                 </Typography>
               </div>
-              {posibleSong().length > 0 ? (
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                  <Typography
-                    variant="h5"
-                    component="h4"
-                    sx={{ color: "rgba(0, 226, 190, 1)", fontWeight: "600" }}
-                  >
-                    Songs
-                  </Typography>
-                  <Stack
-                    direction="row"
-                    justifyContent="start"
-                    alignItems="center"
-                    flexWrap="wrap"
-                  >
-                    <Stack direction="row" flexWrap="wrap">
-                      {currentSongs.map((results) => {
-                        return (
-                          <Stack
-                            direction="row"
-                            spacing={2}
-                            justifyContent="start"
-                            alignItems="center"
-                            sx={{
-                              position: "relative",
-                              color: "white",
-                              backgroundColor: "rgba(0, 7, 20, 0.40)",
-                              padding: "10px",
-                              borderRadius: "15px",
-                              boxShadow: "0px 40px 40px 8px rgba(0, 0, 0, 0.2)",
-                              width: "400px",
-                              margin: "20px 20px 10px 0",
-                              "&:hover": {
-                                transform: "scale(1.03)",
-                                transition: "0.5s",
-                              },
-                            }}
-                          >
-                            <div
-                              className={styles.songContainer}
-                              style={{ position: "relative" }}
-                            >
-                              <img
-                                src={logoIcon}
-                                alt=""
-                                style={{
-                                  height: "80px",
-                                  width: "80px",
-                                  borderRadius: "50px",
+              {
+                /*posibleSong().length*/ posts.length > 0 ? (
+                  <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{ color: "rgba(0, 226, 190, 1)", fontWeight: "600" }}
+                    >
+                      Songs
+                    </Typography>
+                    <Stack
+                      direction="row"
+                      justifyContent="start"
+                      alignItems="center"
+                      flexWrap="wrap"
+                    >
+                      <Stack direction="row" flexWrap="wrap">
+                        {
+                          /*currentSongs*/ posts.map((results) => {
+                            return (
+                              <Stack
+                                direction="row"
+                                spacing={2}
+                                justifyContent="start"
+                                alignItems="center"
+                                sx={{
+                                  position: "relative",
+                                  color: "white",
+                                  backgroundColor: "rgba(0, 7, 20, 0.40)",
+                                  padding: "10px",
+                                  borderRadius: "15px",
+                                  boxShadow:
+                                    "0px 40px 40px 8px rgba(0, 0, 0, 0.2)",
+                                  width: "400px",
+                                  margin: "20px 20px 10px 0",
+                                  "&:hover": {
+                                    transform: "scale(1.03)",
+                                    transition: "0.5s",
+                                  },
                                 }}
-                              />
-                              <p>
-                                <FontAwesomeIcon icon={faPlay} />
-                              </p>
-                            </div>
-                            <div>
-                              <p>{results.title}</p>
-
-                              <Link
-                                className={styles.artistSong}
-                                to={results.userId}
                               >
-                                <p
-                                  style={{
-                                    fontSize: "13px",
-                                    marginTop: "20px",
-                                  }}
+                                <div
+                                  className={styles.songContainer}
+                                  style={{ position: "relative" }}
                                 >
-                                  {user && user.username}
+                                  <img
+                                    src={logoIcon}
+                                    alt=""
+                                    style={{
+                                      height: "80px",
+                                      width: "80px",
+                                      borderRadius: "50px",
+                                    }}
+                                  />
+                                  <p>
+                                    <FontAwesomeIcon icon={faPlay} />
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>{results.title}</p>
+
+                                  <Link
+                                    className={styles.artistSong}
+                                    to={results.userId}
+                                  >
+                                    <p
+                                      style={{
+                                        fontSize: "13px",
+                                        marginTop: "20px",
+                                      }}
+                                    >
+                                      {user && user.username}
+                                    </p>
+                                  </Link>
+                                </div>
+                                <p className={styles.songDate}>
+                                  {results.postDate.slice(0, 10)}
                                 </p>
-                              </Link>
-                            </div>
-                            <p className={styles.songDate}>
-                              {results.postDate.slice(0, 10)}
-                            </p>
-                          </Stack>
-                        );
-                      })}
+                              </Stack>
+                            );
+                          })
+                        }
+                      </Stack>
                     </Stack>
-                  </Stack>
-                </div>
-              ) : null}
-              {currentSongs.length < posibleSong().length ? (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <FontAwesomeIcon
-                    onClick={handleSongsPerPage}
-                    style={{
-                      fontSize: "50px",
-                      margin: "20px auto 30px",
-                    }}
-                    icon={faChevronDown}
-                    className={styles.showMoreButton}
-                  />
-                </div>
-              ) : null}
+                  </div>
+                ) : null
+              }
+              {
+                /*currentSongs.length*/ 10000 <
+                /*posibleSong().length*/ posts.length ? (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <FontAwesomeIcon
+                      // onClick={handleSongsPerPage}
+                      style={{
+                        fontSize: "50px",
+                        margin: "20px auto 30px",
+                      }}
+                      icon={faChevronDown}
+                      className={styles.showMoreButton}
+                    />
+                  </div>
+                ) : null
+              }
 
               {posibleArtist().length > 0 && genresFiltered.length === 0 ? (
                 <div style={{ marginTop: "10px", marginBottom: "10px" }}>
