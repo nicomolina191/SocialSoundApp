@@ -267,7 +267,7 @@ const Login = () => {
             </Button>
             <Button
               className={style.btnDialog}
-              onClick={(e) => handleSendPasswordReset(userToResetPassword)}
+              onClick={handleSendPasswordReset(userToResetPassword)}
             >
               Send
             </Button>
