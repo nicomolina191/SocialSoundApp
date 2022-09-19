@@ -1,28 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Grid, SvgIcon, Typography } from '@mui/material';
 import ReactPlayer from 'react-player';
-// import video from '../../video.mp4';
 import style from './post.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getUserById } from '../../redux/features/users/usersGetSlice';
 
-export default function Post({post}) {
+export default function Post({ post }) {
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.users.user)
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    const [date, setDate] = useState()
+
+    useEffect(() => {
+        dispatch(getUserById(post.userId))
+    }, [])
+
+    useEffect(() => {
+        setDate(new Date(Date.parse(post.postDate)).toLocaleString('sv'))
+    }, [post])
+
     return (
-        <Grid container direction="column" xs={11} className={style.post} p={`1%`} m={`4%`}>
+        <Grid container direction="column" className={style.post} p={`1%`} >
             <Grid item container spacing={1}>
                 <Grid item>
-                    <Avatar src="https://cdn-icons-png.flaticon.com/512/149/149071.png" />
+                    <Avatar src={user && user.avatar} />
                 </Grid>
                 <Grid item container xs={4} direction="column">
                     <Typography variant='body1'>
-                        Account Name
+                        {user && user.name}
                     </Typography>
                     <Typography variant='body2'>
-                        @Handle
+                        {user && `@${user.username}`}
                     </Typography>
                 </Grid>
             </Grid>
             <Grid item>
                 <Typography variant='h6'>
-                    {`${post.title} - ${post.artist}`}
+                    {post.title}
                 </Typography>
                 <Typography variant='body1'>
                     {post.description}
@@ -34,7 +51,7 @@ export default function Post({post}) {
             <Grid item container justifyContent="space-between">
                 <Grid item xs>
                     <Typography variant='body2'>
-                        11:44 AM - Dec 10, 2022
+                        {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1])-1]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
                     </Typography>
                 </Grid>
                 <Grid item container xs={4} justifyContent="flex-end" spacing={2}>
