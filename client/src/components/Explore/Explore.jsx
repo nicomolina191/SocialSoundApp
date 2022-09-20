@@ -16,7 +16,7 @@ import {
   Modal,
   Typography,
   createTheme,
-  ThemeProvider
+  ThemeProvider,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
@@ -42,7 +42,7 @@ const Explore = () => {
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
   let [songsPerPage, setSongsPerPage] = useState(9);
-  // let currentSongs = posibleSong().slice(0, songsPerPage);
+  let currentSongs = posibleSong().slice(0, songsPerPage);
 
   const [open, setOpen] = useState(false);
   const [genresFiltered, setGenresFiltered] = useState([]);
@@ -87,21 +87,19 @@ const Explore = () => {
 
   function handleGenresSelected(e) {
     const currentGenresChecked = genresFiltered.indexOf(e.target.value);
-    // const newChecked = [...genresFiltered];
-    const newChecked = [...genresFiltered]
+    const newChecked = { genres: [...genresFiltered] };
 
     if (currentGenresChecked === -1) {
-      newChecked.push(e.target.value);
+      newChecked.genres.push(e.target.value);
     } else {
-      newChecked.splice(currentGenresChecked, 1);
+      newChecked.genres.splice(currentGenresChecked, 1);
     }
-    setGenresFiltered(newChecked);
-    if (newChecked.length === 0) {
+    setGenresFiltered(newChecked.genres.map((el) => el));
+    if (newChecked.genres.length === 0) {
       dispatch(getPost());
     } else {
       dispatch(getPostByGenre(newChecked));
     }
-    // setOpen(false);
     setOrderChecked("relevance"); // borrar al hacer filtrado y orden combinado
   }
 
@@ -116,10 +114,10 @@ const Explore = () => {
     currentArtists = posibleArtist().slice(0, artistsPerPage);
   }
 
-  // function handleSongsPerPage() {
-  //   setSongsPerPage(songsPerPage + 8);
-  //   currentSongs = posibleSong().slice(0, songsPerPage);
-  // }
+  function handleSongsPerPage() {
+    setSongsPerPage(songsPerPage + 8);
+    currentSongs = posibleSong().slice(0, songsPerPage);
+  }
 
   function handleOpen() {
     setOpen(true);
@@ -143,26 +141,26 @@ const Explore = () => {
     return posibles;
   }
 
-  // function posibleSong() {
-  //   const posibles = [];
-  //   posts.map((post) => {
-  //     if (
-  //       post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-  //       (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
-  //     ) {
-  //       posibles.push(post);
-  //     }
-  //     return null;
-  //   });
-  //   return posibles;
-  // }
+  function posibleSong() {
+    const posibles = [];
+    posts.map((post) => {
+      if (
+        post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
+        (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
+      ) {
+        posibles.push(post);
+      }
+      return null;
+    });
+    return posibles;
+  }
 
   function handleInputChange(e) {
     setInputValue(e.target.value);
     setSongsPerPage(8);
     setArtistsPerPage(10);
     posibleArtist();
-    // posibleSong();
+    posibleSong();
   }
 
   return (
@@ -177,7 +175,7 @@ const Explore = () => {
             height: "100vh",
             paddingLeft: "15px",
             paddingRight: "15px",
-            width: "100%"
+            width: "100%",
           }}
         >
           <div className={styles.fondo}></div>
@@ -292,18 +290,20 @@ const Explore = () => {
                                 type="checkbox"
                                 value={genre.name}
                               ></input>
-                              {/* {!genresFiltered.find((el) => el === genre.name) ? (
-                              <label htmlFor={genre.id}>{genre.name}</label>
-                            ) : ( */}
-                              <label
-                                style={{
-                                  backgroundColor: "rgba(0, 255, 214, 1)",
-                                }}
-                                htmlFor={genre.id}
-                              >
-                                {genre.name}
-                              </label>
-                              {/* )} */}
+                              {!genresFiltered.find(
+                                (el) => el === genre.name
+                              ) ? (
+                                <label htmlFor={genre.id}>{genre.name}</label>
+                              ) : (
+                                <label
+                                  style={{
+                                    backgroundColor: "rgba(0, 255, 214, 1)",
+                                  }}
+                                  htmlFor={genre.id}
+                                >
+                                  {genre.name}
+                                </label>
+                              )}
                             </div>
                           );
                         })}
@@ -502,7 +502,7 @@ const Explore = () => {
               )}
             </Stack>
           ) : posibleArtist().length === 0 &&
-            /*posibleSong().length*/ posts.length === 0 ? (
+            posibleSong().length === 0 || !posts ? (
             <h1
               style={{
                 color: "white",
@@ -524,7 +524,7 @@ const Explore = () => {
                 </Typography>
               </div>
               {
-                /*posibleSong().length*/ posts.length > 0 ? (
+                posibleSong().length > 0 ? (
                   <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                     <Typography
                       variant="h5"
@@ -541,7 +541,7 @@ const Explore = () => {
                     >
                       <Stack direction="row" flexWrap="wrap">
                         {
-                          /*currentSongs*/ posts.map((results) => {
+                          currentSongs.map((results) => {
                             return (
                               <Stack
                                 direction="row"
@@ -611,11 +611,11 @@ const Explore = () => {
                 ) : null
               }
               {
-                /*currentSongs.length*/ 10000 <
-                /*posibleSong().length*/ posts.length ? (
+                currentSongs.length <
+                posibleSong().length ? (
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <FontAwesomeIcon
-                      // onClick={handleSongsPerPage}
+                      onClick={handleSongsPerPage}
                       style={{
                         fontSize: "50px",
                         margin: "20px auto 30px",

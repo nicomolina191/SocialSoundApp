@@ -1,4 +1,4 @@
-const { Posts } = require("../db");
+const { Posts } = require('../../db.js');
 
 const getByTime = async (req, res) => {
 

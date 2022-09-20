@@ -295,7 +295,7 @@ const Login = () => {
                 color: "white",
               }}
             >
-              an email will be sent to reset your password
+              An email will be sent to reset your password
             </DialogContentText>
             <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
               <EmailIcon style={{ padding: "10px" }} />
@@ -319,12 +319,27 @@ const Login = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
-            <Button className={style.btnDialog} onClick={handleClose}>
+            <Button
+              className={style.btnDialog}
+              onClick={handleClose}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" }
+              }}
+            >
               Cancel
             </Button>
             <Button
               className={style.btnDialog}
               onClick={() => handleSendPasswordReset(userToResetPassword)}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" },
+              }}
             >
               Send
             </Button>

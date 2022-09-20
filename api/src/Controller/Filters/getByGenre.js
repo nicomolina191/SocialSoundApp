@@ -1,10 +1,10 @@
-const { Posts, Genres } = require("../db");
+const { Posts, Genres } = require('../../db.js');
 
 const getByGenre = async (req, res) => {
 
-    const genres  = req.body;
-    console.log(genres, req.body);
-    // const { genre } = req.params;
+    const { genres } = req.body;
+    console.log(req.body);
+
     let filterPosts = [];
 
     try {
