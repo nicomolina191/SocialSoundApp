@@ -1,5 +1,5 @@
-const { Users } = require("../db");
-const transporter = require("../Mailer/mailer.js");
+const { Users } = require('../../db.js');
+const transporter = require('../../Mailer/mailer.js');
 
 const createUser = async (req, res) => {
   const { name, role, plan, email, password, username, avatar, idgoogle } =

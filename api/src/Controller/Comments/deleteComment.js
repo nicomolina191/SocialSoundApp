@@ -1,4 +1,4 @@
-const { Comments } = require('../db');
+const { Comments } = require('../../db.js');
 
 const deleteComment = async (req, res) => {
 

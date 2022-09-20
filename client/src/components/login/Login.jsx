@@ -70,7 +70,7 @@ const Login = () => {
   useEffect(() => {
     if (
       googleUser &&
-      users.filter((u) => u.email === googleUser.email).length === 0
+      users?.filter((u) => u.email === googleUser.email).length === 0
     ) {
       axios
         .post("/users", {

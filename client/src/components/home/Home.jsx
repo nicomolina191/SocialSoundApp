@@ -12,11 +12,11 @@ import SideBar from "../SideBar/SideBar";
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.possListAll);
-  const { userFirebase, logout } = useAuth();
+  const { userFirebase } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (typeof userFirebase !== "object") navigate("/login");
+    //if (typeof userFirebase !== "object") navigate("/login");
     dispatch(getPost());
   }, []);
 

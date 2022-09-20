@@ -1,4 +1,4 @@
-const { Users } = require("../db");
+const { Users } = require('../../db.js');
 
 const deleteUser = async (req, res) => {
 

@@ -1,5 +1,4 @@
-const { Users, Genres } = require("../db");
-
+const { Users, Genres } = require('../../db.js');
 const getUserById = async (req, res) => {
 
     const { userId } = req.params;
