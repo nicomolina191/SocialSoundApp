@@ -44,23 +44,23 @@ const Register = () => {
       setLoading(false)
     }, [dispatch, userFirebase]);
 
-  useEffect(() => {
-    if (googleUser && users.filter(u => u.email === googleUser.email).length === 0) {
-      axios
-        .post("/users", {
-          ...googleUser,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-    if (userFirebase !== null) navigate("/home");
-
-  }, [googleUser])
-
+    useEffect(() => {
+      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
+        axios
+          .post("/users", {
+            ...user,
+            idgoogle
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      if (userFirebase !== null) navigate("/home");
+  
+    }, [idgoogle])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,19 +86,6 @@ const Register = () => {
     try {
       const res = await signup(user.email, user.password)
       setIdGoogle(res.user.uid)
-      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
-        axios
-          .post("/users", {
-            ...user,
-            idgoogle
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
       if (userFirebase !== null) navigate("/home");
     } catch (err) {
       return console.log(err);
