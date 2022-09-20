@@ -12,12 +12,13 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
 // import ResetPassword from "./components/resetPassword/ResetPassword";
 import SideBar from "./components/SideBar/SideBar";
-
+import Chat from "./components/Chat/Chat";
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
         <Routes>
+          <Route path="/chat" element={<Chat />} />
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

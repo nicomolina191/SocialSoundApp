@@ -10,15 +10,14 @@
 .conversations{
     background-color: #000a1fe0;
     height: 100vh;
-    overflow-y: scroll;
     width: 30%;
     backdrop-filter: blur(50px);
 }
 
 .convHead{
-    background-color: #000a1fe0;
-    width: 100%;
     padding: 10px;
+    background-color: #000a1fe0;
+    width: calc(100% - 20px);
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -70,16 +69,38 @@
     align-items: center;
 }
 .messageInput{
-    width: calc(100% - 30px);
+    padding: 10px;
+    width: calc(100% - 50px);
     border-radius: 15px;
     border: none;
-    height: 30px;
+    height: 12px;
 }
 .messagesContainer{
     width: 100%;
     height: calc(100% - 130px);
-    overflow: scroll;
+    overflow-y: scroll;
     gap: 10px;
     display: flex;
     flex-direction: column;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

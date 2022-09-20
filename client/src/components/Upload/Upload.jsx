@@ -119,6 +119,7 @@ export default function Upload() {
 
   return (
     <div>
+      {console.log(currentUser)}
       <button className={s.newPostBtn} onClick={handleClickOpen}> <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
         </svg> New Post...</button>
