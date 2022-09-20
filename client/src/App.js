@@ -1,17 +1,16 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Explore from "./components/Explore/Explore";
 import { AuthProvider } from "./context";
 import "./App.css";
-import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
-// import ResetPassword from "./components/resetPassword/ResetPassword";
-import SideBar from "./components/SideBar/SideBar";
+//import Upload from "./components/Upload/Upload";
+//  import SideBar from "./components/SideBar/SideBar";
 
 function App() {
   return (
@@ -33,10 +32,16 @@ function App() {
             path="/home/explore"
             element={
               <ProtectedRoute>
-                <Explore />{" "}
+                <Explore />
               </ProtectedRoute>
             }
           />
+           <Route path="/support" element={
+              <ProtectedRoute>
+           <SupportForm />
+           </ProtectedRoute>
+           }/>
+           <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </React.StrictMode>
