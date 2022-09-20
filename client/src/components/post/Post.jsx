@@ -49,7 +49,7 @@ export default function Post({ post }) {
                 <ReactPlayer url={post.content} controls className={style.reactPlayer} width='100%' height='100%' />
             </Grid>
             <Grid item container justifyContent="space-between">
-                <Grid item xs>
+                <Grid item>
                     <Typography variant='body2'>
                         {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1])-1]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
                     </Typography>
