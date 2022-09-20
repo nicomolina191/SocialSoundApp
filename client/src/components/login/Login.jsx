@@ -18,9 +18,10 @@ import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
-import axios from "axios";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { userExistGoogle } from "../utils";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const Login = () => {
   const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [userToResetPassword, setUserToResetPassword] = useState("");
   const [openAlert, setOpenAlert] = useState({
     show: false,
@@ -39,36 +41,10 @@ const Login = () => {
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
-  // useEffect(() => {
+/*   useEffect(() => {
+    // useEffect(() => {
   //   if (userFirebase !== null) navigate("/home");
   // });
-
-  useEffect(() => {
-    if (userFirebase !== null) navigate("/home");
-    dispatch(getUser());
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!user.password || !user.email) {
-      return;
-    }
-    try {
-      await login(user.email, user.password);
-      navigate("/home");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
     if (
       googleUser &&
       users?.filter((u) => u.email === googleUser.email).length === 0
@@ -85,7 +61,29 @@ const Login = () => {
         });
     }
     if (userFirebase !== null) navigate("/home");
-  }, [googleUser]);
+  }, [googleUser]); */
+
+
+
+  useEffect(() => {
+    if (userFirebase !== null) navigate("/home");
+    dispatch(getUser());
+    setLoading(false)
+  }, [dispatch, userFirebase]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user.password || !user.email) {
+      return;
+    }
+    try {
+      await login(user.email, user.password);
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const handleSignInGoogle = async () => {
     try {
@@ -98,6 +96,8 @@ const Login = () => {
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
       });
+      userExistGoogle(googleUser, users)
+      navigate("/home")
     } catch (err) {
       console.log(err);
       return;
@@ -139,8 +139,17 @@ const Login = () => {
     setUser({ ...user, [name]: value });
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
       <Snackbar open={openAlert.show && openAlert.severity === "success"}>
         <Alert severity="success">{openAlert.msg}</Alert>
       </Snackbar>

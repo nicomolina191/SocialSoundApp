@@ -9,12 +9,15 @@ import { Arrow, EmailIcon, GoogleIcon, PadLock, UserIcon } from "../componentsIc
 import logo from "../../images/logoicon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/features/users/usersGetSlice";
+import { userExistGoogle } from "../utils";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Register = () => {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users.usersListAll)
   const [idgoogle, setIdGoogle] = useState('')
   const [googleUser, setGoogleUser] = useState()
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -33,12 +36,13 @@ const Register = () => {
   const navigate = useNavigate();
 
   // useEffect(() => {
-  if (userFirebase !== null) navigate("/home");
-  // });
-
-  useEffect(() => {
-    dispatch(getUser())
-  }, [])
+    // });
+    
+    useEffect(() => {
+      if (userFirebase !== null) navigate("/home");
+      dispatch(getUser());
+      setLoading(false)
+    }, [dispatch, userFirebase]);
 
   useEffect(() => {
     if (googleUser && users.filter(u => u.email === googleUser.email).length === 0) {
@@ -57,23 +61,6 @@ const Register = () => {
 
   }, [googleUser])
 
-  useEffect(() => {
-    if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
-      axios
-        .post("/users", {
-          ...user,
-          idgoogle
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-    if (userFirebase !== null) navigate("/home");
-
-  }, [idgoogle])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,6 +86,20 @@ const Register = () => {
     try {
       const res = await signup(user.email, user.password)
       setIdGoogle(res.user.uid)
+      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
+        axios
+          .post("/users", {
+            ...user,
+            idgoogle
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      if (userFirebase !== null) navigate("/home");
     } catch (err) {
       return console.log(err);
     }
@@ -108,13 +109,15 @@ const Register = () => {
     try {
       const res = await loginWithGoogle();
       setGoogleUser({
-        name: res.user.email.split('@')[0],
-        username: res.user.email.split('@')[0],
+        name: res.user.email.split("@")[0],
+        username: res.user.email.split("@")[0],
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
-      })
+      });
+      userExistGoogle(googleUser, users)
+      navigate("/home")
     } catch (err) {
       console.log(err);
       return;
@@ -130,6 +133,7 @@ const Register = () => {
 
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>
