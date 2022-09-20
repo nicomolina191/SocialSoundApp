@@ -281,9 +281,9 @@ const Explore = () => {
                         flexWrap="wrap"
                         sx={{ marginBottom: "-10px" }}
                       >
-                        {currentGenres.map((genre) => {
+                        {currentGenres.map((genre, key) => {
                           return (
-                            <div className={styles.genresContainer}>
+                            <div key={key} className={styles.genresContainer}>
                               <input
                                 onClick={handleGenresSelected}
                                 id={genre.id}
