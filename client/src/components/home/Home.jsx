@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Grid container xs={12} className={style.home} justifyContent="space-between">
+    <Grid container item xs={12} className={style.home} justifyContent="space-between">
       {/* <Grid
         item
         container
@@ -62,7 +62,7 @@ export default function Home() {
        >
         <SideBar />
       </Grid>
-      <Grid item xs={9} direction="column" className={style.posts}>
+      <Grid container item xs={9} direction="column" className={style.posts}>
         <Typography variant="h3" className={style.text}>
           Home.
         </Typography>
