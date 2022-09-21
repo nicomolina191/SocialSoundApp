@@ -20,6 +20,7 @@ const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
+const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -51,5 +52,6 @@ router.put("/posts/:id", updatePost);
 router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
+router.put("/notifications/watched/:id", setNotiWatched);
 
 module.exports = router;
