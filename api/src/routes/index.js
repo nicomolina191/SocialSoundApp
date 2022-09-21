@@ -10,10 +10,11 @@ const createComment = require("../Controller/createComment.js");
 const createLike = require("../Controller/createLike.js");
 const getByTime = require("../Controller/getByTime.js");
 const getUserById = require("../Controller/getUserById.js");
-const postPayment = require("../Controller/stripe");
 const getGenres = require("../Controller/getGenres.js");
 const updateUser = require("../Controller/updateUser.js");
 const updatePost = require("../Controller/updatePost.js");
+const postWebhook = require("../Controller/webhook.js");
+const payment = require("../Controller/payment.js");
 
 
 
@@ -38,7 +39,8 @@ router.post("/comments", createComment);
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
 
-router.post('/create-checkout-session', postPayment);
+router.post('/create-checkout-session', payment);
+router.post('/webhook', postWebhook);
 router.put("/users/:nickname", updateUser);
 router.put("/posts/:id", updatePost);
 
