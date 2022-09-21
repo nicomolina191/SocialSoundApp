@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.containerPopularSongs h2 {
+    color: white;
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+.containerFiveSongs {
+    margin-left: 25px;
+}
+
+.containerSong {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.songFirstHalf {
+    display: flex;
+    align-items: center;
+}
+
+.songFirstHalfIndex p {
+    width: 20px;
+    font-weight: 100;
+}
+
+.songFirstHalf img{
+    width: 55px;
+    background-color: gray;
+    margin-right: 10px;
+}
+
+.songSecondHalf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 35%;
+    font-weight: 100;
+}
