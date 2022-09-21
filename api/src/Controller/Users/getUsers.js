@@ -1,27 +1,24 @@
-const { Users, Genres } = require('../../db.js');
+const { Users, Genres } = require("../../db.js");
 
 const getUsers = async (req, res) => {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> development
   try {
-
     const users = await Users.findAll({
-      where: {
-        isActive: true
-      },
       include: {
         model: Genres,
-        attributes: ['name'],
-        through: { attributes: [] }
-      }
+        attributes: ["name"],
+        through: { attributes: [] },
+      },
     });
 
     return res.json(users);
-
   } catch (error) {
-
     return res.send(error);
-  };
+  }
 };
 
 module.exports = getUsers;
