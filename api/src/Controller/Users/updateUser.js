@@ -7,14 +7,16 @@ const updateUser = async (req, res) => {
 
   try {
     let user = await Users.findOne({ where: { id } });
+
     user.update({
       name,
       username,
       avatar,
     });
+
     await user.save();
-    res.send(user);
-    return user;
+    return res.send(user);
+
   } catch (err) {
     res.status(500).send(err);
   }

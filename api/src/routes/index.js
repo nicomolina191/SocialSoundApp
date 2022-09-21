@@ -20,6 +20,8 @@ const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
 const postWebhook = require("../Controller/webhook.js");
 const payment = require("../Controller/payment.js");
+const upToPremium = require("../Controller/Users/upToPremium.js");
+const downToRegular = require("../Controller/Users/downToRegular.js");
 
 
 // Importar todos los routers;
@@ -55,5 +57,7 @@ router.delete("/comments/:id", deleteComment);
 router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
 router.put("/restore/:id", restoreUser);
+router.put("/users/premium/:id", upToPremium);
+router.put("/users/regular/:id", downToRegular);
 
 module.exports = router;
