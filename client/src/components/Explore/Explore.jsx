@@ -166,7 +166,8 @@ const Explore = () => {
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row">
-        <div style={{ minWidth: "270px" }}>
+        <div className={styles.fondo}></div>
+        <div style={{ minWidth: "266px" }}>
           <SideBar />
         </div>
         <div
@@ -178,7 +179,6 @@ const Explore = () => {
             width: "100%",
           }}
         >
-          <div className={styles.fondo}></div>
           <Typography
             variant="h2"
             component="h1"
@@ -501,8 +501,8 @@ const Explore = () => {
                 </Stack>
               )}
             </Stack>
-          ) : posibleArtist().length === 0 &&
-            posibleSong().length === 0 || !posts ? (
+          ) : (posibleArtist().length === 0 &&
+            posibleSong().length === 0) || !posts ? (
             <h1
               style={{
                 color: "white",

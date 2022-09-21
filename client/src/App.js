@@ -9,6 +9,7 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 //import Upload from "./components/Upload/Upload";
 //  import SideBar from "./components/SideBar/SideBar";
 
@@ -33,6 +34,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Explore />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home/explore/:id"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />

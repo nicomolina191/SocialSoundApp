@@ -1,0 +1,17 @@
+.containerAllPosts h2 {
+    font-size: 40px;
+    color: white;
+}
+
+.containerTitleFilters {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.containerFilters {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+}
