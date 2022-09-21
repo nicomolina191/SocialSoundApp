@@ -1,11 +1,6 @@
 const { Users, Genres } = require("../../db.js");
 
 const getUsers = async (req, res) => {
-<<<<<<< HEAD
-
-
-=======
->>>>>>> development
   try {
     const users = await Users.findAll({
       include: {

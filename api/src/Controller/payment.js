@@ -4,6 +4,7 @@ const stripe = new Stripe(process.env.KEY)
 const payment = async (req, res) => {
    
         const session = await stripe.checkout.sessions.create({
+            uid: "",
             payment_method_types: ["card"],
             phone_number_collection: {
               enabled: true,

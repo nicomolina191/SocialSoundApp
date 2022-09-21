@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-const { Router } = require('express');
-const createUser = require('../Controller/Users/createUser.js');
-const getByGenre = require('../Controller/Filters/getByGenre.js');
-const createPost = require('../Controller/Posts/createPost.js');
-const deleteUser = require('../Controller/Users/deleteUser.js');
-const deletePost = require('../Controller/Posts/deletePost.js');
-const deleteComment = require('../Controller/Comments/deleteComment.js');
-const getUsers = require('../Controller/Users/getUsers.js');
-const getPosts = require('../Controller/Posts/getPosts.js');
-const createComment = require('../Controller/Comments/createComment.js');
-const createLike = require('../Controller/Likes/createLike.js');
-const getByTime = require('../Controller/Filters/getByTime.js');
-const getUserById = require('../Controller/Users/getUserById.js');
-const getGenres = require('../Controller/Genres/getGenres.js');
-const updateUser = require('../Controller/Users/updateUser.js');
-const updatePost = require('../Controller/Posts/updatePost.js');
-const getUserByIdGoogle = require('../Controller/Users/getUserByIdGoogle.js');
-const createNoti = require('../Controller/Notifications/createNoti.js');
-const getNotiByUser = require('../Controller/Notifications/getNotiByUser');
-const postWebhook = require("../Controller/webhook.js");
-const payment = require("../Controller/payment.js");
-
-=======
 const { Router } = require("express");
 const createUser = require("../Controller/Users/createUser.js");
 const getByGenre = require("../Controller/Filters/getByGenre.js");
@@ -42,7 +18,9 @@ const getUserByIdGoogle = require("../Controller/Users/getUserByIdGoogle.js");
 const createNoti = require("../Controller/Notifications/createNoti.js");
 const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
->>>>>>> development
+const postWebhook = require("../Controller/webhook.js");
+const payment = require("../Controller/payment.js");
+
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -64,13 +42,11 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
-<<<<<<< HEAD
+
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post('/webhook', postWebhook);
-=======
-router.post("/notifications/create", createNoti);
->>>>>>> development
+
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
