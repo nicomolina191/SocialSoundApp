@@ -9,7 +9,6 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
-import PayButton from "./components/pay/PayButton";
 import Sucess from "./components/sucess/Sucess";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 //import Upload from "./components/Upload/Upload";
@@ -20,7 +19,6 @@ function App() {
     <React.StrictMode>
       <AuthProvider>
         <Routes>
-          <Route path="/pay" element={<PayButton />}/>
            <Route path="/sucess" element={<Sucess />}/>
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />

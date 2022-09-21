@@ -9,7 +9,7 @@ const PayButton = () => {
   const handleCheckout = () => {
     axios
       .post("/create-checkout-session", {
-
+       description: 'Plan Premium',
        amount: 1000
       })
       .then((response) => {
@@ -22,7 +22,7 @@ const PayButton = () => {
 
   return (
     <div className={style.divButton}>
-      <button  onClick={() => handleCheckout()}>Check out</button>
+      <button className={style.bt} onClick={() => handleCheckout()}>Premium</button>
     </div>
   );
 };

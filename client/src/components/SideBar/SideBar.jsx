@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
 import { useAuth } from '../../context';
+import PayButton from '../pay/PayButton'
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SideBar = () => {
                 <li className={s.profileItem}><img className={s.profilePic} width='40px' src="https://png.pngitem.com/pimgs/s/678-6785829_my-account-instagram-profile-icon-hd-png-download.png"/> <button>...</button></li>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
+                <li className={s.buttonPremium}><PayButton /></li>
             </ul>
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>MY COLLECTION</h4>

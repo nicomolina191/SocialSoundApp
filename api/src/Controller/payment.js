@@ -22,8 +22,8 @@ const payment = async (req, res) => {
             ],
             mode: "payment",
             // customer: customer.id,
-            success_url: 'http://localhost:3000/success',
-            cancel_url: 'http://localhost:3000/pay',
+            success_url: 'http://localhost:3000/sucess',
+            cancel_url: 'http://localhost:3000/home',
           });
        
           res.send({ url: session.url });

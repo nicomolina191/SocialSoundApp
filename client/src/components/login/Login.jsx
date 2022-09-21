@@ -22,6 +22,7 @@ import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { userExistGoogle } from "../utils";
 import LoadingProtectRoute from "../../context/LoadingProtectRoute";
+import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -41,10 +42,8 @@ const Login = () => {
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
-/*   useEffect(() => {
-    // useEffect(() => {
-  //   if (userFirebase !== null) navigate("/home");
-  // });
+  useEffect(() => {
+  
     if (
       googleUser &&
       users?.filter((u) => u.email === googleUser.email).length === 0
@@ -61,12 +60,12 @@ const Login = () => {
         });
     }
     if (userFirebase !== null) navigate("/home");
-  }, [googleUser]); */
+  }, [googleUser]); 
 
 
 
   useEffect(() => {
-    if (userFirebase !== null) navigate("/home");
+    // if (userFirebase !== null) navigate("/home");
     dispatch(getUser());
     setLoading(false)
   }, [dispatch, userFirebase]);

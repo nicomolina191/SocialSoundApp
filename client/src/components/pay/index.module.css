@@ -1,16 +1,13 @@
-.divButton button{
-    border-radius: 6px;
-    padding: 4px;
-    width: 180px;
+.divButton .bt{
     font-family: 'Inter', sans-serif;
     border: none;
     letter-spacing: 2px;
-    opacity: 0.6;
     cursor: pointer;
-    font-size: large;
+    font-size: 16px;
+    color: white;
+    transition: all 0.3s ease;
 }
 
-.divButton button:hover{
-    opacity: 1;
-    fill: aqua;
+.divButton .bt:hover{
+    color: rgb(0, 255, 191);
 }

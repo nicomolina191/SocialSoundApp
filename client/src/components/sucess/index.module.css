@@ -8,14 +8,23 @@
     align-items: center;
     flex-direction: column;
     font-family: "Inter", sans-serif;
+    padding: 10px;
 }
 
-.divHome{
-    background-color: aliceblue;
-    border-radius: 6px;
-    padding: 10px;
-    color: black;
-    font-size: large;
+.container h2{
     margin-top: 20px;
 }
 
+.divHome{
+    background-color: rgb(240, 255, 253);
+    border-radius: 8px;
+    padding: 12px;
+    color: black;
+    font-size: large;
+    margin-top: 40px;
+    transition: all 0.3s ease;
+}
+.divHome:hover{
+    color: white;
+    background-color: rgba(127, 255, 212, 0.898);
+}

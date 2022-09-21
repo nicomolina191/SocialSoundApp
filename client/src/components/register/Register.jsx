@@ -39,7 +39,7 @@ const Register = () => {
     // });
     
     useEffect(() => {
-      if (userFirebase !== null) navigate("/home");
+      // if (userFirebase !== null) navigate("/home");
       dispatch(getUser());
       setLoading(false)
     }, [dispatch, userFirebase]);
@@ -86,7 +86,7 @@ const Register = () => {
     try {
       const res = await signup(user.email, user.password)
       setIdGoogle(res.user.uid)
-      if (userFirebase !== null) navigate("/home");
+      // if (userFirebase !== null) navigate("/home");
     } catch (err) {
       return console.log(err);
     }
