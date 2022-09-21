@@ -8,10 +8,10 @@ import "./App.css";
 import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
-import Pay from "./components/pay/Pay";
 import Success from "./components/pay/Success";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ResetPassword from "./components/resetPassword/ResetPassword";
+import PayButton from "./components/pay/PayButton";
 
 function App() {
   return (
@@ -46,14 +46,14 @@ function App() {
                 <Upload />
               </ProtectedRoute>} />
               <Route path='/pay' element={
-                 <ProtectedRoute>
-                   <Pay />
-                 </ProtectedRoute>
+                
+                   <PayButton />
+                 
               }/>
               <Route path='/success' element={
-               <ProtectedRoute>
+               
                  <Success />
-               </ProtectedRoute>
+              
               }/>
         </Routes>
       </AuthProvider>
