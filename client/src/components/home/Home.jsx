@@ -1,19 +1,15 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Post from "../post/Post";
 import style from "./home.module.css";
 import { useEffect } from "react";
 import { getPost } from "../../redux/features/post/postGetSlice";
-import { useAuth } from "../../context";
 import SideBar from "../SideBar/SideBar";
 
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.possListAll);
-  const { userFirebase } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     //if (typeof userFirebase !== "object") navigate("/login");

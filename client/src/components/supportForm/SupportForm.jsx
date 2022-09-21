@@ -1,9 +1,9 @@
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, SvgIcon, TextField, Typography } from '@mui/material'
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import style from './supportForm.module.css'
 import logo from '../../images/logo.png'
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserByFirebaseId, getUserById } from '../../redux/features/users/usersGetSlice';
+import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
 import { Link } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 import { useAuth } from '../../context';
