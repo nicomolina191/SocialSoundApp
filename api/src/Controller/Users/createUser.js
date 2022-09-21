@@ -27,7 +27,7 @@ const createUser = async (req, res) => {
         attachments: [
           {
             filename: "logoiconbg.png",
-            path: `${__dirname}/Images/logoiconbg.png`,
+            path: `${__dirname}/../../Mailer/Images/logoiconbg.png`,
             cid: "logo",
           },
         ],

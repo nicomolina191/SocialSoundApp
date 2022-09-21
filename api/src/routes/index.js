@@ -15,6 +15,8 @@ const getGenres = require('../Controller/Genres/getGenres.js');
 const updateUser = require('../Controller/Users/updateUser.js');
 const updatePost = require('../Controller/Posts/updatePost.js');
 const getUserByIdGoogle = require('../Controller/Users/getUserByIdGoogle.js');
+const createNoti = require('../Controller/Notifications/createNoti.js');
+const getNotiByUser = require('../Controller/Notifications/getNotiByUser');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -27,6 +29,7 @@ router.get('/users/idgoogle/:idgoogle', getUserByIdGoogle);
 router.get("/posts", getPosts);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
+router.get('/notifications/:userId', getNotiByUser);
 
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
@@ -34,6 +37,7 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
+router.post('/notifications/create', createNoti);
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
