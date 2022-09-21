@@ -18,6 +18,8 @@ const getUserByIdGoogle = require("../Controller/Users/getUserByIdGoogle.js");
 const createNoti = require("../Controller/Notifications/createNoti.js");
 const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
+const upToPremium = require("../Controller/Users/upToPremium.js");
+const downToRegular = require("../Controller/Users/downToRegular.js");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -47,5 +49,7 @@ router.delete("/comments/:id", deleteComment);
 router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
 router.put("/restore/:id", restoreUser);
+router.put("/users/premium/:id", upToPremium);
+router.put("/users/regular/:id", downToRegular);
 
 module.exports = router;
