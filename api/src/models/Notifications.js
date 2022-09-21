@@ -18,13 +18,16 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        Date: {
+        date: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
         watched: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        fromUser: {
+            type: DataTypes.UUID
         }
     }, {
         timestamps: false
