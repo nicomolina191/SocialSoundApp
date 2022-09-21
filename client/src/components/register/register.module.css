@@ -1,5 +1,4 @@
-
-.containerRegisterDiv{
+.containerRegisterDiv {
   height: 100vh;
   width: 100vw;
   color: white;
@@ -8,7 +7,7 @@
 }
 
 
-.divBackground{ 
+.divBackground {
   width: 50%;
   height: 100%;
   position: relative;
@@ -17,16 +16,18 @@
   border-radius: 0px 40px 40px 0px;
 }
 
-.divBackgroundColor{
+.divBackgroundColor {
   background-color: rgba(0, 0, 0, 0.7);
   width: 100%;
   height: 100%;
   position: absolute;
   z-index: 2;
   top: 0;
+  border-radius: 0px 40px 40px 0px;
+
 }
 
-.backgroundImage{
+.backgroundImage {
   top: 0;
   background-image: url("../../images/original_2.jpg");
   background-size: cover;
@@ -38,67 +39,67 @@
   position: absolute;
 }
 
-.registerContainer{
-    background-color: var(--main-page-color);
-    height: 100vh;
-    width: 50%;
-    display: flex;
-    color: white;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.registerContainer {
+  background-color: var(--main-page-color);
+  height: 100vh;
+  width: 50%;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.containerTitle{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
+.containerTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
 }
 
 
-.containAll{
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-gap: 1vh;
-width: 50%;
-height: auto;
+.containAll {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1vh;
+  width: 50%;
+  height: auto;
 }
 
-.orderForm{
-    display: flex;
-    gap: 2vh;
-    flex-direction: column;
+.orderForm {
+  display: flex;
+  gap: 2vh;
+  flex-direction: column;
 }
-  
-.orderForm .input{
+
+.orderForm .input {
   width: 100% !important;
 }
 
-.googleButton{
+.googleButton {
   background-color: var(--main-page-color);
   padding: 10px;
   cursor: pointer;
   border-radius: 100% !important;
 }
 
-  .btnRL {
-      position: relative;
-      height: 50px;
-      color: #000A1F !important;
-      font-size: 15px;
-      background-color:#00FFD6 !important;
-      transition: all 0.5s;
-      border-radius: 40px;
-      width: 100%;
-      font-weight: bold !important;
-      font-family: inherit !important;
-    }
-    
+.btnRL {
+  position: relative;
+  height: 50px;
+  font-size: 15px;
+  transition: all 0.5s;
+  border-radius: 40px !important;
+  width: 100%;
+  font-weight: bold !important;
+  font-family: inherit !important;
+  color: #000A1F !important;
+  background-color: #00FFD6 !important;
+}
 
-  
-.arrow{
+
+
+.arrow {
   position: relative;
   display: block;
   z-index: 10;
@@ -108,11 +109,12 @@ height: auto;
   opacity: 0.5;
   padding: 15px;
 }
-.arrow:hover{
+
+.arrow:hover {
   opacity: 1;
 }
 
-.logo{
+.logo {
   width: 200px;
   height: 200px;
   z-index: 10;
@@ -120,7 +122,8 @@ height: auto;
   right: 40px;
   bottom: 10px;
 }
-button{
+
+button {
   background-color: rgba(255, 255, 255, 0);
   cursor: pointer;
 }

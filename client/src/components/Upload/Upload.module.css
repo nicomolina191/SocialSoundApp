@@ -11,12 +11,185 @@
     width: 100%;
     margin-bottom: 20px;
 }
+.newPostBtn{
+    border: none;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+.newPostBtn:hover{
+    color:aqua;
+}
+.btnRL:hover{
+    background-color: #00FFD6;
+    color: #000A1F;
+  }
+.title {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 1.6;
+    padding: 16px 24px;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+.dialog div[role=dialog]{
+    background-color: #000A1F;
+    border-radius: 20px;
+    color: white;
+    min-width: 80%;
+}
+.description{
+    width: 100%;
+}
+.titleInput{
+    width: 100%;
+}
 .selectGenres{
-    width: 350px;
+    width: 100%;
+    border-radius: 15px;
 }
-.genreoptions{
-    background-color: black;
+.selectGenres:hover{
+    outline: none !important;
+    border: none !important;
 }
+div[id="mui-component-select-genres"]{
+    border-radius: 15px;
+    background-color: #0a162f;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+.notchedOutline{
+    border: none;
+    outline: none !important;
+}
+ul[role=listbox]{
+    background-color:#000A1F;
+    border-radius: 15px;
+    font-weight: 600;
+}
+li[role=option]{
+    font-weight: 600;
+    opacity: 0.6;
+    color: white;
+    background-color:#000A1F;
+    transition: 0.3s;
+}
+li[role=option]:hover{
+    background-color: #0a162f;
+    opacity: 1;
+}
+li[role=option][aria-selected=true]{
+    font-weight: 600;
+    background-color: aqua;
+    color: #000A1F;
+    opacity: 1;
+}
+li[role=option][aria-selected=true]:hover{
+    background-color: aqua;
+    opacity: 0.7;
+}
+.MuiOutlinedInput-input{
+    outline: none;
+    border: none;
+}
+.Mui-focused{
+    outline:none;
+}
+:focus{
+    outline: none !important;
+}
+div[role=button]{
+    outline: none;
+    border: none;
+}
+input[type=file]{
+    display: none;
+    width: 100%;
+}
+.inputfile{
+    opacity: 0.7;
+    cursor: pointer;
+    background-color: aqua;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: 500;
+    color: #000A1F;
+    transition: 0.3s;
+}
+.btnRL {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    color: #ffffff;
+    font-size: 15px;
+    background-color: #111c34;
+    transition: all 0.3s;
+    border-radius: 40px;
+    width: 50%;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .fileContainer{
+    display: flex;
+    align-content: center;
+    gap: 15px;
+  }
+  .fileContainer h3{
+    font-weight: 400;
+    font-size: 15px;
+    word-wrap: break-word;
+    width: 50%;
+    height: 60px;
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+  }
+  .btns button{
+    height: 50px;
+    color: #000A1F !important;
+    font-size: 15px;
+    background-color: #00FFD6 !important;
+    transition: all 0.5s;
+    border-radius: 40px;
+    width: 50%;
+    font-weight: bold !important;
+    font-family: inherit !important;
+  }
+  DialogActions button[type=button] {
+    height: 50px;
+    color: white !important;
+    font-size: 15px;
+    background-color: #0b152a !important;
+    transition: all 0.5s;
+    border-radius: 40px;
+    width: 25%;
+    font-weight: bold !important;
+    font-family: inherit !important;
+  }
+ DialogActions button[type=submit] {
+    height: 50px;
+    color: #000A1F !important;
+    font-size: 15px;
+    background-color: #00FFD6 !important;
+    transition: all 0.5s;
+    border-radius: 40px;
+    width: 25%;
+    font-weight: bold !important;
+    font-family: inherit !important;
+  }
 
 
 

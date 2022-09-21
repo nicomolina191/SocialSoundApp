@@ -1,27 +1,30 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Explore from "./components/Explore/Explore";
 import { AuthProvider } from "./context";
 import "./App.css";
-import Upload from "./components/Upload/Upload";
 import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
-import Success from "./components/pay/Success";
 import ProtectedRoute from "./context/ProtectedRoute";
-import ResetPassword from "./components/resetPassword/ResetPassword";
+import SupportForm from "./components/supportForm/SupportForm";
 import PayButton from "./components/pay/PayButton";
+import Sucess from "./components/sucess/Sucess";
+
+//import Upload from "./components/Upload/Upload";
+//  import SideBar from "./components/SideBar/SideBar";
 
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
         <Routes>
+          <Route path="/pay" element={<PayButton />}/>
+           <Route path="/sucess" element={<Sucess />}/>
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/resetpassword" element={<ResetPassword/>}/>
           <Route
             path="/home"
             element={
@@ -34,37 +37,20 @@ function App() {
             path="/home/explore"
             element={
               <ProtectedRoute>
-                <Explore />{" "}
+                <Explore />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/upload"
-            element={
+           <Route path="/support" element={
               <ProtectedRoute>
-                {" "}
-                <Upload />
-              </ProtectedRoute>} />
-              <Route path='/pay' element={
-                
-                   <PayButton />
-                 
-              }/>
-              <Route path='/success' element={
-               
-                 <Success />
-              
-              }/>
+           <SupportForm />
+           </ProtectedRoute>
+           }/>
+           <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
+        
         </Routes>
       </AuthProvider>
     </React.StrictMode>
   );
 }
 export default App;
-{
-  /*           
-                   <Route path="/home" element={<Home />} />
-          <Route path="/home/explore" element={<Explore />} />
-          <Route path="/upload" element={<Upload />} />
-          /> */
-}

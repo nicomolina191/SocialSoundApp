@@ -1,4 +1,5 @@
 import axios from "axios";
+import style from './index.module.css';
 // import { useSelector } from "react-redux";
 // import { url } from "../slices/api";
 
@@ -12,7 +13,6 @@ const PayButton = () => {
        amount: 1000
       })
       .then((response) => {
-        console.log(response);
         if (response.data.url) {
           window.location.href = response.data.url;
         }
@@ -21,9 +21,9 @@ const PayButton = () => {
   };
 
   return (
-    <>
-      <button onClick={() => handleCheckout()}>Check out</button>
-    </>
+    <div className={style.divButton}>
+      <button  onClick={() => handleCheckout()}>Check out</button>
+    </div>
   );
 };
 

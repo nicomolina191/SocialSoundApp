@@ -1,0 +1,21 @@
+.container{
+    background-color: var(--main-page-color);
+    color: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Inter", sans-serif;
+}
+
+.divHome{
+    background-color: aliceblue;
+    border-radius: 6px;
+    padding: 10px;
+    color: black;
+    font-size: large;
+    margin-top: 20px;
+}
+

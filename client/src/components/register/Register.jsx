@@ -5,17 +5,19 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Box, Button, Grid, TextField } from "@mui/material";
-import {
-  Arrow,
-  EmailIcon,
-  GoogleIcon,
-  PadLock,
-  UserIcon,
-} from "../componentsIcons/index";
+import { Arrow, EmailIcon, GoogleIcon, PadLock, UserIcon } from "../componentsIcons/index";
 import logo from "../../images/logoicon.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../redux/features/users/usersGetSlice";
+import { userExistGoogle } from "../utils";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Register = () => {
-  
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users.usersListAll)
+  const [idgoogle, setIdGoogle] = useState('')
+  const [googleUser, setGoogleUser] = useState()
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -30,24 +32,35 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
-  const { signup, signupWithGoogle, userFirebase, logout } = useAuth();
+  const { signup, loginWithGoogle, userFirebase } = useAuth();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+    // });
+    
+    useEffect(() => {
+      if (userFirebase !== null) navigate("/home");
+      dispatch(getUser());
+      setLoading(false)
+    }, [dispatch, userFirebase]);
+
+    useEffect(() => {
+      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
+        axios
+          .post("/users", {
+            ...user,
+            idgoogle
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      if (userFirebase !== null) navigate("/home");
   
-  useEffect(()=>{
-    if (userFirebase !== null) navigate("/home");
-})
-  const handleSignUpGoogle = async () => {  
-    try {
-      /// span si el usuario ya esta registrado
-      await signupWithGoogle();
-      logout()
-    } catch (err) {
-      console.log(err);
-      return;
-    }
-    navigate("/login");
-  };
+    }, [idgoogle])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,21 +82,32 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
+
     try {
-      await signup(user.email, user.password);
-      axios
-        .post("/users", {
-          ...user,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      navigate("/home");
+      const res = await signup(user.email, user.password)
+      setIdGoogle(res.user.uid)
+      if (userFirebase !== null) navigate("/home");
     } catch (err) {
       return console.log(err);
+    }
+  };
+
+  const handleSignInGoogle = async () => {
+    try {
+      const res = await loginWithGoogle();
+      setGoogleUser({
+        name: res.user.email.split("@")[0],
+        username: res.user.email.split("@")[0],
+        password: res.user.email,
+        email: res.user.email,
+        idgoogle: res.user.uid,
+        avatar: res.user.photoURL,
+      });
+      userExistGoogle(googleUser, users)
+      navigate("/home")
+    } catch (err) {
+      console.log(err);
+      return;
     }
   };
 
@@ -96,6 +120,7 @@ const Register = () => {
 
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>
@@ -249,17 +274,14 @@ const Register = () => {
                 direction="column"
                 container
               >
-                <h5 style={{ width: "auto" }}>or continue with</h5>
-
-                <Box className={{ width: "auto" }}>
-                  <Button
-                    sx={{ padding: "10px" }}
-                    onClick={() => handleSignUpGoogle()}
-                    className={style.googleButton}
-                  >
-                    <GoogleIcon />
-                  </Button>
-                </Box>
+                <h5 style={{ width: "auto", margin: "5px" }}>or continue with</h5>
+                <Button
+                  sx={{ padding: "20px", borderRadius: "50%" }}
+                  onClick={() => handleSignInGoogle("/")}
+                  className={style.googleButton}
+                >
+                  <GoogleIcon />
+                </Button>
               </Grid>
             </Box>
           </Box>

@@ -1,27 +1,76 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
-import React, {  useEffect } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  Grid,
+  TextField,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
-
-
+import { getUser } from "../../redux/features/users/usersGetSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { userExistGoogle } from "../utils";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.usersListAll);
+  const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
-  const [error, setError] = useState({ password: "", email: "" });
-  const { login, loginWithGoogle, userFirebase } = useAuth();
-
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [userToResetPassword, setUserToResetPassword] = useState("");
+  const [openAlert, setOpenAlert] = useState({
+    show: false,
+    msg: "",
+    severity: "",
+  });
+  const { login, loginWithGoogle, userFirebase, resetPassword } = useAuth();
   const navigate = useNavigate();
-   
-    useEffect(()=>{
-       console.log(userFirebase)
-        if (userFirebase !== null) navigate("/home");
-    },);
+  //const [error, setError] = useState({ password: "", email: "" });
+  //const usersListAll = useSelector((state) => state.usersListAll);
 
-  
+/*   useEffect(() => {
+    // useEffect(() => {
+  //   if (userFirebase !== null) navigate("/home");
+  // });
+    if (
+      googleUser &&
+      users?.filter((u) => u.email === googleUser.email).length === 0
+    ) {
+      axios
+        .post("/users", {
+          ...googleUser,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    if (userFirebase !== null) navigate("/home");
+  }, [googleUser]); */
+
+
+
+  useEffect(() => {
+    if (userFirebase !== null) navigate("/home");
+    dispatch(getUser());
+    setLoading(false)
+  }, [dispatch, userFirebase]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user.password || !user.email) {
@@ -35,21 +84,78 @@ const Login = () => {
     }
   };
 
+
   const handleSignInGoogle = async () => {
     try {
-      await loginWithGoogle();
+      const res = await loginWithGoogle();
+      setGoogleUser({
+        name: res.user.email.split("@")[0],
+        username: res.user.email.split("@")[0],
+        password: res.user.email,
+        email: res.user.email,
+        idgoogle: res.user.uid,
+        avatar: res.user.photoURL,
+      });
+      userExistGoogle(googleUser, users)
+      navigate("/home")
     } catch (err) {
       console.log(err);
       return;
     }
-    navigate("/home");
+  };
+
+  const handleSendPasswordReset = async (email) => {
+    try {
+      await resetPassword(email);
+      setOpenAlert({
+        show: true,
+        msg: "The email has been sent",
+        severity: "success",
+      });
+      setTimeout(function () {
+        setOpenAlert({
+          show: false,
+          msg: "",
+          severity: "",
+        });
+      }, 2000);
+    } catch (err) {
+      setOpenAlert({
+        show: true,
+        msg: "There is no account for this email",
+        severity: "error",
+      });
+      setTimeout(function () {
+        setOpenAlert({
+          show: false,
+          msg: "",
+          severity: "",
+        });
+      }, 2000);
+    }
   };
 
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
   };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
+      <Snackbar open={openAlert.show && openAlert.severity === "success"}>
+        <Alert severity="success">{openAlert.msg}</Alert>
+      </Snackbar>
+      <Snackbar open={openAlert.show && openAlert.severity === "error"}>
+        <Alert severity="error">{openAlert.msg}</Alert>
+      </Snackbar>
       <Box className={style.containerLoginDiv}>
         <Box className={style.divBackground}>
           <button onClick={() => navigate("/")} className={style.arrow}>
@@ -133,14 +239,18 @@ const Login = () => {
                   />
                 </Box>
                 <Box textAlign={"right"}>
-                  <Link style={{ color: "#00FFD6", textDecoration: "none" }} to="/resetpassword">Forgot your password?</Link>
+                  <Link
+                    onClick={handleClickOpen}
+                    style={{ color: "#00FFD6", textDecoration: "none" }}
+                  >
+                    Forgot your password?
+                  </Link>
                 </Box>
                 <Box style={{ display: "flex", justifyContent: "center" }}>
                   <Button className={style.btnRL} type="submit">
                     Login
                   </Button>
                 </Box>
-               
               </Box>
             </form>
 
@@ -163,6 +273,79 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
+      {open && (
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle
+            sx={{
+              backgroundColor: "var(--main-page-color)",
+              color: "white",
+            }}
+          >
+            Reset Password
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              backgroundColor: "var(--main-page-color)",
+              color: "white",
+            }}
+          >
+            <DialogContentText
+              sx={{
+                backgroundColor: "var(--main-page-color)",
+                color: "white",
+              }}
+            >
+              An email will be sent to reset your password
+            </DialogContentText>
+            <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+              <EmailIcon style={{ padding: "10px" }} />
+              <TextField
+                sx={{
+                  backgroundColor: "var(--main-page-color)",
+                  color: "white",
+                }}
+                className={style.input}
+                autoFocus
+                margin="dense"
+                id="Email"
+                label="Email Address"
+                type="email"
+                fullWidth
+                autoComplete="off"
+                variant="standard"
+                value={userToResetPassword}
+                onChange={(e) => setUserToResetPassword(e.target.value)}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
+            <Button
+              className={style.btnDialog}
+              onClick={handleClose}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" }
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              className={style.btnDialog}
+              onClick={() => handleSendPasswordReset(userToResetPassword)}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" },
+              }}
+            >
+              Send
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Box>
   );
 };

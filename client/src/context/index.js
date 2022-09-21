@@ -20,18 +20,14 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState(null);
-  const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true)
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
-    signOut(auth)};
-
-  const signupWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    signOut(auth);
   };
 
   const login = (email, password) => {
@@ -43,36 +39,26 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const resetPassword = (email) => {
-    return sendPasswordResetEmail(auth, email);
-  };
+  const resetPassword = async (email) => sendPasswordResetEmail(auth, email);
 
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
+      setLoading(false)
     });
     return () => {
       unsuscribe();
     };
   }, []);
-
-  if(userFirebase){
-   userFirebase.getIdToken().then((tokn)=> {
-     setToken(tokn);
-    })
-  }
-  // console.log(token);
   return (
     <authContext.Provider
       value={{
         signup,
         login,
-        signupWithGoogle,
         logout,
         loginWithGoogle,
         resetPassword,
-        userFirebase,
-        token
+        userFirebase,loading
       }}
     >
       {children}
