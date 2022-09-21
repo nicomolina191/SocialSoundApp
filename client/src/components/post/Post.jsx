@@ -5,18 +5,22 @@ import style from './post.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getUserById } from '../../redux/features/users/usersGetSlice';
+import axios from 'axios';
 
 export default function Post({ post }) {
     const dispatch = useDispatch()
-    const user = useSelector(state => state.users.user)
+    const [user, setUser] = useState()
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
     const [date, setDate] = useState()
 
-    useEffect(() => {
-        dispatch(getUserById(post.userId))
+    useEffect(async () => {
+        const res = await axios.get(`/users/${post.userId}`)
+        setUser(res.data)
     }, [])
+
+    console.log(user);
 
     useEffect(() => {
         setDate(new Date(Date.parse(post.postDate)).toLocaleString('sv'))
@@ -51,7 +55,7 @@ export default function Post({ post }) {
             <Grid item container justifyContent="space-between">
                 <Grid item>
                     <Typography variant='body2'>
-                        {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1])-1]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
+                        {date && `${date.split(' ')[1].split(':')[0]}:${date.split(' ')[1].split(':')[1]} · ${monthNames[parseInt(date.split(' ')[0].split('-')[1]) - 1]} ${date.split(' ')[0].split('-')[2]}, ${date.split(' ')[0].split('-')[0]}`}
                     </Typography>
                 </Grid>
                 <Grid item container xs={4} justifyContent="flex-end" spacing={2}>
