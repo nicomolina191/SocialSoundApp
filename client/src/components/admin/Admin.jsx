@@ -28,7 +28,7 @@ const Admin = () => {
         <Button sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} fullWidth onClick={() => navigate("/home")}><Arrow/></Button>
       </Box>
       <Box className={style.usersContainer}>
-      {arrUsers?.map((u, i)=> <UsersPerfil user={u} key={i}/>)}
+      {arrUsers?.map((u, i)=> <UsersPerfil user={u} key={i} setUserSelected={setUserSelected}/>)}
       </Box>
     </Box>
   )

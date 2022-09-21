@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
@@ -7,8 +7,17 @@ import { useAuth } from '../../context';
 import { KeyIcon } from '../componentsIcons'
 
   const SideBar = ({userDB}) => {
+      const [role, setRole] = useState("")
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, loading } = useAuth();
+
+  useEffect(() => {
+    if(!role) return setRole(userDB?.role)
+    if(role && !loading) {
+      logout()
+    return navigate("/login")
+  }
+  }, [userDB?.role])
 
   return (
         <div className={s.sidebar}>

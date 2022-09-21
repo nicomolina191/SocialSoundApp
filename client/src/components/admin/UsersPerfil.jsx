@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import style from "./admin.module.css"
 
-const UsersPerfil = ({user}) => {
+const UsersPerfil = ({user, setUserSelected}) => {
     const [colorUser, setColorUser] = useState("gray")
     useEffect(() => {
         if(user.role === "Admin") return setColorUser("var(--second-page-color)")
@@ -15,7 +15,7 @@ const UsersPerfil = ({user}) => {
 
     console.log(user)
   return (
-  <Button sx={{color:colorUser, padding: "0"}}>
+  <Button onClick={() => setUserSelected(user)} sx={{color:colorUser, padding: "0"}}>
     <div className={style.userDiv}>
         <Avatar alt={user.name} src={user.avatar} />
         <h4>{user.name}</h4>
