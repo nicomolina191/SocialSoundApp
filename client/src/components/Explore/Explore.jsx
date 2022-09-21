@@ -21,7 +21,7 @@ import {
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
-import { getUser, getUserById } from "../../redux/features/users/usersGetSlice";
+import { getUser, getUserByFirebaseId, getUserById } from "../../redux/features/users/usersGetSlice";
 import {
   getPost,
   getPostByGenre,
@@ -31,6 +31,7 @@ import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import { useEffect } from "react";
 import Post from "../post/Post";
 import SideBar from "../SideBar/SideBar";
+import { useAuth } from "../../context";
 
 const Explore = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ const Explore = () => {
   const user = useSelector((state) => state.users.user);
   const posts = useSelector((state) => state.posts.postList);
   const genres = useSelector((state) => state.genres.genreList).slice(1);
+  const userDB = useSelector((state) => state.users.currentUser);
+
   const [inputValue, setInputValue] = useState("");
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
@@ -54,11 +57,14 @@ const Explore = () => {
   const currentGenres = genres.slice(firstGenre, lastGenre);
   const pageNumbers = Math.ceil(genres.length / genrePerPage);
 
+
+  const { userFirebase } = useAuth();
   useEffect(() => {
     dispatch(getUser());
     dispatch(getPost());
     dispatch(getGenre());
     dispatch(getUserById(posts.userId));
+    dispatch(getUserByFirebaseId(userFirebase.uid))
   }, [dispatch]);
 
   const theme = createTheme({
@@ -162,13 +168,12 @@ const Explore = () => {
     posibleArtist();
     posibleSong();
   }
-
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row">
         <div className={styles.fondo}></div>
         <div style={{ minWidth: "266px" }}>
-          <SideBar />
+          <SideBar userDB={userDB}/>
         </div>
         <div
           className={styles.container}
