@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const userExistGoogle = (user, usersDB) =>{
     if (user && !usersDB?.some((u) => u.email === user.email)) {
-        axios
+          return  axios
           .post("/users", {
             ...user,
           })
@@ -13,7 +13,6 @@ export const userExistGoogle = (user, usersDB) =>{
           .catch(function (error) {
             console.log(error);
           });
-          return
         }
-        return
+        return "no se mando"
 }
