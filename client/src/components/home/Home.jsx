@@ -22,36 +22,6 @@ export default function Home() {
 
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
-      {/* <Grid
-        item
-        container
-        xs={3}
-        direction="column"
-        className={style.sideBar}
-        p={`1%`}
-       >
-        <Grid item>
-          <button
-            style={{ backgroundColor: "white" }}
-            onClick={() => {
-              logout();
-              navigate("/login");
-            }}
-          >
-            Logout
-          </button>
-          <Typography variant="body1" className={style.text}>
-            Home
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Link to="/home/explore" style={{ textDecoration: "none" }}>
-            <Typography variant="body1" className={style.text}>
-              Explore
-            </Typography>
-          </Link>
-        </Grid>
-      </Grid> */}
       <Grid
         item
         container

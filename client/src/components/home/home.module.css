@@ -1,3 +1,7 @@
+.home{
+    min-height: 100vh;
+}
+
 .home .sideBar {
     background-color: #000717ED;
 }
