@@ -33,6 +33,7 @@ import Post from "../post/Post";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../../context";
 
+//hay que sacar el preload revisar el tipo si es video o audio
 const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
@@ -46,7 +47,6 @@ const Explore = () => {
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
   let [songsPerPage, setSongsPerPage] = useState(9);
   let currentSongs = posibleSong().slice(0, songsPerPage);
-
   const [open, setOpen] = useState(false);
   const [genresFiltered, setGenresFiltered] = useState([]);
   const [orderChecked, setOrderChecked] = useState("relevance");
@@ -59,6 +59,7 @@ const Explore = () => {
 
 
   const { userFirebase } = useAuth();
+
   useEffect(() => {
     dispatch(getUser());
     dispatch(getPost());
