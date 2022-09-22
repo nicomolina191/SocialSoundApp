@@ -18,6 +18,8 @@ const ProfilePage = () => {
   const { id } = useParams();
   const [loaded, setLoaded] = useState(false);
   const profileUser = useSelector((state) => state.users.user);
+  const userDB = useSelector((state) => state.users.currentUser);
+
 
   useEffect(() => {
     dispatch(getUserById(id));
@@ -42,7 +44,7 @@ const ProfilePage = () => {
         <div className={styles.fondo}></div>
 
         <div className={styles.containerSideBar}>
-          <SideBar />
+          <SideBar userDB={userDB} />
         </div>
 
         {loaded ? (
