@@ -41,3 +41,11 @@
     border-top: 1px solid var(--second-page-color);
     gap: 10px;
 }
+
+.userSelectedDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-top: 40px;
+}
