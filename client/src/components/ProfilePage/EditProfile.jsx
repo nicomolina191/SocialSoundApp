@@ -14,6 +14,7 @@ const EditProfile = (close) => {
     username: currentUser.username,
     avatar: currentUser.avatar,
   });
+  console.log(input);
 
   function handleChange(el) {
     setInput({
@@ -40,7 +41,16 @@ const EditProfile = (close) => {
           </p>
         </div>
         <div className={styles.content}>
-          <img src={currentUser.avatar} alt="" />
+          <input
+            type="file"
+            accept="image/*"
+            name="avatar"
+            id="avatar"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="avatar">
+            <img src={currentUser.avatar} alt="" />
+          </label>
           <div className={styles.inputs}>
             <TextField
               onChange={(e) => handleChange(e)}
