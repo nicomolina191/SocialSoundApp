@@ -1,6 +1,5 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Post from "../post/Post";
 import style from "./home.module.css";
@@ -8,18 +7,19 @@ import { useEffect } from "react";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { useAuth } from "../../context";
 import SideBar from "../SideBar/SideBar";
+import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.possListAll);
+  const userDB = useSelector((state) => state.users.currentUser);
   const { userFirebase } = useAuth();
-  const navigate = useNavigate();
-
   useEffect(() => {
-    //if (typeof userFirebase !== "object") navigate("/login");
     dispatch(getPost());
+    dispatch(getUserByFirebaseId(userFirebase.uid))
   }, []);
 
+  
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
       {/* <Grid
@@ -60,7 +60,7 @@ export default function Home() {
         className={style.sideBar}
         p={`1%`}
        >
-        <SideBar />
+        <SideBar userDB={userDB} />
       </Grid>
       <Grid container item xs={9} direction="column" className={style.posts}>
         <Typography variant="h3" className={style.text}>

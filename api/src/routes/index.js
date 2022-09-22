@@ -6,7 +6,6 @@ const createPost = require("../Controller/Posts/createPost.js");
 const deleteUser = require("../Controller/Users/deleteUser.js");
 const deletePost = require("../Controller/Posts/deletePost.js");
 const deleteComment = require("../Controller/Comments/deleteComment.js");
-const getUsers = require("../Controller/Users/getUsers.js");
 const getPosts = require("../Controller/Posts/getPosts.js");
 const createComment = require("../Controller/Comments/createComment.js");
 const createLike = require("../Controller/Likes/createLike.js");
@@ -23,6 +22,9 @@ const postWebhook = require("../Controller/webhook.js");
 const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
+const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
+const getAllUser = require("../Controller/Users/getAllUser.js");
+const getActiveUser = require("../Controller/Users/getActiveUser.js");
 
 
 
@@ -32,8 +34,9 @@ const downToRegular = require("../Controller/Users/downToRegular.js");
 
 const router = Router();
 
-router.get("/users", getUsers);
-router.get("/users/:userId", getUserById);
+router.get("/usersForAdmin", getAllUser);
+router.get("/usersForClient", getActiveUser);
+router.get("/usersForAdmin/:userId", getUserById);
 router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle);
 router.get("/posts", getPosts);
 router.get("/posts/order/:order", getByTime);
@@ -61,6 +64,7 @@ router.put("/posts/:id", updatePost);
 router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
+router.put("/notifications/watched/:id", setNotiWatched);
 
 
 

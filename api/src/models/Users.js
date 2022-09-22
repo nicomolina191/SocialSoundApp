@@ -63,12 +63,7 @@ module.exports = (sequelize) => {
       followingCount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
-      },
-      // isActive: {
-      //   //Se usa el ID para eliminar y restaurar
-      //   type: DataTypes.BOOLEAN,
-      //   defaultValue: true,
-      // },
+      }
     },
     {
       timestamps: true,
