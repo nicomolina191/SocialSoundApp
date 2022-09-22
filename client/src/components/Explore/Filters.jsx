@@ -30,7 +30,7 @@ const Filters = () => {
 
   useEffect(() => {
     dispatch(getGenre());
-  }, []);
+  }, [dispatch]);
 
   function handleOpen() {
     setOpen(true);

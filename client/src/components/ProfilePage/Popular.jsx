@@ -18,7 +18,7 @@ const Popular = ({ id }) => {
   return (
     <div className={styles.containerPopularSongs}>
       <h2>Popular</h2>
-      <div className={styles.containerFiveSongs}>
+      <div>
         {popularPosts.map((post, index) => {
           return (
             <div className={styles.containerSong}>
