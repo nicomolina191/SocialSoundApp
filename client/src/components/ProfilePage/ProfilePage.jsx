@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserById } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
-import { Button, createTheme, Modal } from "@mui/material";
+import { Button, createTheme, Menu, MenuItem, Modal } from "@mui/material";
 import styles from "./ProfilePage.module.css";
 import SideBar from "../SideBar/SideBar";
 import checkIcon from "../../images/checkIcon.png";
@@ -101,19 +101,26 @@ const ProfilePage = () => {
                   icon={faEllipsis}
                 />
               ) : null}
-              <Modal open={open} onClose={handleClose}>
-                <div className={styles.optionsModal}>
-                  <p onClick={handleOpenSettings} className={styles.option}>
-                    Edit profile
-                  </p>
-                </div>
-              </Modal>
+              <Menu
+                className={styles.optionsModal}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                  horizontal: "right",
+                  vertical: "top",
+                }}
+              >
+                <MenuItem onClick={handleOpenSettings}>Edit profile</MenuItem>
+              </Menu>
               <Modal
                 open={openSettings}
                 onClose={handleCloseSettings}
                 sx={{ backdropFilter: "blur(3px)" }}
               >
-                <EditProfile close={handleCloseSettings} setOpenSettings={setOpenSettings}/>
+                <EditProfile
+                  close={handleCloseSettings}
+                  setOpenSettings={setOpenSettings}
+                />
               </Modal>
             </div>
           </div>
