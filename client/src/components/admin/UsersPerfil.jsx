@@ -13,7 +13,6 @@ const UsersPerfil = ({user, setUserSelected}) => {
     }, [user])
     
 
-    console.log(user)
   return (
   <Button onClick={() => setUserSelected(user)} sx={{color:colorUser, padding: "0"}}>
     <div className={style.userDiv}>
