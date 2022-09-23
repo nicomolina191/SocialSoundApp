@@ -11,8 +11,9 @@ const PayButton = () => {
     axios
       .post("/create-checkout-session", {
        description: 'Plan Premium',
-       amount: 1000,
+       amount: 2400,
        quantity: 1,
+       
       })
       .then((response) => {
         if (response.data.url) {

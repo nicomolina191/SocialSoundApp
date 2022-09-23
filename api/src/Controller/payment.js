@@ -4,7 +4,7 @@ const stripe = new Stripe(process.env.KEY)
 
 const payment = async (req, res) => {
    const {userId} = req.body;
-   //console.log("hola id 2", userId);
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             phone_number_collection: {
@@ -17,7 +17,7 @@ const payment = async (req, res) => {
                   product_data:{
                     name: "Plan premium"
                   },
-                  unit_amount: 1000,
+                  unit_amount: 2400,
                 },
                 quantity: 1,
               },

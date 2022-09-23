@@ -19,7 +19,7 @@ const getUserByIdGoogle = require("../Controller/Users/getUserByIdGoogle.js");
 const createNoti = require("../Controller/Notifications/createNoti.js");
 const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
-const postWebhook = require("../Controller/webhook.js");
+// const postWebhook = require("../Controller/webhook.js");
 const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
@@ -31,6 +31,7 @@ const getPostById = require("../Controller/Posts/getPostById.js");
 const getLikesByPostandUserId = require('../Controller/Likes/getLikesByPostandUserId.js');
 const changeStatusLike = require('../Controller/Likes/changeStatusLike.js');
 const getByPostId = require("../Controller/Comments/getByPostId.js");
+const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -60,7 +61,7 @@ router.post("/posts/genres", getByGenre);
 
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
-router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
+// router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
 
 
 router.delete("/users/:id", deleteUser);
