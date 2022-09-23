@@ -18,7 +18,7 @@ const Popular = ({ id }) => {
   return (
     <div className={styles.containerPopularSongs}>
       <h2>Popular</h2>
-      <div className={styles.containerFiveSongs}>
+      <div>
         {popularPosts.map((post, index) => {
           return (
             <div className={styles.containerSong}>
@@ -31,7 +31,7 @@ const Popular = ({ id }) => {
               </div>
               <div className={styles.songSecondHalf}>
                 <p>6,145,232</p>
-                <p>03:22</p>
+                <p>03:66</p>
               </div>
             </div>
           );

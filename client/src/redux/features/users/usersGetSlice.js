@@ -7,7 +7,7 @@ export const getUser = () => {
   return async (dispatch) => {
     dispatch(getUserStart());
     try {
-      const response = await axios.get("/users");
+      const response = await axios.get("/usersForClient");
       dispatch(getUserSuccess(response.data));
     } catch (error) {
       dispatch(getUserError(error));
@@ -24,10 +24,10 @@ export const createdUser = (user) => {
 };
 
 //actualizar user
-export const updateUser = (nickname, body) => {
+export const updateUser = (id, body) => {
   return async (dispatch) => {
     try {
-      const response = await axios.put(`/users/${nickname}`, body);
+      const response = await axios.put(`/users/${id}`, body);
       if (response) {
         dispatch(updateUsers());
         dispatch(getUser());
@@ -54,7 +54,7 @@ export const deleteUser = (id) => {
 export const getUserById = (id) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/users/${id}`)
+      const response = await axios.get(`/usersForAdmin/${id}`)
       dispatch(getById(response.data))
     } catch (error) {
       console.log(error);

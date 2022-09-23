@@ -1,3 +1,10 @@
+.container {
+  height: 100vh;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+
 .container p,
 li,
 button,
@@ -21,6 +28,40 @@ h4 {
 
 .modalContainer {
   color: white;
+}
+
+.containerSearchBar {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background-color: white;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.containerSearchBar input {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(129, 129, 129, 1);
+  width: 500px;
+  outline: none;
+  border: none;
+}
+
+.containerContent {
+  margin-top: 40px;
+}
+
+.forYouText {
+  color: white;
+  font-weight: 500;
+  font-size: 40px;
+}
+
+.noResultsText {
+  color: white;
+  text-align: center;
+  margin-top: 200px;
 }
 
 .modalContainer h2 {
@@ -71,7 +112,7 @@ h4 {
 }
 
 .genresContainer input {
-  display: none
+  display: none;
 }
 
 .buttonPages {
@@ -99,16 +140,44 @@ h4 {
   font-size: 30px;
 }
 
+.songsContainer {
+  position: relative;
+  color: white;
+  background-color: rgba(0, 7, 20, 0.4);
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 40px 40px 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  margin: 20px 20px 10px 0;
+}
+
+.songsContainer:hover {
+  transform: scale(1.03);
+  transition: 0.5s;
+}
+
 .songContainer p {
   cursor: pointer;
   font-size: 25px;
   position: absolute;
-  left: calc(50% - 10px / 2 );
+  left: calc(50% - 10px / 2);
   top: calc(50% - 40px);
 }
 
-.songContainer p:hover{
+.songContainer p:hover {
   color: rgba(0, 226, 190, 1);
+}
+
+.songContainer img {
+  height: 80px;
+  width: 80px;
+  border-radius: 50px;
+}
+
+.songContainer .playButton {
+  font-size: 30px;
+  position: absolute;
+  top: calc(50% - 40px / 2);
 }
 
 .songDate {
@@ -131,8 +200,54 @@ h4 {
   color: rgba(0, 226, 190, 1);
 }
 
+.artistContainer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  background-color: rgba(0, 7, 20, 0.4);
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 40px 40px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  margin: 20px 20px 10px 0;
+}
+
+.artistContainer:hover {
+  color: rgba(0, 226, 190, 1);
+  transform: scale(1.03);
+  transition: 0.5s;
+}
+
+.artistContainer img {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.containerArtistData {
+  margin-left: 10px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.artistName {
+  font-size: 19px;
+}
+
+.artistUsername {
+  font-size: 13px;
+  color: rgba(129, 129, 129, 1);
+}
+
 .showMoreButton {
   color: rgba(129, 129, 129, 1);
+  font-size: 50px;
+  margin: 30px auto 30px;
 }
 
 .showMoreButton:hover {
