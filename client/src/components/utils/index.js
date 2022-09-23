@@ -1,0 +1,18 @@
+import axios from "axios";
+
+
+export const userExistGoogle = (user, usersDB) =>{
+    if (user && !usersDB?.some((u) => u.email === user.email)) {
+          return  axios
+          .post("/users", {
+            ...user,
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+        return "no se mando"
+}

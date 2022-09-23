@@ -10,10 +10,6 @@ module.exports = (sequelize) => {
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
-        likesCount: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-        },
         description: {
             type: DataTypes.TEXT
         },
@@ -29,9 +25,8 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM("video", "audio"),
             allowNull: false
         },
-        commentsCount: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
+        duration: {
+            type: DataTypes.STRING
         },
         postDate: {
             type: DataTypes.DATE,

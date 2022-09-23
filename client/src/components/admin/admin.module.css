@@ -1,0 +1,53 @@
+.backgroundAdmin {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    color: white
+}
+
+.containerOptions {
+    background-color: var(--main-page-color);
+    width: 25%;
+    height: 100%;
+    border-right: var(--second-page-color) solid 1px;
+}
+
+.usersContainer {
+    width: 75%;
+    height: 100%;
+    background-color: var(--main-page-color);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.buttonUser {
+    text-align: center;
+    background-color: #0a2e11;
+    border-radius: 10px;
+    width: 100%;
+    height: 100px
+}
+
+.userDiv {
+    width: 100%;
+    height: 50px;
+    background-color: var(--main-page-color);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-bottom: 1px solid var(--second-page-color);
+    border-top: 1px solid var(--second-page-color);
+    gap: 10px;
+    padding-left: 10px;
+}
+
+.userSelectedDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-top: 40px;
+}

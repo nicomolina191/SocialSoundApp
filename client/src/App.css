@@ -72,5 +72,6 @@ body::-webkit-scrollbar-thumb:hover {
 
 :root {
   --main-page-color: #000A1F;
-  --second-page-color: #00FFD6
+  --second-page-color: #00FFD6;
+  --second-page-color-dark: #2d655b;
 }

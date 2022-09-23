@@ -5,7 +5,7 @@ const getUserById = async (req, res) => {
 
     try {
 
-        let user = await Users.findByPk(userId, {
+        const user = await Users.findByPk(userId, {
             include: [{
                 model: Genres,
                 attributes: ['name'],
