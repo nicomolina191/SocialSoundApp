@@ -16,7 +16,7 @@ const Register = () => {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users.usersListAll)
   const [idgoogle, setIdGoogle] = useState('')
-  const [googleUser, setGoogleUser] = useState()
+  //const [googleUser, setGoogleUser] = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({
     name: "",
@@ -94,15 +94,16 @@ const Register = () => {
 
   const handleSignInGoogle = async () => {
     try {
-      const res = await loginWithGoogle();
-      setGoogleUser({
+      let googleUser
+      const res = await loginWithGoogle()
+      googleUser = {
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
-      });
+      }
       userExistGoogle(googleUser, users)
       navigate("/home")
     } catch (err) {

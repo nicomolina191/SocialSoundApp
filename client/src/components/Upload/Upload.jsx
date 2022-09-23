@@ -2,18 +2,18 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, DialogContent/* , DialogTitle */ } from '@mui/material';
 import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
-import newpost from '../../images/svg/newpost.svg'
 import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
-import { getAuth } from 'firebase/auth';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
 import { getGenre } from '../../redux/features/genres/genreGetSlice';
+//import newpost from '../../images/svg/newpost.svg'
+// import { getAuth } from 'firebase/auth';
 
 
 export default function Upload() {

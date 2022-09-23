@@ -1,6 +1,6 @@
 const { Users, Genres } = require("../../db.js");
 
-const getUsers = async (req, res) => {
+const getUsersAdmin = async (req, res) => {
   try {
     const users = await Users.findAll({
       include: {
@@ -8,6 +8,7 @@ const getUsers = async (req, res) => {
         attributes: ["name"],
         through: { attributes: [] },
       },
+      paranoid: false,
     });
 
     return res.json(users);
@@ -16,4 +17,4 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = getUsers;
+module.exports = getUsersAdmin;

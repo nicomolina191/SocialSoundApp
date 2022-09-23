@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.containerLikedSongs {
+    display: flex;
+    flex-direction: column;
+}
+
+.containerLikedSongs h3 {
+    font-size: 25px;
+    color: white;
+    margin-top: 15px;
+    margin-bottom: 35px;
+}
+
+.likedSongs {
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+}
+
+.likedSongs img {
+    width: 75px;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.containerImageHeart {
+    position: relative;
+}
+
+.containerImageHeart .heart {
+    position: absolute;
+    width: 30px;
+    border-radius: 50%;
+    background-color: transparent;
+    bottom: 0;
+    right: 0;
+}
+
+.likedSongs p{
+    font-size: 23px;
+    font-weight: 700;
+    color: white;
+    margin-left: 10px;
+}

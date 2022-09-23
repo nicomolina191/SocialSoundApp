@@ -1,11 +1,12 @@
-const { Users, Genres } = require('../../db.js');
-const getUserById = async (req, res) => {
+const { Posts, Genres } = require('../../db.js');
 
-    const { userId } = req.params;
+const getPostById = async (req, res) => {
+
+    const { id } = req.params;
 
     try {
 
-        const user = await Users.findByPk(userId, {
+        const post = await Posts.findByPk(id, {
             include: [{
                 model: Genres,
                 attributes: ['name'],
@@ -13,7 +14,7 @@ const getUserById = async (req, res) => {
             }]
         });
 
-        return res.json(user);
+        return res.json(post);
 
     } catch (error) {
 
@@ -21,4 +22,4 @@ const getUserById = async (req, res) => {
     };
 };
 
-module.exports = getUserById;
+module.exports = getPostById;

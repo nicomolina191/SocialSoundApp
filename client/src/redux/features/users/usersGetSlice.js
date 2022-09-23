@@ -24,10 +24,10 @@ export const createdUser = (user) => {
 };
 
 //actualizar user
-export const updateUser = (nickname, body) => {
+export const updateUser = (id, body) => {
   return async (dispatch) => {
     try {
-      const response = await axios.put(`/users/${nickname}`, body);
+      const response = await axios.put(`/users/${id}`, body);
       if (response) {
         dispatch(updateUsers());
         dispatch(getUser());

@@ -10,6 +10,8 @@ import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
 import PostContainer from "./components/postContainer/PostContainer";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
+import Admin from "./components/admin/Admin";
 //import Upload from "./components/Upload/Upload";
 //  import SideBar from "./components/SideBar/SideBar";
 
@@ -37,6 +39,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/home/explore/:id"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />
@@ -47,6 +57,7 @@ function App() {
            <PostContainer />
            </ProtectedRoute>
            }/>
+           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
            <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
         </Routes>
       </AuthProvider>

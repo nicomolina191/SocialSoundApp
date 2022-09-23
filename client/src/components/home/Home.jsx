@@ -12,14 +12,14 @@ import { useAuth } from "../../context";
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.possListAll);
-  const { userFirebase } = useAuth()
-
+  const userDB = useSelector((state) => state.users.currentUser);
+  const { userFirebase } = useAuth();
   useEffect(() => {
-    //if (typeof userFirebase !== "object") navigate("/login");
     dispatch(getPost());
     dispatch(getUserByFirebaseId(userFirebase.uid))
   }, []);
 
+  
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
       <Grid
@@ -29,8 +29,8 @@ export default function Home() {
         direction="column"
         className={style.sideBar}
         p={`1%`}
-      >
-        <SideBar />
+       >
+        <SideBar userDB={userDB} />
       </Grid>
       <Grid container item xs={9} direction="column" className={style.posts}>
         <Typography variant="h3" className={style.text}>

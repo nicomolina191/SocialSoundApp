@@ -67,7 +67,6 @@ export const getPostByTime = (order) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`/posts/order/${order}`);
-      console.log(response.data);
       dispatch(getAllPostByTime(response.data))
     } catch (error) {
       console.log(error);
