@@ -1,12 +1,17 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
 import { useAuth } from '../../context';
+import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
+import { useSelector } from 'react-redux'
 
   const SideBar = ({userDB}) => {
+    
+    const user = useSelector((state)=> state.users.currentUser)
       const [role, setRole] = useState("")
   const navigate = useNavigate();
   const { logout, loading } = useAuth();
@@ -18,7 +23,7 @@ import { KeyIcon } from '../componentsIcons'
     return navigate("/login")
   }
   }, [userDB?.role])
-
+ const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
@@ -26,6 +31,11 @@ import { KeyIcon } from '../componentsIcons'
                 <li className={s.profileItem}><img className={s.profilePic} width='40px' src="https://png.pngitem.com/pimgs/s/678-6785829_my-account-instagram-profile-icon-hd-png-download.png"/> <button>...</button></li>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
+                {
+                  user?.plan !== 'Premium' ? (
+                  <li className={s.buttonPremium}><PayButton /></li>
+                  ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
+                }
             </ul>
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>MY COLLECTION</h4>
