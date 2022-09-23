@@ -19,6 +19,7 @@ export default function Home() {
     dispatch(getUserByFirebaseId(userFirebase.uid))
   }, []);
 
+  console.log(userDB)
   
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">

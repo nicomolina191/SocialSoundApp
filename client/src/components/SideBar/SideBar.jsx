@@ -11,13 +11,13 @@ import { KeyIcon } from '../componentsIcons'
   const navigate = useNavigate();
   const { logout, loading } = useAuth();
 
-  useEffect(() => {
+/*   useEffect(() => {
     if(!role) return setRole(userDB?.role)
     if(role && !loading) {
       logout()
     return navigate("/login")
   }
-  }, [userDB?.role])
+  }, [userDB?.role]) */
 
   return (
         <div className={s.sidebar}>
