@@ -10,13 +10,13 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      statusLike: {
+      isActive: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        defaultValue: true
       },
     },
     {
-      timestamps: false,
+      timestamps: false
     }
   );
 };
