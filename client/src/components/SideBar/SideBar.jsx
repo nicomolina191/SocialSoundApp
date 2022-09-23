@@ -34,7 +34,7 @@ import { useSelector } from 'react-redux'
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
-                  ): ( <img className={s.premiumIcon} width='44px' src={iconPremium} />)
+                  ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
                 }
             </ul>
             <ul className={s.optionsContainer}>
