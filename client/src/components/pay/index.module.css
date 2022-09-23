@@ -1,0 +1,13 @@
+.divButton .bt{
+    font-family: 'Inter', sans-serif;
+    border: none;
+    letter-spacing: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.divButton .bt:hover{
+    color: rgb(0, 255, 191);
+}
