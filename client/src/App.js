@@ -12,15 +12,17 @@ import SupportForm from "./components/supportForm/SupportForm";
 import Sucess from "./components/sucess/Sucess";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
+
+
 //import Upload from "./components/Upload/Upload";
 //  import SideBar from "./components/SideBar/SideBar";
+
 
 function App() {
   return (
     <React.StrictMode>
       <AuthProvider>
         <Routes>
-           <Route path="/sucess" element={<Sucess />}/>
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -48,6 +50,11 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/home/sucess" element={
+          <ProtectedRoute>
+           <Sucess/>
+          </ProtectedRoute>
+        }/>
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />
@@ -55,7 +62,6 @@ function App() {
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
            <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
-        
         </Routes>
       </AuthProvider>
     </React.StrictMode>

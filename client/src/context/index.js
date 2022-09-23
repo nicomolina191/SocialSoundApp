@@ -21,6 +21,7 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState(null);
   const [loading, setLoading] = useState(true)
+  
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -58,7 +59,7 @@ export function AuthProvider({ children }) {
         logout,
         loginWithGoogle,
         resetPassword,
-        userFirebase,loading
+        userFirebase,loading,
       }}
     >
       {children}

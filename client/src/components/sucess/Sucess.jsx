@@ -1,30 +1,46 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom'
-import { getUserUpdatePremium } from '../../redux/features/users/usersGetSlice';
-import style from './index.module.css'
+/* eslint-disable */
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context";
+import {
+  getUserUpdatePremium,
+} from "../../redux/features/users/usersGetSlice";
+import style from "./index.module.css";
+import axios from "axios";
 
 const Sucess = () => {
+  const { userFirebase } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-   const dispatch = useDispatch();
-   const user = useSelector((state)=> state.users.currentUser)
+  const premium = localStorage.getItem("premium");
   
-   useEffect(()=>{
-     if(user){
-       dispatch(getUserUpdatePremium(user.id))
-     }
-   },[dispatch]);
+  const fetchUser = async () => {
+    if(premium) {
+      const user = await axios.get(`/users/idgoogle/${userFirebase.uid}`);
+      await dispatch(getUserUpdatePremium(user.data.id));
+      localStorage.removeItem("premium");
+    }else{
+      return navigate('/home')
+    }
+  } 
 
+  useEffect(() => {
+    fetchUser()
+  }, []);
 
   return (
-     <div className={style.container}>
+    <div className={style.container}>
+      <div className={style.backgroundContainer}>
       <h1>Thanks for your order, you are user Premium!</h1>
-       <h2>Go home to enjoy the new features!</h2> 
+      <h2>Go home to enjoy the new features!</h2>
+      </div>
       <div className={style.divHome}>
-      <Link to={'/home'}>Home</Link>
+        <Link to={"/home"}>Home</Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Sucess;

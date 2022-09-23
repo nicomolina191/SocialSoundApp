@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const express = require('express');
 const createUser = require("../Controller/Users/createUser.js");
 const getByGenre = require("../Controller/Filters/getByGenre.js");
 const createPost = require("../Controller/Posts/createPost.js");
@@ -28,9 +27,6 @@ const getActiveUser = require("../Controller/Users/getActiveUser.js");
 
 
 
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
-//se instancia a la clase, y devuelve un objeto de stripe, que tiene metodos para registrar un pago
 
 const router = Router();
 

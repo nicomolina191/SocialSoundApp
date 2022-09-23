@@ -20,14 +20,13 @@ import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { userExistGoogle } from "../utils";
 import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersListAll);
-  //const [googleUser, setGoogleUser] = useState();
+  const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true)
@@ -86,17 +85,17 @@ const Login = () => {
 
   const handleSignInGoogle = async () => {
     try {
-      let googleUser
+
       const res = await loginWithGoogle()
-      googleUser = {
+      setGoogleUser({
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
-      }
-      userExistGoogle(googleUser, users)
+      })
+     
       navigate("/home")
     } catch (err) {
       console.log(err);

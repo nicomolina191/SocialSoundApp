@@ -5,6 +5,9 @@ import style from './index.module.css';
 const PayButton = () => {
 
   const handleCheckout = () => {
+    let premium = localStorage.getItem("premium");
+    if(premium) localStorage.removeItem("premium");
+    localStorage.setItem("premium", true)
     axios
       .post("/create-checkout-session", {
        description: 'Plan Premium',
@@ -13,9 +16,7 @@ const PayButton = () => {
       })
       .then((response) => {
         if (response.data.url) {
-          
           window.location.href = response.data.url;
-
         }
       })
       .catch((err) => console.log(err.message));
