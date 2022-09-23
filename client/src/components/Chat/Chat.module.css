@@ -18,6 +18,7 @@
     padding: 10px;
     background-color: #000a1fe0;
     width: calc(100% - 20px);
+    height: 15vh;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -82,6 +83,7 @@
     gap: 10px;
     display: flex;
     flex-direction: column;
+    background-color: #000a1f;
 }
 
 /* width */
@@ -91,12 +93,12 @@
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: transparent; 
+    background: transparent !important; 
   }
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    border-radius: 15px;
+    border-radius: 15px !important;
     background: #888; 
   }
   

@@ -13,6 +13,7 @@ import SupportForm from "./components/supportForm/SupportForm";
 // import ResetPassword from "./components/resetPassword/ResetPassword";
 import SideBar from "./components/SideBar/SideBar";
 import Chat from "./components/Chat/Chat";
+
 function App() {
   return (
     <React.StrictMode>
@@ -38,6 +39,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Chat />{" "}
+              </ProtectedRoute>
+            }
+          />
+          
         </Routes>
       </AuthProvider>
     </React.StrictMode>

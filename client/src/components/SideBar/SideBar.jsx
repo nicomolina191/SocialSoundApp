@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
 import { useAuth } from '../../context';
+import { db } from '../../firebase'
+import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 
 const SideBar = () => {
   const navigate = useNavigate();
   const { userFirebase, logout } = useAuth();  
+  useEffect(async () => {
+    const docRef = doc(db, "userConversations", userFirebase?.uid);
+    const docSnap = await getDocFromServer(docRef);
+    userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
+  }, [])
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
@@ -15,6 +22,7 @@ const SideBar = () => {
                 <li className={s.profileItem}><img className={s.profilePic} width='40px' src="https://png.pngitem.com/pimgs/s/678-6785829_my-account-instagram-profile-icon-hd-png-download.png"/> <button>...</button></li>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
+                <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
             </ul>
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>MY COLLECTION</h4>
