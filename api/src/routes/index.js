@@ -21,15 +21,22 @@ const restoreUser = require("../Controller/Users/restoreUser.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
+const getUserByIdAdmi = require("../Controller/Users/getUserByIdAdmin.js");
+const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
+const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
+const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
 const router = Router();
 
-router.get("/users", getUsers);
-router.get("/users/:userId", getUserById);
-router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle);
+router.get("/users", getUsers); //user
+router.get("/usersAdmi", getUsersAdmin); //admin
+router.get("/users/:userId", getUserById); //user
+router.get("/usersAdmi/:userId", getUserByIdAdmin); //admin
+router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle); //user
+router.get("/usersAdmi/idgoogle/:idgoogle", getUserByIdGoogleAdmin); //admin
 router.get("/posts", getPosts);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
