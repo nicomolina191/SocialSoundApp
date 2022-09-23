@@ -6,14 +6,18 @@ import style from "./home.module.css";
 import { useEffect } from "react";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
+import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
+import { useAuth } from "../../context";
 
 export default function Home() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.possListAll);
+  const { userFirebase } = useAuth()
 
   useEffect(() => {
     //if (typeof userFirebase !== "object") navigate("/login");
     dispatch(getPost());
+    dispatch(getUserByFirebaseId(userFirebase.uid))
   }, []);
 
   return (
@@ -25,7 +29,7 @@ export default function Home() {
         direction="column"
         className={style.sideBar}
         p={`1%`}
-       >
+      >
         <SideBar />
       </Grid>
       <Grid container item xs={9} direction="column" className={style.posts}>
@@ -33,7 +37,7 @@ export default function Home() {
           Home.
         </Typography>
         {posts.length > 0 &&
-          posts.map((post, i) => <Post key={i} post={post}/>)}
+          posts.map((post, i) => <Post key={i} post={post} comments={false} />)}
       </Grid>
     </Grid>
   );
