@@ -7,7 +7,7 @@ export const getUser = () => {
   return async (dispatch) => {
     dispatch(getUserStart());
     try {
-      const response = await axios.get("/usersForClient");
+      const response = await axios.get("/users");
       dispatch(getUserSuccess(response.data));
     } catch (error) {
       dispatch(getUserError(error));
@@ -54,7 +54,7 @@ export const deleteUser = (id) => {
 export const getUserById = (id) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/usersForAdmin/${id}`)
+      const response = await axios.get(`/users/${id}`)
       dispatch(getById(response.data))
     } catch (error) {
       console.log(error);
