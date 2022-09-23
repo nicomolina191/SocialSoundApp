@@ -43,6 +43,7 @@
 }
 .lastMessage{
     margin: 0;
+    cursor: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
     opacity: 0.7;

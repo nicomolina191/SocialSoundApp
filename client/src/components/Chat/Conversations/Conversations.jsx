@@ -1,26 +1,32 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import React, {useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "../../../context";
 import { db } from "../../../firebase";
 import { changeUserChat } from "../../../redux/features/chat/chatGetSlice";
+import { getUserByFirebaseId } from "../../../redux/features/users/usersGetSlice";
 import s from './Conversations.module.css'
 
 const Conversations = () => {
   const [conversations, setConversations] = useState([]);
   const currentUser = useSelector(state => state.users.currentUser)
   const dispatch = useDispatch()
+  const {userFirebase} = useAuth()
+
+  useEffect(()=> {
+    !currentUser && dispatch(getUserByFirebaseId(userFirebase?.uid))
+  }, [])
   useEffect(() => {
     const getConversations = () => {
       const unsub = onSnapshot(doc(db, "userConversations", currentUser.idgoogle), (doc) => {
-        const sorted = Object.entries(doc?.data()).sort((a,b)=>b[1].date - a[1].date)
-        setConversations(sorted);
+        setConversations(Object.entries(doc?.data()).sort((a,b)=>b[1].date - a[1].date));
       });
       return () => {
         unsub();
       };
     };
     currentUser.name && getConversations();
-  }, [currentUser.idgoogle]);
+  }, [currentUser?.idgoogle]);
 
   const handleSelect = (u) => {
     dispatch(changeUserChat({destination: {name: u.displayName, idgoogle: u.uid, avatar: u.photoURL},

@@ -22,7 +22,7 @@ const Message = ({ message }) => {
   return (
     <div
       ref={ref}
-      className={`${s.message} ${message.senderId === currentUser.idgoogle && s.sender}`}
+      className={`${s.message} ${message.senderId === currentUser.idgoogle ? s.sender : s.destination}`}
     >
       <div className={s.messageInfo}>
         <img
@@ -37,8 +37,8 @@ const Message = ({ message }) => {
         
       </div>
       <div className={s.messageContent}>
-        <p>{message.text}</p>
-        {message.img && <img width='50px' src={message.img} alt="" />}
+        {message.text && <p>{message.text}</p>}
+        {message.img && <img className={s.messageImage} src={message.img} alt="" />}
         
       </div>
       <span>{messageDate(message.date.seconds)}</span>

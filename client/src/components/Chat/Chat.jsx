@@ -24,7 +24,7 @@ function Chat() {
         const docRef = doc(db, "userConversations", userFirebase?.uid);
         const docSnap = await getDocFromServer(docRef);
         userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
-        userFirebase?.uid && await dispatch(getUserByFirebaseId(userFirebase?.uid))
+        userFirebase?.uid && dispatch(getUserByFirebaseId(userFirebase?.uid))
       } catch(err) {
         console.log(err)
       } 
