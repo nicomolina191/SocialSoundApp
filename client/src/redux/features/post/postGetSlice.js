@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime } from "./postSlice";
+import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById } from "./postSlice";
 
 //obtener los users
 export const getPost = () => {
@@ -54,7 +54,7 @@ export const deletePost = (id) => {
 export const getPostByGenre = (genres) => {
   return async (dispatch) => {
     try {
-      let response =await axios.post('/posts/genres', genres)
+      let response = await axios.post('/posts/genres', genres)
       dispatch(getAllPostByGenre(response.data))
     } catch (error) {
       console.log(error);
@@ -69,6 +69,17 @@ export const getPostByTime = (order) => {
       const response = await axios.get(`/posts/order/${order}`);
       console.log(response.data);
       dispatch(getAllPostByTime(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const getPostById = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/posts/${id}`)
+      dispatch(getCurrentPostById(response.data))
     } catch (error) {
       console.log(error);
     }
