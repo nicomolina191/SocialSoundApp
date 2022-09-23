@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from '../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
-
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 
 const Admin = () => {
   const dispatch = useDispatch()
@@ -22,19 +22,39 @@ const Admin = () => {
   }, [dispatch])
   
   
+const formatResult = (user) => <UsersPerfil user={user} setUserSelected={setUserSelected}/>
+
+const handleClick = (value) => {
+if(value === "role") setUserSelected(userSelected?.role === "Admin"? {...userSelected, role: "User"} : {...userSelected, role: "Admin"})
+if(value === "isBanned") setUserSelected({...userSelected, isBanned: !userSelected?.isBanned})
+if(value === "isActive") setUserSelected({...userSelected, isActive: !userSelected?.isActive})
+let userFind = arrUsers.find(u => u?.idgoogle === userSelected?.idgoogle)
+userFind = userSelected
+  return
+}
+
   return (
     <Box className={style.backgroundAdmin}>
       <Box className={style.containerOptions}>
-        <Button sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} fullWidth onClick={() => navigate("/home")}><Arrow/></Button>
+        <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} onClick={() => navigate("/home")}><Arrow/></Button>
         <Box className={style.userSelectedDiv}>
           {userSelected?.avatar && <Avatar src={userSelected?.avatar} />}
       {userSelected?.name && <h4 style={{paddingTop: "10px"}}>{userSelected?.name}</h4>}
-      {userSelected?.name && <Button  sx={{textTransform: "none"}} className={style.buttonUser}>Role: {userSelected?.role}</Button>}
-      {userSelected?.name && <Button sx={{textTransform: "none"}} className={style.buttonUser}>Banned: {userSelected?.banned ? "Yes": "No"}</Button>}
+      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"role"}>Role: {userSelected?.role}</Button>}
+      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"isBanned"}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
+      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"isActive"}>isActive: {userSelected?.isActive ? "Yes": "No"}</Button>}
         </Box>
       </Box>
       <Box className={style.usersContainer}>
-      {arrUsers?.map((u, i)=> <UsersPerfil user={u} key={i} setUserSelected={setUserSelected}/>)}
+      <ReactSearchAutocomplete 
+       items={arrUsers}
+       fuseOptions={{ keys: ["name"] }}
+       autoFocus
+       formatResult={(e) => formatResult(e)}
+       styling={{backgroundColor:"var(--main-page-color)", color: "white", border: "1px solid var(--second-page-color)"}}
+       className={style.reactSearchAutocomplete}
+       onSelect={(e)=> setUserSelected(e)}
+       />
       </Box>
     </Box>
   )

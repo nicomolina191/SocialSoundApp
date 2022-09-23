@@ -24,7 +24,6 @@ const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
-const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
 const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
 const getLikesByPostId = require('../Controller/Likes/getLikesByPostId.js');
