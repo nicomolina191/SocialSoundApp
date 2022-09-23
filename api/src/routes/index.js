@@ -6,6 +6,7 @@ const createPost = require("../Controller/Posts/createPost.js");
 const deleteUser = require("../Controller/Users/deleteUser.js");
 const deletePost = require("../Controller/Posts/deletePost.js");
 const deleteComment = require("../Controller/Comments/deleteComment.js");
+const getUsers = require("../Controller/Users/getUsers.js");
 const getPosts = require("../Controller/Posts/getPosts.js");
 const createComment = require("../Controller/Comments/createComment.js");
 const createLike = require("../Controller/Likes/createLike.js");
@@ -23,18 +24,22 @@ const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
-const getAllUser = require("../Controller/Users/getAllUser.js");
-const getActiveUser = require("../Controller/Users/getActiveUser.js");
+const getUserByIdAdmi = require("../Controller/Users/getUserByIdAdmin.js");
+const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
+const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
+const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 
 
 
 
 const router = Router();
 
-router.get("/usersForAdmin", getAllUser);
-router.get("/usersForClient", getActiveUser);
-router.get("/usersForAdmin/:userId", getUserById);
-router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle);
+router.get("/users", getUsers); //user
+router.get("/usersAdmi", getUsersAdmin); //admin
+router.get("/users/:userId", getUserById); //user
+router.get("/usersAdmi/:userId", getUserByIdAdmin); //admin
+router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle); //user
+router.get("/usersAdmi/idgoogle/:idgoogle", getUserByIdGoogleAdmin); //admin
 router.get("/posts", getPosts);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);

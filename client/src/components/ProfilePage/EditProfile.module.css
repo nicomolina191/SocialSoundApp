@@ -1,0 +1,68 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerSettings {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #000a1f;
+  min-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.header p {
+  font-size: 20px;
+  color: rgb(180, 180, 180);
+}
+
+.header p:hover {
+  cursor: pointer;
+  color: white;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  height: 200px;
+}
+
+.content img {
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+}
+
+.content .inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 50px;
+  margin-left: 20px;
+}
+
+.content img:hover {
+  filter: blur(2px);
+  cursor: pointer;
+}

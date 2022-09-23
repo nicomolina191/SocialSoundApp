@@ -1,22 +1,12 @@
 const { Users, Posts, Comments } = require("../../db.js");
+const badWords = require("./BadWords.js");
 
 const createComment = async (req, res) => {
   const { content, idPost, idUser } = req.body;
   try {
-    const badWords = [
-      "cantante de mierda",
-      "infeliz",
-      "negrata",
-      "malparido",
-      "hijo de puta",
-      "eres un fracasado",
-      "canción tan estúpida",
-      "eres un burro",
-      "asco de canción",
-      "gil de mierda",
-    ];
+    let censoredWords = badWords;
 
-    const sensitiveWords = badWords.find((ele) => content.includes(ele));
+    const sensitiveWords = censoredWords.find((ele) => content.includes(ele));
     if (sensitiveWords) {
       res.send("Your comment is not appropriate, please do it again");
     } else {
