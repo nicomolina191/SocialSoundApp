@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Post from "../post/Post";
 import style from "./home.module.css";
 import { useEffect } from "react";
-import { getPost } from "../../redux/features/post/postGetSlice";
+import { clearPost, getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
 import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 import { useAuth } from "../../context";
@@ -17,6 +17,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUserByFirebaseId(userFirebase.uid))
+    dispatch(clearPost())
   }, []);
 
   
@@ -37,7 +38,7 @@ export default function Home() {
           Home.
         </Typography>
         {posts.length > 0 &&
-          posts.map((post, i) => <Post key={i} post={post} comments={false} />)}
+          posts.slice(0).reverse().map((post, i) => <Post key={i} post={post} comments={false} />)}
       </Grid>
     </Grid>
   );

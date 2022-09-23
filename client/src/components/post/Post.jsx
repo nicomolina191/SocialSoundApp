@@ -10,64 +10,27 @@ import { Link } from 'react-router-dom';
 import {
     EmailShareButton,
     FacebookShareButton,
-    HatenaShareButton,
-    InstapaperShareButton,
-    LineShareButton,
     LinkedinShareButton,
-    LivejournalShareButton,
-    MailruShareButton,
-    OKShareButton,
-    PinterestShareButton,
-    PocketShareButton,
-    RedditShareButton,
     TelegramShareButton,
-    TumblrShareButton,
     TwitterShareButton,
-    ViberShareButton,
-    VKShareButton,
     WhatsappShareButton,
-    WorkplaceShareButton
-} from "react-share";
-
-import {
-    FacebookShareCount,
-    HatenaShareCount,
-    OKShareCount,
-    PinterestShareCount,
-    RedditShareCount,
-    TumblrShareCount,
-    VKShareCount
 } from "react-share";
 
 import {
     EmailIcon,
     FacebookIcon,
-    FacebookMessengerIcon,
-    HatenaIcon,
-    InstapaperIcon,
-    LineIcon,
     LinkedinIcon,
-    LivejournalIcon,
-    MailruIcon,
-    OKIcon,
-    PinterestIcon,
-    PocketIcon,
-    RedditIcon,
     TelegramIcon,
-    TumblrIcon,
     TwitterIcon,
-    ViberIcon,
-    VKIcon,
-    WeiboIcon,
     WhatsappIcon,
-    WorkplaceIcon
 } from "react-share";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Post({ post, comments }) {
+export default function Post({ post, comments, margin }) {
+    console.log(post);
     const shareURL = `www.socialsound.art/home/post/${post.id}`
     const [user, setUser] = useState()
     const [like, setLike] = useState()
@@ -88,12 +51,10 @@ export default function Post({ post, comments }) {
         setOpen(false);
     };
 
-    const likesHardcorde = [{ statusLike: true, postId: '3e8dd109-aa65-4e88-aa1e-de74bcfa65e4', userId: currentUser.id }, { statusLike: false, postId: '51555a39-e41f-4765-8854-a23571923f1a', userId: 'ff586dbe-5cd2-401a-acba-71cc376102e0' }, { statusLike: true, postId: '51555a39-e41f-4765-8854-a23571923f1a', userId: 'abc' }, { statusLike: true, postId: '51555a39-e41f-4765-8854-a23571923f1a', userId: 'cde' }]
-
-    function getLikes() {
-        // const res = await axios.get(`/likes/${post.id}`)
-        // setLikes(res.data)
-        setLikes(likesHardcorde.filter(like => like.postId === post.id))
+    async function getLikes() {
+        const res = await axios.get(`/likes/${post.id}`)
+        setLikes(res.data)
+        // setLikes(likesHardcorde.filter(like => like.postId === post.id))
     }
 
     const handleLike = () => {
@@ -112,40 +73,51 @@ export default function Post({ post, comments }) {
 
     useEffect(() => {
         if (like === undefined && likes !== undefined) {
-            function getLikeOfThisUser() {
-                // const res = await axios.get(`/likes/${post.id}/${currentUser.id}`)
-                // setLike(res.data.statusLike)
-                setLike(!!likes?.find(like => like.postId === post.id && like.userId === currentUser.id)?.statusLike)
+            async function getLikeOfThisUser() {
+                const res = await axios.get(`/likes/${post.id}/${currentUser.id}`)
+                setLike(res.data[0]?.isActive)
+                // setLike(!!likes?.find(like => like.postId === post.id && like.userId === currentUser.id)?.statusLike)
             }
             getLikeOfThisUser()
         }
     }, [likes])
 
     useEffect(() => {
-        if (click !== undefined) {
-            const currentLike = likesHardcorde.find(like => like.postId === post.id && like.userId === currentUser.id) || {}
-            function updateLike() {
-                // await axios.put(`/likes/${post.id}/${currentUser.id}`, like)
-                currentLike.statusLike = like
-            }
-            function createLike() {
-                // await axios.post(`/likes`, {statusLike: like, idPost:post.id, idUser:currentUser.id})
+        async function updateLikes() {
+            if (click !== undefined) {
+                await getLikes()
+                const res = await axios.get(`/likes/${post.id}/${currentUser.id}`)
+                const currentLike = (res.data && res.data[0]) || {}
+                console.log(currentLike);
+                async function updateLike() {
+                    await axios.put(`/likes`, { postId: post.id, userId: currentUser.id, isActive: like })
+                    // currentLike.statusLike = like
+                }
+                async function createLike() {
+                    await axios.post(`/likes`, { idPost: post.id, idUser: currentUser.id })
 
-                likesHardcorde.push({ statusLike: like, postId: post.id, userId: currentUser.id })
+                    // likesHardcorde.push({ statusLike: like, postId: post.id, userId: currentUser.id })
+                }
+                Object.keys(currentLike).length === 0 ? await createLike() : await updateLike()
+                await getLikes()
             }
-            Object.keys(currentLike).length === 0 ? createLike() : updateLike()
-            getLikes()
         }
+        updateLikes()
     }, [click])
+    // useEffect(()=>{
+    //     getLikes()
+    // },[likes])
+
     console.log(like);
     console.log(likes);
+    console.log(likes?.filter(likes => likes.isActive).length);
 
     useEffect(() => {
         setDate(new Date(Date.parse(post.postDate)).toLocaleString('sv'))
     }, [post])
 
     return (
-        <Grid container direction="column" className={style.post} p={`1%`}>
+        <Grid container direction="column" className={style.post} p={`1%`} m={margin}>
             <Grid item container spacing={1}>
                 <Grid item>
                     <Avatar src={user && user.avatar} />
@@ -179,7 +151,7 @@ export default function Post({ post, comments }) {
                 <Grid item container xs={4} justifyContent="flex-end" spacing={2}>
                     <Grid item>
                         <Typography>
-                            {likes?.filter(likes => likes.statusLike).length === 0 ? '' : likes?.filter(likes => likes.statusLike).length}
+                            {likes?.filter(likes => likes.isActive).length === 0 ? '' : likes?.filter(likes => likes.isActive).length}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -198,38 +170,48 @@ export default function Post({ post, comments }) {
                                 <path d="M568.5 142.6l-144-135.1c-9.625-9.156-24.81-8.656-33.91 .9687c-9.125 9.625-8.688 24.81 .9687 33.91l100.1 94.56h-163.4C287.5 134.2 249.7 151 221 179.4C192 208.2 176 246.7 176 288v87.1c0 13.25 10.75 23.1 24 23.1S224 389.3 224 376V288c0-28.37 10.94-54.84 30.78-74.5C274.3 194.2 298.9 183 328 184h163.6l-100.1 94.56c-9.656 9.094-10.09 24.28-.9687 33.91c4.719 4.1 11.06 7.531 17.44 7.531c5.906 0 11.84-2.156 16.47-6.562l144-135.1C573.3 172.9 576 166.6 576 160S573.3 147.1 568.5 142.6zM360 384c-13.25 0-24 10.75-24 23.1v47.1c0 4.406-3.594 7.1-8 7.1h-272c-4.406 0-8-3.594-8-7.1V184c0-4.406 3.594-7.1 8-7.1H112c13.25 0 24-10.75 24-23.1s-10.75-23.1-24-23.1H56c-30.88 0-56 25.12-56 55.1v271.1C0 486.9 25.13 512 56 512h272c30.88 0 56-25.12 56-55.1v-47.1C384 394.8 373.3 384 360 384z" />
                             </SvgIcon>
                         </button>
-                        <Dialog
-                            open={open}
-                            TransitionComponent={Transition}
-                            keepMounted
-                            onClose={handleClose}
-                            aria-describedby="alert-dialog-slide-description"
-                            className={style.dialog}>
-                            <DialogTitle>{"Share!"}</DialogTitle>
-                            <DialogContent className={style.dialogContent}>
-                                <FacebookShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <FacebookIcon size={32} round={true} />
-                                </FacebookShareButton>
-                                <TwitterShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <TwitterIcon size={32} round={true} />
-                                </TwitterShareButton>
-                                <TelegramShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <TelegramIcon size={32} round={true} />
-                                </TelegramShareButton>
-                                <WhatsappShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <WhatsappIcon size={32} round={true} />
-                                </WhatsappShareButton>
-                                <LinkedinShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <LinkedinIcon size={32} round={true} />
-                                </LinkedinShareButton>
-                                <EmailShareButton url={shareURL} style={{ margin: `2%` }}>
-                                    <EmailIcon size={32} round={true} />
-                                </EmailShareButton>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleClose}>Close</Button>
-                            </DialogActions>
-                        </Dialog>
+                        <Grid item className={style.dialogContainer}>
+                            <Dialog
+                                open={open}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={handleClose}
+                                aria-describedby="alert-dialog-slide-description"
+                                className={style.dialog}
+                                PaperProps={{
+                                    style: {
+                                        backgroundColor: '#000A1F',
+                                        color: '#1976FA',
+                                        padding:'1%'
+                                    }
+                                }}>
+                                        <h2>Share!</h2>
+                                
+                                <DialogContent className={style.dialogContent}>
+                                    <FacebookShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <FacebookIcon size={32} round={true} />
+                                    </FacebookShareButton>
+                                    <TwitterShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <TwitterIcon size={32} round={true} />
+                                    </TwitterShareButton>
+                                    <TelegramShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <TelegramIcon size={32} round={true} />
+                                    </TelegramShareButton>
+                                    <WhatsappShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <WhatsappIcon size={32} round={true} />
+                                    </WhatsappShareButton>
+                                    <LinkedinShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <LinkedinIcon size={32} round={true} />
+                                    </LinkedinShareButton>
+                                    <EmailShareButton url={shareURL} style={{ margin: `2%` }}>
+                                        <EmailIcon size={32} round={true} />
+                                    </EmailShareButton>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} className={style.button}>Close</Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Grid>
                     </Grid>
                     <Grid item>
                         {comments ?

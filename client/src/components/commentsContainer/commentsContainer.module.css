@@ -1,9 +1,9 @@
 .commentsContainer{
-    width: 90% !important;
+    width: 80% !important;
 }
 
 .commentsContainer .input{
-    width: 80%;
+    width: 85%;
     margin-right: 2%;
     background-color: white;
 }

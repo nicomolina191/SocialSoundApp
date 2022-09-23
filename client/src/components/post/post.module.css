@@ -36,11 +36,3 @@
 .post .icon{
     color: #C4C4C4;
 }
-
-.post .dialog{
-    background-color: black !important;
-}
-
-.post .dialog .dialogContent button{
-    margin: 10%;
-}

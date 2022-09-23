@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById } from "./postSlice";
+import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } from "./postSlice";
 
 //obtener los users
 export const getPost = () => {
@@ -82,5 +82,11 @@ export const getPostById = (id) => {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+export const clearPost=()=>{
+  return (dispatch)=>{
+    dispatch(clearCurrentPost())
   }
 }
