@@ -3,22 +3,27 @@
     padding: 0;
 }
 
+p {
+    cursor: default;
+}
+
 .containerPopularSongs h2 {
     color: white;
     font-size: 40px;
     margin-bottom: 30px;
 }
 
-.containerFiveSongs {
-    margin-left: 25px;
-}
-
 .containerSong {
+    padding: 10px 25px;
     display: flex;
     justify-content: space-between;
     width: 100%;
     color: white;
-    margin-bottom: 12px;
+    border-radius: 6px;
+}
+
+.containerSong:hover {
+    background-color: rgba(128, 128, 128, 0.451);
 }
 
 .songFirstHalf {

@@ -11,30 +11,25 @@ const AllPosts = (id) => {
   const dispatch = useDispatch();
   const allPosts = useSelector((state) => state.posts.postList);
   const [checked, setChecked] = useState("all");
-  const [posts, setPosts] = useState(
-    allPosts.filter((post) => post.userId === id.id)
-  );
-  const artistPosts = posts
-  console.log(posts);
-  console.log(artistPosts);
+  const artistPosts = allPosts.filter((post) => post.userId === id.id);
+  const [posts, setPosts] = useState(artistPosts);
 
   useEffect(() => {
     dispatch(getPost());
-  }, []);
+  }, [dispatch]);
 
   function handleCheckedAll() {
     setChecked("all");
-    setPosts(allPosts.filter((post) => post.userId === id.id));
   }
 
   function handleCheckedVideo() {
     setChecked("video");
-    setPosts(artistPosts.filter((post) => !post.content.includes(".mp4")));
+    setPosts(artistPosts.filter((post) => post.content.includes(".mp4")));
   }
 
   function handleCheckedAudio() {
     setChecked("audio");
-    setPosts(artistPosts.filter((post) => !post.content.includes(".mp3")));
+    setPosts(artistPosts.filter((post) => post.content.includes(".mp3")));
   }
 
   return (
@@ -90,9 +85,19 @@ const AllPosts = (id) => {
         </div>
       </div>
       <div>
-        {artistPosts.map((post, i) => {
-          return <Post key={i} post={post} />;
-        })}
+        {checked !== "all" ? (
+          posts.length === 0 ? (
+            <p className={styles.noResultsText}>No post was found</p>
+          ) : (
+            posts.map((post, i) => {
+              return <Post key={i} post={post} />;
+            })
+          )
+        ) : (
+          artistPosts.map((post, i) => {
+            return <Post key={i} post={post} />;
+          })
+        )}
       </div>
     </div>
   );
