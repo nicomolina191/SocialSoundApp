@@ -14,7 +14,7 @@ const UsersPerfil = ({user, setUserSelected}) => {
     
 
   return (
-  <Button onClick={() => setUserSelected(user)} sx={{color:colorUser, padding: "0"}}>
+  <Button onClick={() => setUserSelected(user)} sx={{color:colorUser, padding: "0"}} fullWidth>
     <div className={style.userDiv}>
         <Avatar alt={user.name} src={user.avatar} />
         <h4>{user.name}</h4>

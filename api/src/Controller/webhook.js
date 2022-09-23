@@ -9,7 +9,7 @@ const postWebhook = async(req, res) => {
  let eventType;
  
   //recibir notificaciones
-  const endPointSecret = "whsec_442ae1484f5a10b97f1d1800c8796583061c7e3e328887fa5bc5a29ba6826310";
+  const endPointSecret = process.env.KEY_SECRET;
 
  if(endPointSecret){
   let event;
