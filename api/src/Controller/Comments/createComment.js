@@ -2,7 +2,9 @@ const { Users, Posts, Comments } = require("../../db.js");
 const badWords = require("./BadWords.js");
 
 const createComment = async (req, res) => {
+
   const { content, idPost, idUser } = req.body;
+
   try {
     let censoredWords = badWords;
 
@@ -20,6 +22,7 @@ const createComment = async (req, res) => {
       res.json(addComent);
     }
   } catch (error) {
+
     res.json(error);
   }
 };
