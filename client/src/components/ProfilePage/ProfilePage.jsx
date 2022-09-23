@@ -15,6 +15,7 @@ import AllPosts from "./AllPosts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import EditProfile from "./EditProfile";
+import Upload from "../Upload/Upload";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -130,24 +131,26 @@ const ProfilePage = () => {
               {artistPosts.length > 0 ? (
                 <img src={playIcon} className={styles.playButton} alt="" />
               ) : null}
-              <Button
-                variant="contained"
-                sx={{
-                  height: "48px",
-                  marginLeft: "30px",
-                  fontSize: "18px",
-                  color: "black",
-                  fontWeight: "500",
-                  backgroundColor: "rgba(0, 255, 214, 1)",
-                  width: "110px",
-                  textTransform: "none",
-                  "&:hover": {
+              {currentUser.id !== profileUser.id ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "48px",
+                    marginLeft: "30px",
+                    fontSize: "18px",
+                    color: "black",
+                    fontWeight: "500",
                     backgroundColor: "rgba(0, 255, 214, 1)",
-                  },
-                }}
-              >
-                Follow
-              </Button>
+                    width: "110px",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 255, 214, 1)",
+                    },
+                  }}
+                >
+                  Follow
+                </Button>
+              ) : null}
             </div>
             {artistPosts.length > 0 ? (
               <div>
@@ -166,9 +169,19 @@ const ProfilePage = () => {
             ) : (
               <div>
                 <div className={styles.popuAndLiked}>
-                  <p className={styles.noPostsYet}>
-                    This user has not posted anything yet
-                  </p>
+                  {currentUser.id === profileUser.id ? (
+                    <div className={styles.noPostsYet}>
+                      <p>Share your music with other users</p>
+                      <button className={styles.buttonPost}>
+                        <Upload />
+                      </button>
+                    </div>
+                  ) : (
+                    <p className={styles.noPostsYet}>
+                      This user has not posted anything yet
+                    </p>
+                  )}
+
                   <div className={styles.liked}>
                     <LikedSongs />
                   </div>

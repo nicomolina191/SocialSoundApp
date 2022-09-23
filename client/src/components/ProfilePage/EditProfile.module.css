@@ -62,7 +62,26 @@
   margin-left: 20px;
 }
 
+.content img {
+  cursor: pointer;
+}
+
 .content img:hover {
   filter: blur(2px);
-  cursor: pointer;
+}
+
+.imageLoading {
+  cursor: default;
+  filter: blur(2px);
+}
+
+.containerLoading {
+  position: absolute;
+  top: calc(50% - 60px / 2);
+  left: calc(50% - 57px / 2);
+}
+
+.containerLoading img:hover {
+  cursor: default;
+  filter: none;
 }
