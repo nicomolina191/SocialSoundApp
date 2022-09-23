@@ -83,11 +83,6 @@ Genres.belongsToMany(Users, { through: "users_genres", timestamps: false });
 Posts.belongsToMany(Likes, { through: "posts_likes", timestamps: false });
 Likes.belongsTo(Posts, { through: "posts_likes", timestamps: false });
 
-//COMMENTS - LIKES
-
-Comments.belongsToMany(Likes, { through: "comments_likes", timestamps: false });
-Likes.belongsTo(Comments, { through: "comments_likes", timestamps: false });
-
 // POSTS - GENRES
 
 Posts.belongsToMany(Genres, { through: "posts_genres", timestamps: false });
