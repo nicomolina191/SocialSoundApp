@@ -23,6 +23,7 @@ const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
 const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
 const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
+const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 const getLikesByPostId = require('../Controller/Likes/getLikesByPostId.js');
 const getPostById = require("../Controller/Posts/getPostById.js");
 const getLikesByPostandUserId = require('../Controller/Likes/getLikesByPostandUserId.js');
