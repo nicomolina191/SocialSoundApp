@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: flex-end;
     gap: 2vh;
+    overflow: hidden;
 }
 .imgInput{
     cursor: pointer;
@@ -15,15 +16,21 @@ svg path{
     fill: aqua;
 }
 .inputText{
+    font-family: 'Inter', sans-serif;
     color: white;
-    width: 55vw;
+    resize: none;
+    width: 50vw;
     border-radius: 20px;
     border: 0;
     padding: 6px;
+    padding-left: 12px;
+    height: 25px;
+    word-wrap: break-word;
     background-color: #101c36;
 }
 .inputSubmit{
     background-color: aqua;
+    border: 0;
     color: #000715;
     padding: 6px;
     padding-bottom: 4px;

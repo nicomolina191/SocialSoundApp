@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import s from './Chat.module.css'
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,27 +10,43 @@ import Conversations from './Conversations/Conversations'
 import { changeUserChat } from '../../redux/features/chat/chatGetSlice'
 import Input from './Input/Input'
 import Messages from './Messages/Messages'
-
+import { useNavigate } from 'react-router-dom'
+import { Arrow } from '../componentsIcons'
 
 function Chat() {
-    const dispatch = useDispatch()
-    const {userFirebase} = useAuth()
-    const users = useSelector(state => state.users.usersListAll)
-    const currentUser = useSelector(state => state.users.currentUser)
-    const destination = useSelector(state => state.chat.destination)
-    useEffect(async() => {
-      try{
-        await dispatch(getUser())
-        const docRef = doc(db, "userConversations", userFirebase?.uid);
-        const docSnap = await getDocFromServer(docRef);
-        userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
-        userFirebase?.uid && dispatch(getUserByFirebaseId(userFirebase?.uid))
+  const dispatch = useDispatch()
+  const {userFirebase} = useAuth()
+  const users = useSelector(state => state.users.usersListAll)
+  const currentUser = useSelector(state => state.users.currentUser)
+  const destination = useSelector(state => state.chat.destination)
+  const navigate = useNavigate()
+
+  useEffect(async() => {
+    try{
+      await dispatch(getUser())
+      const docRef = doc(db, "userConversations", userFirebase?.uid);
+      const docSnap = await getDocFromServer(docRef);
+      userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
+      userFirebase?.uid && dispatch(getUserByFirebaseId(userFirebase?.uid))
       } catch(err) {
         console.log(err)
       } 
-    }, [])
+  }, [])
 
-
+  const formatResult = (item) => {
+    console.log(item);
+    return (
+      <div className={s.resultWrapper}>
+        <img className={s.resultPic} src={item.avatar} alt="not found" />
+        <div className={s.resultInfo}>
+          <span className={s.resultName}>{item.name}</span>
+          <span className={s.resultUsername}>@{item.username}</span>
+        </div>
+      </div>
+    );
+  };
+  
+    
   const handleOnSearch = (string, results) => {
     console.log('SEARCHED', results);
   };
@@ -70,34 +86,37 @@ function Chat() {
   return (
     <div className={s.wholeContainer}>
         <div className={s.conversations}>
-            <div className={s.convHead}>
+          <div className={s.convHead}>
+            <button className={s.goBack} onClick={()=> navigate(-1)}><Arrow/></button>
             <h2 className={s.convTitle}>Messages</h2>
             <ReactSearchAutocomplete
             items={users}
+            placeholder="Search a user to start a conversation"
             fuseOptions={{ keys: ["name", "username"] }} // Search on both fields
             resultStringKeyName="name" // String to display in the results
             onSearch={handleOnSearch}
             onSelect={handleOnSelect}
             showIcon={false}
+            formatResult={formatResult}
             styling={{
               height: "34px",
               border: "none",
               borderRadius: "15px",
-              backgroundColor: "white",
+              backgroundColor: "#101c36",
               boxShadow: "none",
-              hoverBackgroundColor: "lightgreen",
-              color: "darkgreen",
-              fontSize: "12px",
-              fontFamily: "Courier",
-              iconColor: "green",
-              lineColor: "lightgreen",
-              placeholderColor: "darkgreen",
+              hoverBackgroundColor: "#00081ae0",
+              color: "white",
+              fontSize: "13px",
+              fontFamily: "'Inter', sans-serif",
+              iconColor: "white",
+              lineColor: "aqua",
+              placeholderColor: "grey",
               // clearIconMargin: "3px 8px 0 0",
               zIndex: 2,
             }}
-          />
-            </div>
-            {currentUser?.name ? <Conversations/> : <h3>loading...</h3>}
+           />
+          </div>
+            {currentUser?.name ? <div className={s.scrollConv}><Conversations/></div> : <h3>loading...</h3>}
         </div>
         { currentUser?.name && destination?.name 
         ? <div className={s.chatContainer}>
@@ -111,7 +130,7 @@ function Chat() {
 
         : <div className={s.chatContainer}>
             <div className={s.receiver}></div>
-            <div className={s.messagesContainer}><h2>Start a new chat or select a conversation</h2></div>
+            <div className={s.messagesContainer}></div>
           <div className={s.mCont}></div>
         </div>
         }
