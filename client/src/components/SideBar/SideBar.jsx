@@ -35,7 +35,7 @@ const SideBar = ({userDB}) => {
   }, [userDB?.role]) */
 
 
- const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+ const iconPremium = "https://disabilitywebtraining.com/wp-content/uploads/2018/04/planPremium.png"
 
   return (
         <div className={s.sidebar}>
@@ -50,7 +50,7 @@ const SideBar = ({userDB}) => {
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
-                  ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
+                  ): ( <img className={s.premiumIcon} width='64px' src={iconPremium} />)
                 }
 
             </ul>
