@@ -39,7 +39,7 @@ const Register = () => {
     // });
     
     useEffect(() => {
-      if (userFirebase !== null) navigate("/home");
+      // if (userFirebase !== null) navigate("/home");
       dispatch(getUser());
       setLoading(false)
     }, [dispatch, userFirebase]);
@@ -82,14 +82,21 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-
+let googleUser
     try {
       const res = await signup(user.email, user.password)
-      setIdGoogle(res.user.uid)
-      if (userFirebase !== null) navigate("/home");
+      googleUser = {
+        name: res.user.email.split("@")[0],
+        username: user.username,
+        password: user.password,
+        email: user.email,
+        idgoogle: res.user.uid,
+      }
+      await userExistGoogle(googleUser, users)
     } catch (err) {
       return console.log(err);
     }
+    if (userFirebase !== null) navigate("/home");
   };
 
   const handleSignInGoogle = async () => {
@@ -102,14 +109,13 @@ const Register = () => {
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
-        avatar: res.user.photoURL,
       }
-      userExistGoogle(googleUser, users)
-      navigate("/home")
+      await userExistGoogle(googleUser, users)
     } catch (err) {
       console.log(err);
       return;
     }
+    navigate("/home")
   };
 
   const handleChange = ({ target: { name, value } }) => {

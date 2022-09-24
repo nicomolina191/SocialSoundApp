@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const express = require('express');
 const createUser = require("../Controller/Users/createUser.js");
 const getByGenre = require("../Controller/Filters/getByGenre.js");
 const createPost = require("../Controller/Posts/createPost.js");
@@ -18,18 +19,22 @@ const getUserByIdGoogle = require("../Controller/Users/getUserByIdGoogle.js");
 const createNoti = require("../Controller/Notifications/createNoti.js");
 const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
+// const postWebhook = require("../Controller/webhook.js");
+const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
-const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
 const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
-//const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin.js");
 const getLikesByPostId = require('../Controller/Likes/getLikesByPostId.js');
 const getPostById = require("../Controller/Posts/getPostById.js");
 const getLikesByPostandUserId = require('../Controller/Likes/getLikesByPostandUserId.js');
 const changeStatusLike = require('../Controller/Likes/changeStatusLike.js');
 const getByPostId = require("../Controller/Comments/getByPostId.js");
+const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
+const createReview = require('../Controller/Reviews/createReview.js');
+const getReview = require('../Controller/Reviews/getReview.js');
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -49,6 +54,7 @@ router.get("/notifications/:userId", getNotiByUser);
 router.get('/likes/:postId', getLikesByPostId);
 router.get('/likes/:postId/:userId', getLikesByPostandUserId);
 router.get('/comments/:postId', getByPostId);
+router.get("/reviews", getReview);
 
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
@@ -56,7 +62,12 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
-router.post("/notifications/create", createNoti);
+
+router.post('/notifications/create', createNoti);
+router.post('/create-checkout-session', payment);
+router.post("/reviews", createReview);
+// router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
+
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
@@ -69,6 +80,8 @@ router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
 router.put("/notifications/watched/:id", setNotiWatched);
 router.put("/likes", changeStatusLike);
+
+
 
 
 module.exports = router;

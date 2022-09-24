@@ -9,10 +9,13 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
-// import ResetPassword from "./components/resetPassword/ResetPassword";
 import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
+import Sucess from "./components/sucess/Sucess";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
+import Admin from "./components/admin/Admin";
+
 
 
 function App() {
@@ -56,6 +59,11 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/home/sucess" element={
+          <ProtectedRoute>
+           <Sucess/>
+          </ProtectedRoute>
+        }/>
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />

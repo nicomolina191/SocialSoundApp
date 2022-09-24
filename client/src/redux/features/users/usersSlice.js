@@ -58,12 +58,18 @@ const userSlice = createSlice({
         ...state,
         currentUser: action.payload
       }
-    }
+    },
+    getUpdatePremium : (state, action)=> {
+      return {
+        ...state,
+        currentUser: action.payload
+      }
+    },
   },
 });
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium  } = userSlice.actions;
 
 export default userSlice.reducer;
 
