@@ -15,7 +15,7 @@ import Admin from "./components/admin/Admin";
 import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
 
-import Admin from "./components/admin/Admin";
+
 
 
 
