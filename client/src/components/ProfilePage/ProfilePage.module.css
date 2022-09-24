@@ -100,7 +100,7 @@
 }
 
 .optionsModal {
-  margin: 130px 0 0 -30px;
+  margin: 125px 0 0 -18px;
 }
 
 .contentContainer {
@@ -136,9 +136,27 @@
 }
 
 .noPostsYet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: white;
   font-weight: 100;
   font-size: 30px;
   margin: auto;
   margin-top: 80px;
+}
+
+.buttonPost {
+  margin-top: 25px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: black;
+  font-size: 25px;
+  color: black;
+  font-weight: 400;
+}
+
+.buttonPost:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
 }

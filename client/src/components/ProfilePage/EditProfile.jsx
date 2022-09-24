@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import styles from "./EditProfile.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faWindowRestore, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField } from "@mui/material";
 import { updateUser } from "../../redux/features/users/usersGetSlice";
+import { storage } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Loading from "../loading/Loading";
 
 const EditProfile = (close) => {
   const dispatch = useDispatch();
@@ -14,18 +17,40 @@ const EditProfile = (close) => {
     username: currentUser.username,
     avatar: currentUser.avatar,
   });
-  console.log(input);
+  const [imageUrl, setImageUrl] = useState(currentUser.avatar);
+  const [loading, setLoading] = useState(false);
 
-  function handleChange(el) {
-    setInput({
-      ...input,
-      [el.target.name]: el.target.value,
-    });
+  function uploadFile(file) {
+    setLoading(true);
+    const fileRef = ref(storage, `profileAvatar/${file.name + Math.random()}`);
+    return uploadBytes(fileRef, file)
+      .then((snapshot) => {
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((url) => {
+        setLoading(false);
+        setImageUrl(url);
+        return url;
+      })
+      .catch((err) => console.log(err));
+  }
+
+  async function handleChange(el) {
+    el.target.name === "avatar"
+      ? setInput({
+          ...input,
+          [el.target.name]: await uploadFile(el.target.files[0]),
+        })
+      : setInput({
+          ...input,
+          [el.target.name]: el.target.value,
+        });
   }
 
   function handleSubmit() {
     try {
       dispatch(updateUser(currentUser.id, input));
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -48,8 +73,16 @@ const EditProfile = (close) => {
             id="avatar"
             onChange={(e) => handleChange(e)}
           />
-          <label htmlFor="avatar">
-            <img src={currentUser.avatar} alt="" />
+          <label style={{ position: "relative" }} htmlFor="avatar">
+            {loading ? (
+              <img className={styles.imageLoading} src={imageUrl} alt="" />
+            ) : (
+              <img src={imageUrl} alt="" />
+            )}
+
+            <div className={styles.containerLoading}>
+              {loading ? <Loading width={"60px"} height={"60px"} /> : null}
+            </div>
           </label>
           <div className={styles.inputs}>
             <TextField
