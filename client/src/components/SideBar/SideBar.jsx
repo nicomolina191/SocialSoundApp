@@ -16,13 +16,14 @@ import { useSelector } from 'react-redux'
   const navigate = useNavigate();
   const { logout, loading } = useAuth();
 
-  useEffect(() => {
+/*   useEffect(() => {
     if(!role) return setRole(userDB?.role)
     if(role && !loading) {
       logout()
     return navigate("/login")
   }
-  }, [userDB?.role])
+  }, [userDB?.role]) */
+
  const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
   return (
         <div className={s.sidebar}>
