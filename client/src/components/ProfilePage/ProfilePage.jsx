@@ -22,16 +22,16 @@ const ProfilePage = () => {
   const { id } = useParams();
   const profileUser = useSelector((state) => state.users.user);
   const currentUser = useSelector((state) => state.users.currentUser);
-  const allPosts = useSelector((state) => state.posts.postList);
-  const artistPosts = allPosts.filter((post) => post.userId === id);
+  const allPosts = useSelector((state) => state.posts.possListAll);
+  const artistPosts = Array.isArray(allPosts) ? allPosts.filter((post) => post.userId === id) : []
   const userDB = useSelector((state) => state.users.currentUser);
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
 
   useEffect(() => {
-    dispatch(getUserById(id));
     dispatch(getPost());
-  }, [dispatch]);
+    dispatch(getUserById(id));
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
@@ -163,7 +163,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
                 <div className={styles.allPosts}>
-                  <AllPosts id={id} />
+                  <AllPosts artistPostsObj={artistPosts} />
                 </div>
               </div>
             ) : (

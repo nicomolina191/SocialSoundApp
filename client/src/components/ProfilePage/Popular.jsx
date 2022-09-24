@@ -6,10 +6,9 @@ import portada from "./Play.png";
 
 const Popular = ({ id }) => {
   const dispatch = useDispatch();
-  const allPosts = useSelector((state) => state.posts.postList);
-  const popularPosts = allPosts
-    .filter((post) => post.userId === id)
-    .slice(0, 5);
+  const allPosts = useSelector((state) => state.posts.possListAll);
+  const popularPosts = Array.isArray(allPosts) ? allPosts.filter((post) => post.userId === id).slice(0, 5) : []
+    
 
   useEffect(() => {
     dispatch(getPostByTime("popu"));
