@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   postList: [],
   possListAll: [],
+  post: {},
   isLoading: true,
 };
 
@@ -52,17 +53,29 @@ export const postSlice = createSlice({
         ...state,
         postList: action.payload,
       }
-    }, 
+    },
     getAllPostByTime: (state, action) => {
       return {
         ...state,
         postList: action.payload,
+      }
+    },
+    getCurrentPostById: (state, action) => {
+      return {
+        ...state,
+        post: action.payload
+      }
+    },
+    clearCurrentPost:(state, action)=>{
+      return{
+        ...state,
+        post:{}
       }
     }
   }
 });
 
 
-export const { addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime } = postSlice.actions;
+export const { addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } = postSlice.actions;
 
 export default postSlice.reducer;

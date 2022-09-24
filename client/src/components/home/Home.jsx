@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Post from "../post/Post";
 import style from "./home.module.css";
 import { useEffect } from "react";
-import { getPost } from "../../redux/features/post/postGetSlice";
-import { useAuth } from "../../context";
+import { clearPost, getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
 import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
+import { useAuth } from "../../context";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -17,42 +17,13 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUserByFirebaseId(userFirebase.uid))
+    dispatch(clearPost())
   }, []);
 
   console.log(userDB)
   
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
-      {/* <Grid
-        item
-        container
-        xs={3}
-        direction="column"
-        className={style.sideBar}
-        p={`1%`}
-       >
-        <Grid item>
-          <button
-            style={{ backgroundColor: "white" }}
-            onClick={() => {
-              logout();
-              navigate("/login");
-            }}
-          >
-            Logout
-          </button>
-          <Typography variant="body1" className={style.text}>
-            Home
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Link to="/home/explore" style={{ textDecoration: "none" }}>
-            <Typography variant="body1" className={style.text}>
-              Explore
-            </Typography>
-          </Link>
-        </Grid>
-      </Grid> */}
       <Grid
         item
         container
@@ -68,7 +39,7 @@ export default function Home() {
           Home.
         </Typography>
         {posts.length > 0 &&
-          posts.map((post, i) => <Post key={i} post={post}/>)}
+          posts.slice(0).reverse().map((post, i) => <Post key={i} post={post} comments={false} />)}
       </Grid>
     </Grid>
   );

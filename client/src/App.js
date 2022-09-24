@@ -9,6 +9,7 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
+import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
@@ -58,6 +59,11 @@ function App() {
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />
+           </ProtectedRoute>
+           }/>
+           <Route path="/home/post/:idPost" element={
+              <ProtectedRoute>
+           <PostContainer />
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
