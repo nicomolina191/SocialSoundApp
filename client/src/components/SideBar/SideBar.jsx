@@ -1,20 +1,30 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
 import { useAuth } from '../../context';
+import { db } from '../../firebase'
+import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
 
-  const SideBar = ({userDB}) => {
+
+const SideBar = ({userDB}) => {
     
-    const user = useSelector((state)=> state.users.currentUser)
-      const [role, setRole] = useState("")
+  const user = useSelector((state)=> state.users.currentUser)
+  const [role, setRole] = useState("")
+
   const navigate = useNavigate();
-  const { logout, loading } = useAuth();
+  const { logout, loading, userFirebase } = useAuth();
+
+  useEffect(async () => {
+    const docRef = doc(db, "userConversations", userFirebase?.uid);
+    const docSnap = await getDocFromServer(docRef);
+    userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
+    
+  }, [])
 
 /*   useEffect(() => {
     if(!role) return setRole(userDB?.role)
@@ -24,7 +34,9 @@ import { useSelector } from 'react-redux'
   }
   }, [userDB?.role]) */
 
+
  const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
@@ -32,11 +44,15 @@ import { useSelector } from 'react-redux'
                 <li className={s.profileItem}><img className={s.profilePic} width='40px' src="https://png.pngitem.com/pimgs/s/678-6785829_my-account-instagram-profile-icon-hd-png-download.png"/> <button>...</button></li>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
+
+                <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
+
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
                   ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
                 }
+
             </ul>
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>MY COLLECTION</h4>

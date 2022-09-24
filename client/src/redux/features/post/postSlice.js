@@ -6,6 +6,7 @@ const initialState = {
   possListAll: [],
   post: {},
   isLoading: true,
+  error: false
 };
 
 export const postSlice = createSlice({
@@ -13,7 +14,10 @@ export const postSlice = createSlice({
   initialState,
   reducers: {
     addPosts: (state, action) => {
-      state.postList.push(action.payload)
+      return {
+      ...state,
+      postList: [...state.postList, action.payload]
+      }
     },
     deletePosts: (state) => {
       return {

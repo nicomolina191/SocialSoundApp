@@ -27,7 +27,7 @@
     "nodemon": "^2.0.7",
     "pg": "^8.5.1",
     "sequelize": "^6.3.5",
-    "stripe": "^10.10.0",
+    "stripe": "^10.11.0",
     "supertest-as-promised": "^4.0.2"
   },
   "devDependencies": {
