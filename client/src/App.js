@@ -12,6 +12,7 @@ import SupportForm from "./components/supportForm/SupportForm";
 import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
+import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
@@ -52,6 +53,14 @@ function App() {
             }
           />
           <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Chat />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/home/explore/:id"
             element={
               <ProtectedRoute>
@@ -67,6 +76,11 @@ function App() {
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />
+           </ProtectedRoute>
+           }/>
+           <Route path="/home/post/:idPost" element={
+              <ProtectedRoute>
+           <PostContainer />
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
