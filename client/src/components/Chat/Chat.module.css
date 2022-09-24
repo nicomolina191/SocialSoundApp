@@ -117,11 +117,22 @@
 .goBack svg{
     width: 40px;
     height: 40px;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+.goBack:hover svg{
+    opacity: 1;
 }
 .scrollConv{
     max-height: calc(100vh - 176px);
     overflow-y: scroll;
     background-color: rgba(0, 2, 20, 0.62);;
+}
+.loading{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 /* width */
 ::-webkit-scrollbar {

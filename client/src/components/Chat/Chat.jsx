@@ -12,6 +12,7 @@ import Input from './Input/Input'
 import Messages from './Messages/Messages'
 import { useNavigate } from 'react-router-dom'
 import { Arrow } from '../componentsIcons'
+import Loading from '../loading/Loading'
 
 function Chat() {
   const dispatch = useDispatch()
@@ -116,7 +117,7 @@ function Chat() {
             }}
            />
           </div>
-            {currentUser?.name ? <div className={s.scrollConv}><Conversations/></div> : <h3>loading...</h3>}
+            {currentUser?.name ? <div className={s.scrollConv}><Conversations/></div> : <div className={s.loading}> <Loading width='50px' height='50px'/> </div>}
         </div>
         { currentUser?.name && destination?.name 
         ? <div className={s.chatContainer}>

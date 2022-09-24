@@ -5,6 +5,7 @@
     align-items: center;
 }
 .userChat{
+    transition: 0.3s;
     display: flex;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -26,6 +27,7 @@
     width: 15vw;
     text-overflow: ellipsis;
     font-weight: 500;
+    transition: 0.3s;
 }
 .userChat:hover .userChatName{
     color: aqua;

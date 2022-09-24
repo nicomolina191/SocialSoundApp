@@ -1,4 +1,3 @@
-import axios from "axios";
 import { changeUser } from "./chatSlice";
 
 //obtener los generos

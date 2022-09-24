@@ -72,6 +72,10 @@
 .destination .messageContent {
     background-color: #0c1f48;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
     padding-left: 15px;
     padding-right: 13px;
     margin-left: 15px;
