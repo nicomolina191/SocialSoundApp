@@ -5,6 +5,7 @@ import logo from '../../images/logo.png'
 import cardMusic from '../../images/cardMusic.png'
 import style from './landing.module.css'
 import { Link } from 'react-router-dom'
+import Reviews from '../reviews/Reviews.jsx';
 
 export default function Landing() {
     return (
@@ -235,6 +236,9 @@ export default function Landing() {
                     </Grid>
                 </Grid>
             </Grid>
+            <div className={style.reviews}>
+                <Reviews/>
+            </div>
             <Grid item container xs={12} className={style.footer} direction="column" alignItems="center" mt={`20%`}>
                 <Grid item >
                     <img src={logo} alt="" className={style.footerLogoicon} />
