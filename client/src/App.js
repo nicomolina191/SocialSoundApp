@@ -9,13 +9,14 @@ import Landing from "./components/landing/Landing";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
-import Sucess from "./components/sucess/Sucess";
+import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
+import PostContainer from "./components/postContainer/PostContainer";
+import Sucess from "./components/sucess/Sucess";
 
 
-//import Upload from "./components/Upload/Upload";
-//  import SideBar from "./components/SideBar/SideBar";
+
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <React.StrictMode>
       <AuthProvider>
         <Routes>
+          <Route path="/chat" element={<Chat />} />
           <Route path="/" element={<Landing />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -39,6 +41,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Explore />
+              </ProtectedRoute>
+            }
+          />    
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Chat />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Chat />{" "}
               </ProtectedRoute>
             }
           />
@@ -58,6 +76,11 @@ function App() {
            <Route path="/support" element={
               <ProtectedRoute>
            <SupportForm />
+           </ProtectedRoute>
+           }/>
+           <Route path="/home/post/:idPost" element={
+              <ProtectedRoute>
+           <PostContainer />
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />

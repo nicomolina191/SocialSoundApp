@@ -32,6 +32,9 @@ const getLikesByPostandUserId = require('../Controller/Likes/getLikesByPostandUs
 const changeStatusLike = require('../Controller/Likes/changeStatusLike.js');
 const getByPostId = require("../Controller/Comments/getByPostId.js");
 const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
+const createReview = require('../Controller/Reviews/createReview.js');
+const getReview = require('../Controller/Reviews/getReview.js');
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -51,6 +54,7 @@ router.get("/notifications/:userId", getNotiByUser);
 router.get('/likes/:postId', getLikesByPostId);
 router.get('/likes/:postId/:userId', getLikesByPostandUserId);
 router.get('/comments/:postId', getByPostId);
+router.get("/reviews", getReview);
 
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
@@ -61,6 +65,7 @@ router.post("/posts/genres", getByGenre);
 
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
+router.post("/reviews", createReview);
 // router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
 
 
