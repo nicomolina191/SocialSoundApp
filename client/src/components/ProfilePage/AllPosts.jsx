@@ -15,12 +15,12 @@ const AllPosts = (artistPostsObj) => {
 
   function handleCheckedVideo() {
     setChecked("video");
-    setPosts(artistPosts.filter((post) => post.content.includes(".mp4")));
+    setPosts(artistPosts.filter((post) => post.type.includes("video")));
   }
 
   function handleCheckedAudio() {
     setChecked("audio");
-    setPosts(artistPosts.filter((post) => post.content.includes(".mp3")));
+    setPosts(artistPosts.filter((post) => post.type.includes("audio")));
   }
 
   return (

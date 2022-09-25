@@ -7,7 +7,7 @@ import styles from "./LikedSongs.module.css";
 import heart from "../../images/heartLikes.png";
 import portada from "./Play.png";
 
-const LikedSongs = (user) => {
+const LikedSongs = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const profileUser = useSelector((state) => state.users.user);
