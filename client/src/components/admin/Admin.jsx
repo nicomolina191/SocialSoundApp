@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from '../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import axios from 'axios'
 
 const Admin = () => {
   const dispatch = useDispatch()
@@ -28,8 +29,9 @@ const handleClick = (value) => {
 if(value === "role") setUserSelected(userSelected?.role === "Admin"? {...userSelected, role: "User"} : {...userSelected, role: "Admin"})
 if(value === "isBanned") setUserSelected({...userSelected, isBanned: !userSelected?.isBanned})
 if(value === "isActive") setUserSelected({...userSelected, isActive: !userSelected?.isActive})
-let userFind = arrUsers.find(u => u?.idgoogle === userSelected?.idgoogle)
-userFind = userSelected
+axios.put(`/users/admin/${userSelected.idgoogle}`,{
+  ...userSelected
+})
   return
 }
 

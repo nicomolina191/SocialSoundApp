@@ -34,6 +34,7 @@ const getByPostId = require("../Controller/Comments/getByPostId.js");
 const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
 const createReview = require('../Controller/Reviews/createReview.js');
 const getReview = require('../Controller/Reviews/getReview.js');
+const updateUserAdmin = require("../Controller/Users/updateUserAdmin.js")
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -75,6 +76,7 @@ router.delete("/comments/:id", deleteComment);
 
 router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
+router.put("/users/admin/:idgoogle", updateUserAdmin)
 router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
