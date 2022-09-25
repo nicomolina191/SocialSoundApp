@@ -85,3 +85,21 @@
   cursor: default;
   filter: none;
 }
+
+.containerBanner {
+  color: white;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.containerBanner p {
+  margin: 10px 0 20px;
+}
+
+.containerBanner img {
+  cursor: pointer;
+}
+
+.containerBanner img:hover {
+  filter: blur(2px);
+}

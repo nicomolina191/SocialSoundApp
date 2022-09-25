@@ -159,7 +159,7 @@ const ProfilePage = () => {
                     <Popular id={id} />
                   </div>
                   <div className={styles.liked}>
-                    <LikedSongs />
+                    <LikedSongs id={id} />
                   </div>
                 </div>
                 <div className={styles.allPosts}>

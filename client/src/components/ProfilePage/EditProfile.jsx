@@ -16,8 +16,10 @@ const EditProfile = (close) => {
     name: currentUser.name,
     username: currentUser.username,
     avatar: currentUser.avatar,
+    banner: currentUser.banner,
   });
   const [imageUrl, setImageUrl] = useState(currentUser.avatar);
+  const [bannerUrl, setBannerUrl] = useState(currentUser.banner);
   const [loading, setLoading] = useState(false);
 
   function uploadFile(file) {
@@ -35,11 +37,31 @@ const EditProfile = (close) => {
       .catch((err) => console.log(err));
   }
 
+  function uploadBanner(file) {
+    setLoading(true);
+    const fileRef = ref(storage, `profileBanner/${file.name + Math.random()}`);
+    return uploadBytes(fileRef, file)
+      .then((snapshot) => {
+        return getDownloadURL(snapshot.ref);
+      })
+      .then((url) => {
+        setLoading(false);
+        setBannerUrl(url);
+        return url;
+      })
+      .catch((err) => console.log(err));
+  }
+
   async function handleChange(el) {
     el.target.name === "avatar"
       ? setInput({
           ...input,
           [el.target.name]: await uploadFile(el.target.files[0]),
+        })
+      : el.target.name === "banner"
+      ? setInput({
+          ...input,
+          [el.target.name]: await uploadBanner(el.target.files[0]),
         })
       : setInput({
           ...input,
@@ -113,6 +135,27 @@ const EditProfile = (close) => {
             Save
           </Button>
         </div>
+        {/* <div className={styles.containerBanner}>
+          <p>Choose your banner!</p>
+          <input
+            type="file"
+            accept="image/*"
+            name="banner"
+            id="banner"
+            onChange={(e) => handleChange(e)}
+          />
+          <label style={{ position: "relative" }} htmlFor="banner">
+            {loading ? (
+              <img className={styles.imageLoading} src={bannerUrl} alt="" />
+            ) : (
+              <img src={bannerUrl} alt="" />
+            )}
+
+            <div className={styles.containerLoading}>
+              {loading ? <Loading width={"60px"} height={"60px"} /> : null}
+            </div>
+          </label>
+        </div> */}
       </div>
     </div>
   );
