@@ -20,6 +20,8 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState(null);
+  const [loading, setLoading] = useState(true)
+  
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -43,6 +45,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsuscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
+      setLoading(false)
     });
     return () => {
       unsuscribe();
@@ -56,7 +59,7 @@ export function AuthProvider({ children }) {
         logout,
         loginWithGoogle,
         resetPassword,
-        userFirebase,
+        userFirebase,loading,
       }}
     >
       {children}

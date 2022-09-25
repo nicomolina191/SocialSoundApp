@@ -9,12 +9,15 @@ import { Arrow, EmailIcon, GoogleIcon, PadLock, UserIcon } from "../componentsIc
 import logo from "../../images/logoicon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/features/users/usersGetSlice";
+import { userExistGoogle } from "../utils";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Register = () => {
   const dispatch = useDispatch()
   const users = useSelector(state => state.users.usersListAll)
   const [idgoogle, setIdGoogle] = useState('')
-  const [googleUser, setGoogleUser] = useState()
+  //const [googleUser, setGoogleUser] = useState()
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -33,47 +36,31 @@ const Register = () => {
   const navigate = useNavigate();
 
   // useEffect(() => {
-  //   if (userFirebase !== null) navigate("/home");
-  // });
+    // });
+    
+    useEffect(() => {
+      // if (userFirebase !== null) navigate("/home");
+      dispatch(getUser());
+      setLoading(false)
+    }, [dispatch, userFirebase]);
 
-  useEffect(() => {
-    dispatch(getUser())
-  }, [])
-
-  useEffect(() => {
-    if (googleUser && users.filter(u => u.email === googleUser.email).length === 0) {
-      axios
-        .post("/users", {
-          ...googleUser,
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-    if (userFirebase !== null) navigate("/home");
-
-  }, [googleUser])
-
-  useEffect(() => {
-    if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
-      axios
-        .post("/users", {
-          ...user,
-          idgoogle
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-    if (userFirebase !== null) navigate("/home");
-
-  }, [idgoogle])
+    useEffect(() => {
+      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
+        axios
+          .post("/users", {
+            ...user,
+            idgoogle
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      if (userFirebase !== null) navigate("/home");
+  
+    }, [idgoogle])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,30 +82,40 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-
+let googleUser
     try {
       const res = await signup(user.email, user.password)
-      setIdGoogle(res.user.uid)
+      googleUser = {
+        name: res.user.email.split("@")[0],
+        username: user.username,
+        password: user.password,
+        email: user.email,
+        idgoogle: res.user.uid,
+      }
+      await userExistGoogle(googleUser, users)
     } catch (err) {
       return console.log(err);
     }
+    if (userFirebase !== null) navigate("/home");
   };
 
   const handleSignInGoogle = async () => {
     try {
-      const res = await loginWithGoogle();
-      setGoogleUser({
-        name: res.user.email.split('@')[0],
-        username: res.user.email.split('@')[0],
+      let googleUser
+      const res = await loginWithGoogle()
+      googleUser = {
+        name: res.user.email.split("@")[0],
+        username: res.user.email.split("@")[0],
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
-        avatar: res.user.photoURL,
-      })
+      }
+      await userExistGoogle(googleUser, users)
     } catch (err) {
       console.log(err);
       return;
     }
+    navigate("/home")
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -130,6 +127,7 @@ const Register = () => {
 
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
       <Box className={style.containerRegisterDiv}>
         <Box className={style.divBackground}>
           <Box className={style.divTitle}>

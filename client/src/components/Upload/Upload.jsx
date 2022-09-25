@@ -2,18 +2,18 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { MenuItem, Select, OutlinedInput, TextField, Dialog, DialogActions, DialogContent/* , DialogTitle */ } from '@mui/material';
 import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux';
 import { createdPost } from '../../redux/features/post/postGetSlice';
-import newpost from '../../images/svg/newpost.svg'
 import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
-import { getAuth } from 'firebase/auth';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
 import { getGenre } from '../../redux/features/genres/genreGetSlice';
+//import newpost from '../../images/svg/newpost.svg'
+// import { getAuth } from 'firebase/auth';
 
 
 export default function Upload() {
@@ -119,13 +119,13 @@ export default function Upload() {
 
   return (
     <div>
+      {console.log(currentUser)}
       <button className={s.newPostBtn} onClick={handleClickOpen}> <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
+        <path fillRule="evenodd" clipRule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
         </svg> New Post...</button>
       <Dialog className={s.dialog} fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
             <h2 className={s.title}>New Post</h2>
             <form onSubmit={(e)=>handleSubmit(e)}>
-{console.log(currentUser)}
                 <DialogContent className={s.content} id='content'>
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
@@ -149,7 +149,6 @@ export default function Upload() {
                                 {genres.map((genre) => (
                                     <MenuItem key={genre.name}value={genre.name}>{genre.name}</MenuItem>
                                   ))}
-                                  {console.log(genres)}
                             </Select>
                         </li>
                         <li className={s.fileContainer}><label className={s.btnRL} htmlFor="image">Upload an image for your song<input id='image' disabled={loading.cover || loading.content} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></label>{loading.cover ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.cover ? fileNames.cover : ''}</h3> } </li>
@@ -160,7 +159,6 @@ export default function Upload() {
                 <Button className={s.buttonSc} autoFocus onClick={handleClose}>Cancel</Button>
                 <Button className={s.buttonSc} type="submit">Post</Button>
                 </DialogActions>
-                                    {console.log(postData)}
             </form>
       </Dialog>
     </div>

@@ -24,7 +24,6 @@
 .landing .signUp {
     color: #000A1F;
     background-color: #00FFD6;
-    ;
 }
 
 .landing .signUp:hover {
@@ -210,3 +209,8 @@
 /* .landing .input{
     background-color: red;
 } */
+
+.reviews {
+    width: 900px;
+    margin: auto;
+}

@@ -18,9 +18,10 @@ import { useAuth } from "../../context";
 import { Arrow, EmailIcon, GoogleIcon, PadLock } from "../componentsIcons";
 import style from "./login.module.css";
 import logo from "../../images/logoicon.png";
-import axios from "axios";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
+import LoadingProtectRoute from "../../context/LoadingProtectRoute";
+import axios from "axios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const Login = () => {
   const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [userToResetPassword, setUserToResetPassword] = useState("");
   const [openAlert, setOpenAlert] = useState({
     show: false,
@@ -39,38 +41,11 @@ const Login = () => {
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
-  // useEffect(() => {
-  //   if (userFirebase !== null) navigate("/home");
-  // });
-
   useEffect(() => {
-    dispatch(getUser());
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!user.password || !user.email) {
-      return;
-    }
-    try {
-      await login(user.email, user.password);
-      navigate("/home");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
+  
     if (
       googleUser &&
-      users.filter((u) => u.email === googleUser.email).length === 0
+      users?.filter((u) => u.email === googleUser.email).length === 0
     ) {
       axios
         .post("/users", {
@@ -84,11 +59,34 @@ const Login = () => {
         });
     }
     if (userFirebase !== null) navigate("/home");
-  }, [googleUser]);
+  }, [googleUser]); 
+
+
+
+  useEffect(() => {
+    // if (userFirebase !== null) navigate("/home");
+    dispatch(getUser());
+    setLoading(false)
+  }, [dispatch, userFirebase]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user.password || !user.email) {
+      return;
+    }
+    try {
+      await login(user.email, user.password);
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const handleSignInGoogle = async () => {
     try {
-      const res = await loginWithGoogle();
+
+      const res = await loginWithGoogle()
       setGoogleUser({
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],
@@ -96,7 +94,9 @@ const Login = () => {
         email: res.user.email,
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
-      });
+      })
+     
+      navigate("/home")
     } catch (err) {
       console.log(err);
       return;
@@ -138,8 +138,17 @@ const Login = () => {
     setUser({ ...user, [name]: value });
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box>
+      {loading && <LoadingProtectRoute />}
       <Snackbar open={openAlert.show && openAlert.severity === "success"}>
         <Alert severity="success">{openAlert.msg}</Alert>
       </Snackbar>
@@ -285,7 +294,7 @@ const Login = () => {
                 color: "white",
               }}
             >
-              an email will be sent to reset your password
+              An email will be sent to reset your password
             </DialogContentText>
             <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
               <EmailIcon style={{ padding: "10px" }} />
@@ -309,12 +318,27 @@ const Login = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ backgroundColor: "var(--main-page-color)" }}>
-            <Button className={style.btnDialog} onClick={handleClose}>
+            <Button
+              className={style.btnDialog}
+              onClick={handleClose}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" }
+              }}
+            >
               Cancel
             </Button>
             <Button
               className={style.btnDialog}
               onClick={() => handleSendPasswordReset(userToResetPassword)}
+              sx={{
+                backgroundColor: "#00FFD6",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#00FFD6" },
+              }}
             >
               Send
             </Button>
