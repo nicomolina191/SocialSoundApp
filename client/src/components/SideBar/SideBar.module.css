@@ -118,3 +118,14 @@ a{
     margin-left: 6px;
 }
 
+.btn {
+    background-color: #00FFD6;
+    color: black;
+    padding: 12px;
+    border-radius: 5px;
+    margin-top: 30px;
+    margin-left: 20px; 
+}
+.textReview {
+    font-size: 18px;
+}

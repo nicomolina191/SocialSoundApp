@@ -9,6 +9,8 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
+import { Rating, TextField } from '@mui/material';
+import axios from 'axios';
 
 
 const SideBar = ({userDB}) => {
@@ -34,8 +36,48 @@ const SideBar = ({userDB}) => {
   }
   }, [userDB?.role]) */
 
+  const [showForm, setShowForm] = useState(false);
+  const [showButton, setShowButton] = useState(true);
+  const [showText, setShowText] = useState(false);
+  const [input, setInput] = useState({
+      userId: userFirebase.auth.currentUser.uid,
+      name: userFirebase.auth.currentUser.displayName,
+      avatar: userFirebase.auth.currentUser.photoURL,
+      rating: '',
+      description: '',
+  });
 
- const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+  const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+
+  useEffect(() => {
+    const getReviews = async () => {
+        let allReviews = await axios.get('/reviews');
+        if (allReviews.data.find(r => r.userId === input.userId.toString())) {
+            setShowButton(false);
+        }
+    };
+    getReviews();
+  }, [input.userId])
+
+  const handleChange = (e) => {
+    setInput({
+        ...input,
+        [e.target.name] : e.target.value
+    })
+};
+
+  const handleButton = (e) => {
+    setShowForm(true);
+    setShowButton(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(input);
+    await axios.post('/reviews', input);
+    setShowForm(false);
+    setShowText(true);
+  }
 
   return (
         <div className={s.sidebar}>
@@ -80,7 +122,48 @@ const SideBar = ({userDB}) => {
                     {userDB?.role === "Admin" && <li className={s.optionItem} onClick={() => navigate("/admin")}><KeyIcon /> Admin</li>}
 
             </ul>
-
+            {
+              showForm && (
+                <div>
+                  <form className={s.form} onSubmit={(e) => handleSubmit(e)} >
+                    <p>Choose the rating:</p>
+                    <Rating
+                    name="rating"
+                    value={input.rating}
+                    onChange={(e) => handleChange(e)} 
+                    />
+                    <p>Write your review below:</p>
+                    <TextField 
+                    className={s.reviewText}
+                    type="multiline"
+                    multiline
+                    required={true}
+                    autoComplete="off"
+                    variant="standard"
+                    size='normal'
+                    label="Description"
+                    name="description"
+                    rows={4}
+                    onChange={(e) => handleChange(e)}
+                    value={input.description}
+                    />
+                    <div>
+                      <button className={s.btn}>Submit</button>
+                    </div>
+                  </form>
+                </div>
+              )
+            }
+            {
+              showButton && (
+                <button className={s.btn} onClick={handleButton} >Share your review!</button>
+              )
+            }
+            {
+              showText && (
+                <p className={s.textReview}>Thank you for your review!</p>
+              )
+            }
         </div>
   )
 }
