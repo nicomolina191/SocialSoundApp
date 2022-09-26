@@ -3,7 +3,7 @@ const { Users } = require('../../db.js');
 const updateUser = async (req, res) => {
 
   const { id } = req.params;
-  const { name, username, avatar } = req.body;
+  const { name, username, avatar, banner } = req.body;
 
   try {
     let user = await Users.findOne({ where: { id } });
@@ -12,6 +12,7 @@ const updateUser = async (req, res) => {
       name,
       username,
       avatar,
+      banner
     });
 
     await user.save();
