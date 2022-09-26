@@ -241,7 +241,7 @@ const getGenres = async (req, res) => {
       ]
     }
 
-    return res.json(genres.data.data);
+    return res.json(genres.data);
 
   } catch (error) {
 
