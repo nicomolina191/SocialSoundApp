@@ -1,22 +1,13 @@
 import { Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPost } from "../../redux/features/post/postGetSlice";
 import Post from "../post/Post";
 import styles from "./AllPosts.module.css";
 
-const AllPosts = (id) => {
-  const dispatch = useDispatch();
-  const allPosts = useSelector((state) => state.posts.postList);
+const AllPosts = (artistPostsObj) => {
   const [checked, setChecked] = useState("all");
-  const artistPosts = allPosts.filter((post) => post.userId === id.id);
+  const artistPosts = artistPostsObj.artistPostsObj
   const [posts, setPosts] = useState(artistPosts);
-
-  useEffect(() => {
-    dispatch(getPost());
-  }, [dispatch]);
 
   function handleCheckedAll() {
     setChecked("all");
@@ -24,12 +15,12 @@ const AllPosts = (id) => {
 
   function handleCheckedVideo() {
     setChecked("video");
-    setPosts(artistPosts.filter((post) => post.content.includes(".mp4")));
+    setPosts(artistPosts.filter((post) => post.type.includes("video")));
   }
 
   function handleCheckedAudio() {
     setChecked("audio");
-    setPosts(artistPosts.filter((post) => post.content.includes(".mp3")));
+    setPosts(artistPosts.filter((post) => post.type.includes("audio")));
   }
 
   return (

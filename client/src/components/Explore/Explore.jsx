@@ -31,7 +31,6 @@ const Explore = () => {
   const user = useSelector((state) => state.users.user);
   const posts = useSelector((state) => state.posts.postList);
   const userDB = useSelector((state) => state.users.currentUser);
-  const fAndOPosts = [...posts];
 
   const [inputValue, setInputValue] = useState("");
   let [artistsPerPage, setArtistsPerPage] = useState(10);
@@ -86,10 +85,9 @@ const Explore = () => {
 
   function posibleSong() {
     const posibles = [];
-    fAndOPosts.map((post) => {
+    posts?.map((post) => {
       if (
-        post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
+        post.title.toLowerCase().includes(inputValue.toLowerCase())
       ) {
         posibles.push(post);
       }
@@ -161,7 +159,7 @@ const Explore = () => {
                 ) : (
                   <Stack spacing={0} sx={{ marginTop: "20px" }}>
                     {posts.length > 0 &&
-                      fAndOPosts.map((post, i) => <Post key={i} post={post} />)}
+                      posts?.map((post, i) => <Post key={i} post={post} />)}
                   </Stack>
                 )}
               </Stack>
