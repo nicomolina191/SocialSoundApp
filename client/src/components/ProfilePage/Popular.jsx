@@ -6,7 +6,7 @@ import portada from "./Play.png";
 
 const Popular = ({ id }) => {
   const dispatch = useDispatch();
-  const allPosts = useSelector((state) => state.posts.postList);
+  const allPosts = useSelector((state) => state.posts.possListAll);
   const popularPosts = allPosts
     .filter((post) => post.userId === id)
     .slice(0, 5);
@@ -26,8 +26,8 @@ const Popular = ({ id }) => {
                 <div className={styles.songFirstHalfIndex}>
                   <p>{index + 1}</p>
                 </div>
-                  <img src={portada} alt="" />
-                  <p>{post.title}</p>
+                <img src={portada} alt="" />
+                <p>{post.title}</p>
               </div>
               <div className={styles.songSecondHalf}>
                 <p>6,145,232</p>

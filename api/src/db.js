@@ -63,6 +63,11 @@ const { Users, Posts, Likes, Genres, Comments, Message, Chat, Notifications } =
 
 // Relaciones
 
+//USERS - USERS
+
+Users.belongsToMany(Users, { through: 'Following', as: 'FollowerUsers', foreignKey: 'following_id' });
+Users.belongsToMany(Users, { through: 'Following', as: 'FollowingUsers', foreignKey: 'follower_id' });
+
 // USERS - POSTS
 
 Users.belongsToMany(Posts, { through: "users_posts", timestamps: false });

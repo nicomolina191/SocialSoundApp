@@ -3,6 +3,7 @@ const initialState = {
   usersList: [],
   usersListAll: [],
   user:{},
+  userLikes: [],
   isLoading: true,
   currentUser: {}
 }
@@ -65,11 +66,17 @@ const userSlice = createSlice({
         currentUser: action.payload
       }
     },
+    getLikes : (state, action)=> {
+      return {
+        ...state,
+        userLikes: action.payload
+      }
+    },
   },
 });
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium  } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes  } = userSlice.actions;
 
 export default userSlice.reducer;
 
