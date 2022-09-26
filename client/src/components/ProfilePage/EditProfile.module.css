@@ -98,8 +98,17 @@
 
 .containerBanner img {
   cursor: pointer;
+  width: 400px;
+  height: 150px;
+  border-radius: 5px;
 }
 
 .containerBanner img:hover {
-  filter: blur(2px);
+  filter: brightness(50%);
+}
+
+.containerBannerLoading {
+  position: absolute;
+  top: -130px;
+  left: calc(50% - 57px / 2);
 }

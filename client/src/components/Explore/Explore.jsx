@@ -87,8 +87,7 @@ const Explore = () => {
     const posibles = [];
     posts.map((post) => {
       if (
-        post.title.toLowerCase().includes(inputValue.toLowerCase()) ||
-        (user && user.username.toLowerCase().includes(inputValue.toLowerCase()))
+        post.title.toLowerCase().includes(inputValue.toLowerCase())
       ) {
         posibles.push(post);
       }

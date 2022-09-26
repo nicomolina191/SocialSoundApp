@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styles from "./EditProfile.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWindowRestore, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, TextField } from "@mui/material";
+import { Button, Link, TextField } from "@mui/material";
 import { updateUser } from "../../redux/features/users/usersGetSlice";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Loading from "../loading/Loading";
+import PayButton from "../pay/PayButton";
 
 const EditProfile = (close) => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const EditProfile = (close) => {
   const [imageUrl, setImageUrl] = useState(currentUser.avatar);
   const [bannerUrl, setBannerUrl] = useState(currentUser.banner);
   const [loading, setLoading] = useState(false);
+  const [bannerLoading, setBannerLoading] = useState(false);
 
   function uploadFile(file) {
     setLoading(true);
@@ -38,14 +40,14 @@ const EditProfile = (close) => {
   }
 
   function uploadBanner(file) {
-    setLoading(true);
+    setBannerLoading(true);
     const fileRef = ref(storage, `profileBanner/${file.name + Math.random()}`);
     return uploadBytes(fileRef, file)
       .then((snapshot) => {
         return getDownloadURL(snapshot.ref);
       })
       .then((url) => {
-        setLoading(false);
+        setBannerLoading(false);
         setBannerUrl(url);
         return url;
       })
@@ -135,27 +137,38 @@ const EditProfile = (close) => {
             Save
           </Button>
         </div>
-        {/* <div className={styles.containerBanner}>
-          <p>Choose your banner!</p>
-          <input
-            type="file"
-            accept="image/*"
-            name="banner"
-            id="banner"
-            onChange={(e) => handleChange(e)}
-          />
-          <label style={{ position: "relative" }} htmlFor="banner">
-            {loading ? (
-              <img className={styles.imageLoading} src={bannerUrl} alt="" />
-            ) : (
-              <img src={bannerUrl} alt="" />
-            )}
+        {currentUser.plan === "Premium" ? (
+          <div className={styles.containerBanner}>
+            <p>Choose your banner!</p>
+            <input
+              type="file"
+              accept="image/*"
+              name="banner"
+              id="banner"
+              onChange={(e) => handleChange(e)}
+            />
+            <label style={{ position: "relative" }} htmlFor="banner">
+              {bannerLoading ? (
+                <img className={styles.imageLoading} src={bannerUrl} alt="" />
+              ) : (
+                <img src={bannerUrl} alt="" />
+              )}
 
-            <div className={styles.containerLoading}>
-              {loading ? <Loading width={"60px"} height={"60px"} /> : null}
-            </div>
-          </label>
-        </div> */}
+              <div className={styles.containerBannerLoading}>
+                {bannerLoading ? (
+                  <Loading width={"60px"} height={"60px"} />
+                ) : null}
+              </div>
+            </label>
+          </div>
+        ) : (
+          <div style={{display: "flex", alignItems: "center"}}>
+            <p style={{ color: "white", fontSize: "14px", marginRight: "10px" }}>
+              Go premium to modify the banner!
+            </p>
+            <PayButton />
+          </div>
+        )}
       </div>
     </div>
   );

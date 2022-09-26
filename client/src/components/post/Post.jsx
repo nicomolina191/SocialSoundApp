@@ -74,7 +74,7 @@ export default function Post({ post, comments, margin }) {
   };
 
   async function getLikes() {
-    const res = await axios.get(`/likes/${post.id}`);
+    const res = await axios.get(`/likes/posts/${post.id}`);
     setLikes(res.data);
     // setLikes(likesHardcorde.filter(like => like.postId === post.id))
   }

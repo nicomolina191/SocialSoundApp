@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserById } from "../../redux/features/users/usersGetSlice";
+import { getUserById, getUserLikes } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
 import { Button, createTheme, Menu, MenuItem, Modal } from "@mui/material";
@@ -16,22 +16,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import EditProfile from "./EditProfile";
 import Upload from "../Upload/Upload";
+import axios from "axios";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const profileUser = useSelector((state) => state.users.user);
   const currentUser = useSelector((state) => state.users.currentUser);
+  const currentUserFollows = useSelector(
+    (state) => state.users.currentUser.FollowingUsers
+  );
   const allPosts = useSelector((state) => state.posts.possListAll);
-  const artistPosts = Array.isArray(allPosts) ? allPosts.filter((post) => post.userId === id) : []
+  const artistPosts = Array.isArray(allPosts)
+    ? allPosts.filter((post) => post.userId === id)
+    : [];
   const userDB = useSelector((state) => state.users.currentUser);
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
+  const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUserById(id));
-  }, []);
+    dispatch(getUserLikes(id));
+  }, [dispatch]);
+
+  function getFollowOfThisUser() {
+    if (currentUserFollows) {
+      const check = currentUserFollows.find(
+        (user) => user.id === profileUser.id
+      );
+      return check;
+    }
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,6 +64,14 @@ const ProfilePage = () => {
 
   const handleCloseSettings = () => {
     setOpenSettings(false);
+  };
+
+  const handleFollow = () => {
+    axios.post("/users/follow", {
+      idUser: currentUser.id,
+      followTo: profileUser.id,
+    });
+    setFollowed(true)
   };
 
   const theme = createTheme({
@@ -71,7 +96,13 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.containerProfile}>
-          <div className={styles.containerProfileData}>
+          <div
+            className={styles.containerProfileData}
+            style={{
+              background: `url(${profileUser.banner})`,
+              backgroundSize: "cover",
+            }}
+          >
             <div className={styles.containerImgName}>
               <img src={profileUser.avatar} alt="" />
               <div className={styles.artistData}>
@@ -132,24 +163,47 @@ const ProfilePage = () => {
                 <img src={playIcon} className={styles.playButton} alt="" />
               ) : null}
               {currentUser.id !== profileUser.id ? (
-                <Button
-                  variant="contained"
-                  sx={{
-                    height: "48px",
-                    marginLeft: "30px",
-                    fontSize: "18px",
-                    color: "black",
-                    fontWeight: "500",
-                    backgroundColor: "rgba(0, 255, 214, 1)",
-                    width: "110px",
-                    textTransform: "none",
-                    "&:hover": {
+                getFollowOfThisUser() === undefined && !followed ? (
+                  <Button
+                    onClick={handleFollow}
+                    variant="contained"
+                    sx={{
+                      height: "48px",
+                      marginLeft: "30px",
+                      fontSize: "18px",
+                      color: "black",
+                      fontWeight: "500",
                       backgroundColor: "rgba(0, 255, 214, 1)",
-                    },
-                  }}
-                >
-                  Follow
-                </Button>
+                      width: "110px",
+                      textTransform: "none",
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 255, 214, 1)",
+                      },
+                    }}
+                  >
+                    Follow
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleFollow}
+                    variant="contained"
+                    sx={{
+                      height: "48px",
+                      marginLeft: "30px",
+                      fontSize: "18px",
+                      color: "black",
+                      fontWeight: "500",
+                      backgroundColor: "rgba(61, 61, 61, 1)",
+                      width: "110px",
+                      textTransform: "none",
+                      "&:hover": {
+                        backgroundColor: "rgba(61, 61, 61, 0.6)",
+                      },
+                    }}
+                  >
+                    Following
+                  </Button>
+                )
               ) : null}
             </div>
             {artistPosts.length > 0 ? (
