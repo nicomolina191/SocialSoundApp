@@ -85,7 +85,7 @@ const Explore = () => {
 
   function posibleSong() {
     const posibles = [];
-    posts.map((post) => {
+    posts?.map((post) => {
       if (
         post.title.toLowerCase().includes(inputValue.toLowerCase())
       ) {
@@ -159,7 +159,7 @@ const Explore = () => {
                 ) : (
                   <Stack spacing={0} sx={{ marginTop: "20px" }}>
                     {posts.length > 0 &&
-                      posts.map((post, i) => <Post key={i} post={post} />)}
+                      posts?.map((post, i) => <Post key={i} post={post} />)}
                   </Stack>
                 )}
               </Stack>
