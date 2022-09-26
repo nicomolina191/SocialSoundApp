@@ -47,10 +47,9 @@ const SideBar = ({userDB}) => {
       description: '',
   });
 
-<<<<<<< HEAD
- const iconPremium = "https://disabilitywebtraining.com/wp-content/uploads/2018/04/planPremium.png"
-=======
-  const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+
+ const iconPremium = "https://png.pngtree.com/png-clipart/20220616/original/pngtree-golden-king-crown-vector-png-png-image_8072475.png"
+
 
   useEffect(() => {
     const getReviews = async () => {
@@ -81,7 +80,6 @@ const SideBar = ({userDB}) => {
     setShowForm(false);
     setShowText(true);
   }
->>>>>>> development
 
   return (
         <div className={s.sidebar}>
@@ -92,12 +90,12 @@ const SideBar = ({userDB}) => {
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 
                 <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
-
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
-                  ): ( <img className={s.premiumIcon} width='64px' src={iconPremium} />)
+                  ): ( <img className={s.premiumIcon} width='40px' src={iconPremium} />)
                 }
+
 
             </ul>
             <ul className={s.optionsContainer}>
