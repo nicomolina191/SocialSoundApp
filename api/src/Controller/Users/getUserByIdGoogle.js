@@ -12,6 +12,12 @@ const getUserByIdGoogle = async (req, res) => {
                 model: Genres,
                 attributes: ['name'],
                 through: { attributes: [] }
+            },
+            {
+                model: Users,
+                as: 'FollowingUsers',
+                attributes: ['id', 'username', 'avatar'],
+                through: { attributes: [] }
             }]
         });
 
