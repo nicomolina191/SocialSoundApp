@@ -28,7 +28,6 @@ const formatResult = (user) => <UsersPerfil user={user} setUserSelected={setUser
 const handleClick = (value) => {
 if(value === "role") setUserSelected(userSelected?.role === "Admin"? {...userSelected, role: "User"} : {...userSelected, role: "Admin"})
 if(value === "isBanned") setUserSelected({...userSelected, isBanned: !userSelected?.isBanned})
-if(value === "isActive") setUserSelected({...userSelected, isActive: !userSelected?.isActive})
 axios.put(`/users/admin/${userSelected.idgoogle}`,{
   ...userSelected
 })
