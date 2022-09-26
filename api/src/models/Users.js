@@ -47,6 +47,11 @@ module.exports = (sequelize) => {
         defaultValue:
           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
       },
+      banner: {
+        type: DataTypes.TEXT,
+        defaultValue:
+          "https://cdn.pixabay.com/photo/2015/08/03/10/25/banner-873106_1280.jpg",
+      },
       paymentDate: {
         type: DataTypes.DATEONLY,
       },
@@ -55,14 +60,6 @@ module.exports = (sequelize) => {
       },
       registerDate: {
         type: DataTypes.DATEONLY,
-      },
-      followersCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      followingCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
       }
     },
     {

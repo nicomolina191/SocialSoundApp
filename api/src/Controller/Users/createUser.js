@@ -2,7 +2,7 @@ const { Users } = require('../../db.js');
 const transporter = require('../../Mailer/mailer.js');
 
 const createUser = async (req, res) => {
-  const { name, role, plan, email, password, username, avatar, idgoogle } =
+  const { name, role, plan, email, password, username, avatar, banner, idgoogle } =
     req.body;
 
   try {
@@ -14,6 +14,7 @@ const createUser = async (req, res) => {
       password,
       username,
       avatar,
+      banner,
       idgoogle
     });
 
@@ -39,7 +40,9 @@ const createUser = async (req, res) => {
     Mail().catch(console.error);
 
     return res.json(user);
+
   } catch (error) {
+
     return res.status(500).send(error);
   }
 };
