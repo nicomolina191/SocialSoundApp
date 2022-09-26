@@ -48,7 +48,7 @@ const SideBar = ({userDB}) => {
   });
 
 
- const iconPremium = "https://png.pngtree.com/png-clipart/20220616/original/pngtree-golden-king-crown-vector-png-png-image_8072475.png"
+ const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
 
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const SideBar = ({userDB}) => {
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
-                  ): ( <img className={s.premiumIcon} width='40px' src={iconPremium} />)
+                  ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
                 }
 
 
