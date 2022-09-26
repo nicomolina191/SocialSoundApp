@@ -34,6 +34,8 @@ const getByPostId = require("../Controller/Comments/getByPostId.js");
 const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
 const createReview = require('../Controller/Reviews/createReview.js');
 const getReview = require('../Controller/Reviews/getReview.js');
+const getLikesByUserId = require('../Controller/Likes/getLikesByUserId.js');
+const addFollower = require('../Controller/Follows/addFollower.js');
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -51,7 +53,8 @@ router.get("/posts/:id", getPostById);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 router.get("/notifications/:userId", getNotiByUser);
-router.get('/likes/:postId', getLikesByPostId);
+router.get('/likes/users/:userId', getLikesByUserId);
+router.get('/likes/posts/:postId', getLikesByPostId);
 router.get('/likes/:postId/:userId', getLikesByPostandUserId);
 router.get('/comments/:postId', getByPostId);
 router.get("/reviews", getReview);
@@ -62,6 +65,7 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
+router.post("/users/follow", addFollower);
 
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
