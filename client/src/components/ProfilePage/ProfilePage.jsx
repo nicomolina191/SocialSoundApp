@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUserById,
@@ -16,10 +16,11 @@ import Popular from "./Popular";
 import LikedSongs from "./LikedSongs";
 import AllPosts from "./AllPosts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import EditProfile from "./EditProfile";
 import Upload from "../Upload/Upload";
 import axios from "axios";
+import { changeUserChat } from "../../redux/features/chat/chatGetSlice";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -88,6 +89,14 @@ const ProfilePage = () => {
       ].join(","),
     },
   });
+
+  const sendMessage = async () => {
+    const combinedId =
+      currentUser.idgoogle > profileUser.idgoogle
+        ? currentUser.idgoogle + profileUser.idgoogle
+        : profileUser.idgoogle + currentUser.idgoogle;
+    dispatch(changeUserChat({ destination: profileUser, chatId: combinedId }));
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -167,52 +176,72 @@ const ProfilePage = () => {
           </div>
 
           <div className={styles.contentContainer}>
-            <div className={styles.playFollowContainer}>
-              {artistPosts.length > 0 ? (
-                <img src={playIcon} className={styles.playButton} alt="" />
-              ) : null}
-              {currentUser.id !== profileUser.id ? (
-                getFollowOfThisUser() === undefined && !followed ? (
-                  <Button
-                    onClick={handleFollow}
-                    variant="contained"
-                    sx={{
-                      height: "48px",
-                      marginLeft: "30px",
-                      fontSize: "18px",
-                      color: "black",
-                      fontWeight: "500",
-                      backgroundColor: "rgba(0, 255, 214, 1)",
-                      width: "110px",
-                      textTransform: "none",
-                      "&:hover": {
+            <div className={styles.playFollowMessageContainer}>
+              <div className={styles.playFollowContainer}>
+                {artistPosts.length > 0 ? (
+                  <img src={playIcon} className={styles.playButton} alt="" />
+                ) : null}
+                {currentUser.id !== profileUser.id ? (
+                  getFollowOfThisUser() === undefined && !followed ? (
+                    <Button
+                      onClick={handleFollow}
+                      variant="contained"
+                      sx={{
+                        height: "48px",
+                        marginLeft: "30px",
+                        fontSize: "18px",
+                        color: "black",
+                        fontWeight: "500",
                         backgroundColor: "rgba(0, 255, 214, 1)",
-                      },
+                        width: "110px",
+                        textTransform: "none",
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                        },
+                      }}
+                    >
+                      Follow
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleFollow}
+                      variant="contained"
+                      sx={{
+                        height: "48px",
+                        marginLeft: "30px",
+                        fontSize: "18px",
+                        color: "black",
+                        fontWeight: "500",
+                        backgroundColor: "rgba(195, 195, 195, 1)",
+                        width: "110px",
+                        textTransform: "none",
+                        "&:hover": {
+                          backgroundColor: "rgba(195, 195, 195, 0.8)",
+                        },
+                      }}
+                    >
+                      Following
+                    </Button>
+                  )
+                ) : null}
+              </div>
+              {currentUser.id !== profileUser.id ? (
+                <div>
+                  <p
+                    style={{
+                      color: "white",
+                      fontSize: "30px",
+                      marginLeft: "10px",
                     }}
                   >
-                    Follow
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleFollow}
-                    variant="contained"
-                    sx={{
-                      height: "48px",
-                      marginLeft: "30px",
-                      fontSize: "18px",
-                      color: "black",
-                      fontWeight: "500",
-                      backgroundColor: "rgba(195, 195, 195, 1)",
-                      width: "110px",
-                      textTransform: "none",
-                      "&:hover": {
-                        backgroundColor: "rgba(195, 195, 195, 0.8)",
-                      },
-                    }}
-                  >
-                    Following
-                  </Button>
-                )
+                    <Link to="/messages">
+                      <FontAwesomeIcon
+                        onClick={sendMessage}
+                        icon={faEnvelope}
+                      />
+                    </Link>
+                  </p>
+                </div>
               ) : null}
             </div>
             {artistPosts.length > 0 ? (
