@@ -34,12 +34,12 @@ const getByPostId = require("../Controller/Comments/getByPostId.js");
 const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
 const createReview = require('../Controller/Reviews/createReview.js');
 const getReview = require('../Controller/Reviews/getReview.js');
-const updateUserAdmin = require("../Controller/Users/updateUserAdmin.js")
 const getLikesByUserId = require('../Controller/Likes/getLikesByUserId.js');
 const addFollower = require('../Controller/Follows/addFollower.js');
-
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
+const changePlanUser = require("../Controller/Users/changePlanUser.js");
+const setUserGenres = require("../Controller/Users/setUserGenres.js");
+const updateBanUser = require("../Controller/Users/updateBanUser.js");
+const updateRoleUser = require("../Controller/Users/updateRoleUser.js");
 
 const router = Router();
 
@@ -67,12 +67,9 @@ router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
 router.post("/users/follow", addFollower);
-
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post("/reviews", createReview);
-// router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
-
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
@@ -80,14 +77,15 @@ router.delete("/comments/:id", deleteComment);
 
 router.put("/users/:id", updateUser);
 router.put("/posts/:id", updatePost);
-router.put("/users/admin/:idgoogle", updateUserAdmin)
 router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
 router.put("/notifications/watched/:id", setNotiWatched);
 router.put("/likes", changeStatusLike);
-
-
+router.put("/users/set/plan", changePlanUser);
+router.put("/users/set/genres", setUserGenres);
+router.put("/users/set/update-ban", updateBanUser);
+router.put("/users/set/role", updateRoleUser);
 
 
 module.exports = router;

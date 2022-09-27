@@ -17,6 +17,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        cover: {
+            type: DataTypes.STRING
+        },
         content: {
             type: DataTypes.TEXT,
             allowNull: false
