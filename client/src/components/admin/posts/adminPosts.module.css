@@ -1,0 +1,21 @@
+.adminPostsContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--main-page-color);
+    color: white;
+    display: flex;
+    align-items: flex-start;
+}
+
+.carousel {
+    width: 100% !important;
+    height: 50px !important;
+}
+
+.divMobileStepper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}

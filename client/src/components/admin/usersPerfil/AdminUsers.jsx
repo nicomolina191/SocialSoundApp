@@ -1,16 +1,16 @@
 import { Avatar, Box, Button } from '@mui/material'
 import React, { useState } from 'react'
-import { Arrow } from '../componentsIcons'
+import { Arrow } from '../../componentsIcons'
 import style from "./admin.module.css"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from '../../redux/features/users/usersGetSlice';
+import { getUser } from '../../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import axios from 'axios'
 
-const Admin = () => {
+const AdminUsers = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const arrUsers = useSelector(state => state.users.usersListAll)
@@ -46,7 +46,9 @@ const handleBan = () => {
 }
 
 const handlePremium = () => {
-  
+  setLoading(true)
+  if(userSelected?.isPremium) setUserSelected({...userSelected, isPremium: false})
+  else if(!userSelected?.isPremium) setUserSelected({...userSelected, isPremium: true})
 }
 
 //modal para verificar el baneo handleBan y handleRole usarlos para mostrar el modal, Se cambia el valor al traer todos los usuarios
@@ -54,7 +56,7 @@ const handlePremium = () => {
   return (
     <Box className={style.backgroundAdmin}>
       <Box className={style.containerOptions}>
-        <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} onClick={() => navigate("/home")}><Arrow/></Button>
+        <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} onClick={() => navigate("/admin")}><Arrow/></Button>
         <Box className={style.userSelectedDiv}>
           {userSelected?.avatar && <Avatar src={userSelected?.avatar} />}
 
@@ -65,8 +67,8 @@ const handlePremium = () => {
 
       {userSelected?.name && <Button onClick={() => handleBan()} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
-
-{userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 
+      
+      {userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"isPremium"} disable={`${loading}`}>IsPremium: {userSelected?.isPremium ? "Yes": "No"}</Button>}
         </Box>
       </Box>
@@ -85,4 +87,4 @@ const handlePremium = () => {
   )
 }
 
-export default Admin
+export default AdminUsers
