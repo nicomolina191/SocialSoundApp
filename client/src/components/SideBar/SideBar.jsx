@@ -40,9 +40,9 @@ const SideBar = ({userDB}) => {
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
   const [input, setInput] = useState({
-      userId: userFirebase.auth.currentUser.uid,
-      name: userFirebase.auth.currentUser.displayName,
-      avatar: userFirebase.auth.currentUser.photoURL,
+      userId: userFirebase?.auth?.currentUser?.uid,
+      name: userFirebase?.auth?.currentUser?.displayName,
+      avatar: userFirebase?.auth?.currentUser?.photoURL,
       rating: '',
       description: '',
   });
@@ -50,6 +50,7 @@ const SideBar = ({userDB}) => {
   const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
 
   useEffect(() => {
+    
     const getReviews = async () => {
         let allReviews = await axios.get('/reviews');
         if (allReviews.data.find(r => r.userId === input.userId.toString())) {
