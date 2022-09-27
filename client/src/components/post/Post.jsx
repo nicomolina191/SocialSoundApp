@@ -11,6 +11,7 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
+import ReactPlayer from "react-player";
 import style from "./post.module.css";
 import { useEffect } from "react";
 import axios from "axios";
@@ -201,9 +202,24 @@ export default function Post({ post, comments, margin }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-
-        {user?.name && post?.content && <Audio song={post} artist={user}/>}
-
+      
+      { user?.name && post?.type === 'video' &&
+        <Grid item className={style.playerWrapper}>
+          <ReactPlayer
+          url={post.content}
+          controls
+          className={style.reactPlayer}
+          width="100%"
+          height="100%"
+          />
+        </Grid>
+      }
+      { user?.name && post?.type === 'audio' &&
+        <Audio 
+        song={post} 
+        artist={user}
+        />
+      }
       <Grid item container justifyContent="space-between">
         <Grid item>
           <Typography variant="body2">

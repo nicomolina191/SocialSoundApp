@@ -1,6 +1,7 @@
 .playerContainer{
     display: flex;
     width: calc(100% - 20px);
+    height: 158px;
     gap: 10px;
     padding: 8px;
     border-radius: 15px;
