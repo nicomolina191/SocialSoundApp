@@ -8,29 +8,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from '../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import axios from 'axios'
 
 const Admin = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const arrUsers = useSelector(state => state.users.usersListAll)
 
+  const [loading, setLoading] = useState(false)
   const [userSelected, setUserSelected] = useState({})
   
-
   useEffect(() => {
     dispatch(getUser())
-  }, [dispatch])
+  }, [dispatch, userSelected])
+
+  useEffect(() =>  {
+    axios.put(`/users/admin/${userSelected.idgoogle}`,{
+      ...userSelected
+    })
+    dispatch(getUser())
+    setLoading(false)
+  }, [userSelected])
   
   
 const formatResult = (user) => <UsersPerfil user={user} setUserSelected={setUserSelected}/>
 
-const handleClick = (value) => {
-if(value === "role") setUserSelected(userSelected?.role === "Admin"? {...userSelected, role: "User"} : {...userSelected, role: "Admin"})
-if(value === "isBanned") setUserSelected({...userSelected, isBanned: !userSelected?.isBanned})
-if(value === "isActive") setUserSelected({...userSelected, isActive: !userSelected?.isActive})
-let userFind = arrUsers.find(u => u?.idgoogle === userSelected?.idgoogle)
-userFind = userSelected
-  return
+const handleRole = () => {
+  setLoading(true)
+  if(userSelected?.role === "Admin") setUserSelected({...userSelected, role:"User"})
+  else if(userSelected?.role === "User") setUserSelected({...userSelected, role:"Admin"})
+}
+const handleBan = () => {
+  setLoading(true)
+  if(userSelected?.isBanned) setUserSelected({...userSelected, isBanned: false})
+  else if(!userSelected?.isBanned) setUserSelected({...userSelected,isBanned: true})
 }
 
   return (
@@ -39,10 +50,15 @@ userFind = userSelected
         <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} onClick={() => navigate("/home")}><Arrow/></Button>
         <Box className={style.userSelectedDiv}>
           {userSelected?.avatar && <Avatar src={userSelected?.avatar} />}
+
       {userSelected?.name && <h4 style={{paddingTop: "10px"}}>{userSelected?.name}</h4>}
-      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"role"}>Role: {userSelected?.role}</Button>}
-      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"isBanned"}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
-      {userSelected?.name && <Button onClick={(e) => handleClick(e.target.name)} sx={{textTransform: "none"}} className={style.buttonUser} name={"isActive"}>isActive: {userSelected?.isActive ? "Yes": "No"}</Button>}
+
+      {userSelected?.name && <Button onClick={() => handleRole()} sx={{textTransform: "none"}} 
+      className={style.buttonUser} name={"role"} disable={`${loading}`}>Role: {userSelected?.role}</Button>}
+
+      {userSelected?.name && <Button onClick={() => handleBan()} sx={{textTransform: "none"}} 
+      className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
+
         </Box>
       </Box>
       <Box className={style.usersContainer}>
