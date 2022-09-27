@@ -96,7 +96,7 @@ let googleUser
     } catch (err) {
       return console.log(err);
     }
-    if (userFirebase !== null) navigate("/home");
+    navigate("/login");
   };
 
   const handleSignInGoogle = async () => {
