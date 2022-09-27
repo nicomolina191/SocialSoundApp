@@ -82,7 +82,7 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-let googleUser
+    let googleUser
     try {
       const res = await signup(user.email, user.password)
       googleUser = {
