@@ -71,7 +71,7 @@ const Explore = () => {
 
   function posibleArtist() {
     const posibles = [];
-    users.map((user) => {
+    users?.map((user) => {
       if (
         user.username.toLowerCase().includes(inputValue.toLowerCase()) ||
         user.name.toLowerCase().includes(inputValue.toLowerCase())
