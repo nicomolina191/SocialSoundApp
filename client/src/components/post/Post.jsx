@@ -11,14 +11,13 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import ReactPlayer from "react-player";
 import style from "./post.module.css";
 import { useEffect } from "react";
 import axios from "axios";
 import CommentsContainer from "../commentsContainer/CommentsContainer";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Audio from "../Player/Audio/Audio";
+import Audio from "../Audio/Audio.jsx";
 import {
   EmailShareButton,
   FacebookShareButton,
