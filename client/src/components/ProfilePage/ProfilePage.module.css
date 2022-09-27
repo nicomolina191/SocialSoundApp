@@ -18,9 +18,11 @@
 }
 
 .containerProfileData {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 1px 5px 25px 4px rgba(0,0,0,0.7);
 }
 
 .containerImgName {

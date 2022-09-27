@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserById, getUserLikes } from "../../redux/features/users/usersGetSlice";
+import {
+  getUserById,
+  getUserLikes,
+} from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
 import { Button, createTheme, Menu, MenuItem, Modal } from "@mui/material";
@@ -71,7 +74,7 @@ const ProfilePage = () => {
       idUser: currentUser.id,
       followTo: profileUser.id,
     });
-    setFollowed(true)
+    setFollowed(true);
   };
 
   const theme = createTheme({
@@ -96,13 +99,19 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.containerProfile}>
-          <div
-            className={styles.containerProfileData}
-            style={{
-              background: `url(${profileUser.banner})`,
-              backgroundSize: "cover",
-            }}
-          >
+          <div className={styles.containerProfileData}>
+            <div
+              style={{
+                background: `url(${profileUser.banner})`,
+                backgroundSize: "cover",
+                backgroundColor: "brightness(50%)",
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                zIndex: "-100",
+                filter: "blur(1px)",
+              }}
+            ></div>
             <div className={styles.containerImgName}>
               <img src={profileUser.avatar} alt="" />
               <div className={styles.artistData}>
