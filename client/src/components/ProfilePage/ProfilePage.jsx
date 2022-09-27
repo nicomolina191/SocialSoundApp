@@ -116,10 +116,10 @@ const ProfilePage = () => {
                 <div className={styles.followersCount}>
                   <p className={styles.followersCount}>
                     {profileUser.followersCount} Followers
-                    {profileUser.followingCount > 0
-                      ? profileUser.followingCount === 1
-                        ? ` ・ Follow ${profileUser.followingCount} user`
-                        : ` ・ Follow ${profileUser.followingCount} users`
+                    {profileUser.FollowingUsers?.length > 0
+                      ? profileUser.FollowingUsers.length === 1
+                        ? ` ・ Follow ${profileUser.FollowingUsers.length} user`
+                        : ` ・ Follow ${profileUser.FollowingUsers.length} users`
                       : null}
                   </p>
                 </div>
@@ -193,11 +193,11 @@ const ProfilePage = () => {
                       fontSize: "18px",
                       color: "black",
                       fontWeight: "500",
-                      backgroundColor: "rgba(61, 61, 61, 1)",
+                      backgroundColor: "rgba(195, 195, 195, 1)",
                       width: "110px",
                       textTransform: "none",
                       "&:hover": {
-                        backgroundColor: "rgba(61, 61, 61, 0.6)",
+                        backgroundColor: "rgba(195, 195, 195, 0.8)",
                       },
                     }}
                   >
