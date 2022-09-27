@@ -130,6 +130,7 @@ export default function Upload() {
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
                         <li> <TextField
+                            name='description'
                             className={s.description}
                             id="standard-multiline-static"
                             label="Description"
