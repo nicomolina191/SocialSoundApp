@@ -36,7 +36,7 @@ const Login = () => {
     msg: "",
     severity: "",
   });
-  const { login, loginWithGoogle, userFirebase, resetPassword } = useAuth();
+  const { login, loginWithGoogle, userFirebase, resetPassword, getAdditionalUserInfo } = useAuth();
   const navigate = useNavigate();
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
@@ -87,6 +87,7 @@ const Login = () => {
     try {
 
       const res = await loginWithGoogle()
+      console.log(getAdditionalUserInfo(res))
       setGoogleUser({
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],

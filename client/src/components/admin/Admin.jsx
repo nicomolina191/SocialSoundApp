@@ -42,7 +42,9 @@ const handleBan = () => {
   setLoading(true)
   if(userSelected?.isBanned) setUserSelected({...userSelected, isBanned: false})
   else if(!userSelected?.isBanned) setUserSelected({...userSelected,isBanned: true})
+
 }
+//modal para verificar el baneo
 
   return (
     <Box className={style.backgroundAdmin}>
