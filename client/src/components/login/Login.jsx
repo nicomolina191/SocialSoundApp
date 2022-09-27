@@ -87,7 +87,7 @@ const Login = () => {
     try {
 
       const res = await loginWithGoogle()
-      console.log(getAdditionalUserInfo(res))
+      //console.log(getAdditionalUserInfo(res))
       setGoogleUser({
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],

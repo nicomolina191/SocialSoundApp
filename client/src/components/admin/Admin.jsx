@@ -17,7 +17,8 @@ const Admin = () => {
 
   const [loading, setLoading] = useState(false)
   const [userSelected, setUserSelected] = useState({})
-  
+  //componente con dos opciones para intercalar entre usuarios y reportes
+  //buscar los post por titulo del post nombre del que lo subio y el usuario que lo reporto
   useEffect(() => {
     dispatch(getUser())
   }, [dispatch, userSelected])
@@ -42,9 +43,13 @@ const handleBan = () => {
   setLoading(true)
   if(userSelected?.isBanned) setUserSelected({...userSelected, isBanned: false})
   else if(!userSelected?.isBanned) setUserSelected({...userSelected,isBanned: true})
-
 }
-//modal para verificar el baneo
+
+const handlePremium = () => {
+  
+}
+
+//modal para verificar el baneo handleBan y handleRole usarlos para mostrar el modal, Se cambia el valor al traer todos los usuarios
 
   return (
     <Box className={style.backgroundAdmin}>
@@ -61,6 +66,8 @@ const handleBan = () => {
       {userSelected?.name && <Button onClick={() => handleBan()} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
 
+{userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 
+      className={style.buttonUser} name={"isPremium"} disable={`${loading}`}>IsPremium: {userSelected?.isPremium ? "Yes": "No"}</Button>}
         </Box>
       </Box>
       <Box className={style.usersContainer}>
