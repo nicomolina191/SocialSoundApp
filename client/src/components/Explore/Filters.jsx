@@ -138,18 +138,18 @@ const Filters = () => {
                     <div key={key} className={styles.genresContainer}>
                       <input
                         onClick={handleGenresSelected}
-                        id={genre.id}
+                        id={genre.name}
                         type="checkbox"
                         value={genre.name}
                       ></input>
                       {!genresFiltered.find((el) => el === genre.name) ? (
-                        <label htmlFor={genre.id}>{genre.name}</label>
+                        <label htmlFor={genre.name}>{genre.name}</label>
                       ) : (
                         <label
                           style={{
                             backgroundColor: "rgba(0, 255, 214, 1)",
                           }}
-                          htmlFor={genre.id}
+                          htmlFor={genre.name}
                         >
                           {genre.name}
                         </label>

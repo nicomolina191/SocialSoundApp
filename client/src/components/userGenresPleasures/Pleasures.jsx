@@ -8,11 +8,16 @@ import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { setUserGenres } from "../../redux/features/users/usersGetSlice";
 
 const Pleasures = () => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.genres.genreList).slice(1);
-  const [genresSelected, setGenresSelected] = useState([]);
+  const currentUser = useSelector((state) => state.users.currentUser);
+  const [genresSelected, setGenresSelected] = useState({
+    id: currentUser.id,
+    genres: [],
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const genrePerPage = 10;
   const lastGenre = currentPage * genrePerPage;
@@ -37,15 +42,23 @@ const Pleasures = () => {
   }
 
   function handleGenresSelected(e) {
-    const currentGenresChecked = genresSelected.indexOf(e.target.value);
-    const newChecked = { genres: [...genresSelected] };
-
+    const currentGenresChecked = genresSelected.genres.indexOf(e.target.value);
+    const newChecked = [...genresSelected.genres];
     if (currentGenresChecked === -1) {
-      newChecked.genres.push(e.target.value);
+      newChecked.push(e.target.value);
     } else {
-      newChecked.genres.splice(currentGenresChecked, 1);
+      newChecked.splice(currentGenresChecked, 1);
     }
-    setGenresSelected(newChecked.genres.map((el) => el));
+    setGenresSelected({ id: currentUser.id, genres: newChecked.map((el) => el) });
+  }
+
+  function handleSubmit() {
+    try {
+      dispatch(setUserGenres(genresSelected));
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -59,12 +72,12 @@ const Pleasures = () => {
           padding: "24px",
           width: "850px",
           height: "450px",
-          borderRadius: "10px"
+          borderRadius: "10px",
         }}
       >
         <div className={styles.containerText}>
           <h1>Tell us about you.</h1>
-          <p>Click the genres you like most.</p>
+          <p>Click at least two genres you like.</p>
         </div>
         <Stack direction="row" justifyContent="space-between">
           {currentPage > 1 ? (
@@ -92,18 +105,18 @@ const Pleasures = () => {
                 <div key={key} className={styles.genresContainer}>
                   <input
                     onClick={handleGenresSelected}
-                    id={genre.id}
+                    id={genre.name}
                     type="checkbox"
                     value={genre.name}
                   ></input>
-                  {!genresSelected.find((el) => el === genre.name) ? (
-                    <label htmlFor={genre.id}>{genre.name}</label>
+                  {!genresSelected.genres.find((el) => el === genre.name) ? (
+                    <label htmlFor={genre.name}>{genre.name}</label>
                   ) : (
                     <label
                       style={{
                         backgroundColor: "rgba(0, 255, 214, 1)",
                       }}
-                      htmlFor={genre.id}
+                      htmlFor={genre.name}
                     >
                       {genre.name}
                     </label>
@@ -127,23 +140,41 @@ const Pleasures = () => {
           )}
         </Stack>
         <div>
-          <Button
-            variant="contained"
-            sx={{
-              width: "200px",
-              height: "40px",
-              borderRadius: "10px",
-              backgroundColor: "#00FFD6",
-              color: "black",
-              textTransform: "none",
-              fontFamily: "Inter, sans-serif",
-              "&:hover" : {
+          {genresSelected.genres.length > 1 ? (
+            <Button
+              onClick={handleSubmit}
+              variant="contained"
+              sx={{
+                width: "200px",
+                height: "40px",
+                borderRadius: "10px",
                 backgroundColor: "#00FFD6",
-              }
-            }}
-          >
-            Done
-          </Button>
+                color: "black",
+                textTransform: "none",
+                fontFamily: "Inter, sans-serif",
+                "&:hover": {
+                  backgroundColor: "#00FFD6",
+                },
+              }}
+            >
+              Done
+            </Button>
+          ) : (
+            <Button
+              disabled
+              onClick={handleSubmit}
+              variant="contained"
+              sx={{
+                width: "200px",
+                height: "40px",
+                borderRadius: "10px",
+                textTransform: "none",
+                fontFamily: "Inter, sans-serif",
+              }}
+            >
+              Done
+            </Button>
+          )}
         </div>
       </Stack>
     </div>

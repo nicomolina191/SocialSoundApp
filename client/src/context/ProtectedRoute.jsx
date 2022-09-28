@@ -8,7 +8,6 @@ import Pleasures from "../components/userGenresPleasures/Pleasures"
 const ProtectedRoute = ({ children }) => {
   const { userFirebase, loading } = useAuth();
   const pleasures = useSelector(state => state.users.currentUser.genres)
-  console.log(pleasures);
 
   if(loading) return <LoadingProtectRoute/>
 
