@@ -34,6 +34,9 @@ module.exports = (sequelize) => {
         postDate: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
+        },
+        isShared: {
+            type: DataTypes.STRING,
         }
     }, {
         timestamps: false
