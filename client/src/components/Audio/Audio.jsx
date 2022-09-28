@@ -7,7 +7,7 @@ export default function Audio({song, artist}) {
 
   return (
     <div className={s.playerContainer}>
-      <img src='https://bajao.pk/theme/images/default-square-dark.jpg' alt="not found" />  
+      <img src={song.cover} alt="not found" />  
       <div className={s.songInfo}>
         <h3>{song.title}</h3>
         <h4>{artist?.name}</h4>  

@@ -7,7 +7,7 @@ import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux';
-import { createdPost } from '../../redux/features/post/postGetSlice';
+import { createdPost, getPost } from '../../redux/features/post/postGetSlice';
 import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
@@ -88,11 +88,25 @@ export default function Upload() {
               : setPostData({...postData, [name]: value})
     };
 
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     async function handleSubmit(e){
       e.preventDefault()
-      postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover
-      ? dispatch(createdPost({...postData, idUser: currentUser.id}))
-      : alert('Check the information')
+      if(postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover){
+        await dispatch(createdPost({...postData, idUser: currentUser.id}))
+        setPostData({
+        title: '',
+        description: '',
+        content: '',
+        cover: null,
+        type: '',
+        genres: []
+        })
+        setFileNames({cover: '', content: ''})
+        handleClose()
+      } else alert('Check the information')
     }
 
     const theme = useTheme();
@@ -113,9 +127,7 @@ export default function Upload() {
         setOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    
 
   return (
     <div>
@@ -129,6 +141,8 @@ export default function Upload() {
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
                         <li> <TextField
+                            value={postData.description}
+                            onChange={handleChange}
                             name='description'
                             className={s.description}
                             id="standard-multiline-static"
