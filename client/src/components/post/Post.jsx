@@ -10,7 +10,6 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import ReactPlayer from "react-player";
 import style from "./post.module.css";
 import { useEffect } from "react";
 import axios from "axios";
@@ -34,7 +33,7 @@ import {
   TelegramIcon,
   TwitterIcon,
   WhatsappIcon,
-} from "react-share";AD
+} from "react-share";
 import Video from "../Video/Video";
 import { deletePost } from "../../redux/features/post/postGetSlice";
 
