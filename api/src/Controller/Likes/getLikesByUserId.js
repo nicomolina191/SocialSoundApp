@@ -1,4 +1,4 @@
-const { Likes } = require('../../db.js');
+const { Likes, Posts } = require('../../db.js');
 
 const getLikesByUserId = async (req, res) => {
 
@@ -7,13 +7,16 @@ const getLikesByUserId = async (req, res) => {
     try {
 
         const likes = await Likes.findAll({
-            where: { userId }
+            where: { userId },
+            include: [{
+                model: Posts
+            }]
         });
 
         return res.json(likes);
 
     } catch (error) {
-
+        console.log(error);
         return res.status(500).send(error);
     };
 };
