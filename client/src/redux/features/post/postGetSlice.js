@@ -19,6 +19,7 @@ export const createdPost = (body) => {
   return async (dispatch) => {
     let response = await axios.post("/posts", body);
     dispatch(addPosts(response.data));
+    dispatch(getPost());
   };
 };
 
@@ -41,7 +42,7 @@ export const updatePost = (id, body) => {
 export const deletePost = (id) => {
   return async (dispatch) => {
     try {
-      await axios.put(`/posts/${id}`);
+      await axios.delete(`/posts/${id}`);
       dispatch(deletePosts());
       dispatch(getPost());
     } catch (error) {
