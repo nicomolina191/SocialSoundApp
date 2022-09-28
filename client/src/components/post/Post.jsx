@@ -203,18 +203,10 @@ export default function Post({ post, comments, margin }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-      
-      { user?.name && post?.type === 'video' &&
-        <Video
-        song={post}
-        artist={user}
-        />
-      }
-      { user?.name && post?.type === 'audio' &&
-        <Audio 
-        song={post} 
-        artist={user}
-        />
+      {user?.name && post?.type === 'video'
+        ? <Video song={post}/>
+        : post?.type === 'audio'
+        && <Audio song={post} artist={user}/>
       }
       <Grid item container justifyContent="space-between">
         <Grid item>

@@ -13,6 +13,7 @@
     width: 140px;
     height: 150px;
     object-fit: cover;
+    filter: brightness(70%);
     border-radius: 15px;
 }
 .songInfo{
