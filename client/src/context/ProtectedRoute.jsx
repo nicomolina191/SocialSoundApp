@@ -1,23 +1,20 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/";
 import LoadingProtectRoute from "./LoadingProtectRoute";
+import Pleasures from "../components/userGenresPleasures/Pleasures"
 
 const ProtectedRoute = ({ children }) => {
-  //const dispatch = useDispatch()
   const { userFirebase, loading } = useAuth();
- /*const pleasures = useSelector(state => state.usersgustos de musica del usuario )*/
-
-/*   useEffect(()=> {
-  dispatch()
-  },[]) */
+  const pleasures = useSelector(state => state.users.currentUser.genres)
+  console.log(pleasures);
 
   if(loading) return <LoadingProtectRoute/>
 
   if (!userFirebase) return <Navigate to="/login" />;
 
-//  if(pleasures.length < 1) return <Navigate to="/user/pleasures" />
+  if(pleasures?.length < 1) return <Pleasures />
 
   return <div>{children}</div>;
 };
