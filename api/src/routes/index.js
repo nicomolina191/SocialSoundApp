@@ -38,11 +38,6 @@ const changePlanUser = require("../Controller/Users/changePlanUser.js");
 const setUserGenres = require("../Controller/Users/setUserGenres.js");
 const updateBanUser = require("../Controller/Users/updateBanUser.js");
 const updateRoleUser = require("../Controller/Users/updateRoleUser.js");
-const getUserByIdAdmin = require("../Controller/Users/getUserByIdAdmin");
-const createReview = require("../Controller/Reviews/createReview.js");
-const getReview = require("../Controller/Reviews/getReview.js");
-const getLikesByUserId = require("../Controller/Likes/getLikesByUserId.js");
-const addFollower = require("../Controller/Follows/addFollower.js");
 const getReports = require("../Controller/Reports/getReports.js");
 const createReport = require("../Controller/Reports/createReport.js");
 
