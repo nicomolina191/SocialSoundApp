@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import style from "./adminPosts.module.css"
 import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
@@ -10,12 +10,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { postsReported } from '../../../redux/features/post/postGetSlice';
 import { Arrow } from '../../componentsIcons';
 import { useNavigate } from 'react-router-dom';
+import Post from "../../post/Post"
 
 
 const AdminPosts = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(postsReported())
+  }, [dispatch])
+
   const posts = useSelector(state => state.posts.reportedPosts)
+  const [activeStep, setActiveStep] = useState(0);
+  const [postSelected, setPostSelected] = useState({})
   const navigate = useNavigate()
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -25,9 +32,7 @@ const AdminPosts = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   
-  useEffect(() => {
-    dispatch(postsReported())
-  }, [])
+
   
   return (
   <Box className={style.adminPostsContainer}>
@@ -52,10 +57,11 @@ const AdminPosts = () => {
         </Button>
       }
     /></Box>
-    <Box>
-
+    <Box className={style.postsContainer}>
+      <Box className={style.postsDiv}>
+        {typeof posts === "string"? <h1>NotFound</h1> : posts?.map((post, i) => <Post key={i} post={post} comments={false} />)}
+      </Box>
     </Box>
-
     </Box>
   )
 }
