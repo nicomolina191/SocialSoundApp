@@ -1,7 +1,7 @@
 const { Users, Posts, Genres } = require('../../db.js');
 
 const createPost = async (req, res) => {
-  const { description, title, content, idUser, genres, type } = req.body;
+  const { description, title, content, idUser, genres, type, cover } = req.body;
 
   try {
     const post = await Posts.create({
@@ -9,6 +9,7 @@ const createPost = async (req, res) => {
       title,
       content,
       type,
+      cover
     });
 
     const user = await Users.findByPk(idUser);
@@ -19,12 +20,12 @@ const createPost = async (req, res) => {
         where: { name: genre },
       });
       await post.addGenre(genreDB);
-    }
+    };
 
     return res.json(post);
   } catch (err) {
     return res.status(500).send(err);
-  }
+  };
 };
 
 module.exports = createPost;

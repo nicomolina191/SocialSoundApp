@@ -18,9 +18,11 @@
 }
 
 .containerProfileData {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 1px 5px 25px 4px rgba(0, 0, 0, 0.7);
 }
 
 .containerImgName {
@@ -71,7 +73,7 @@
   position: absolute;
   color: white;
   font-size: 13.5px;
-  font-weight: 100;
+  font-weight: 200;
   bottom: -25px;
 }
 
@@ -106,6 +108,13 @@
 .playFollowContainer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.playFollowMessageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .playFollowContainer .playButton:hover {
