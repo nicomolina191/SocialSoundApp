@@ -3,6 +3,7 @@ import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
+import ButtonSupport from '../buttonSupport/ButtonSupport'
 import { useAuth } from '../../context';
 import { db } from '../../firebase'
 import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
@@ -114,6 +115,7 @@ const SideBar = ({userDB}) => {
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>ME</h4>
                 <li className={s.optionItem}> <Upload/> </li>
+                <li className={s.optionItem}> <ButtonSupport/> </li>
                 <li className={s.optionItem} onClick={() => {
               logout();
               navigate("/login");
