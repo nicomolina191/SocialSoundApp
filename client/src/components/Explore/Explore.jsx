@@ -154,11 +154,11 @@ const Explore = () => {
                   For you.
                 </Typography>
 
-                {posts.length === 0 ? (
+                {posts?.length === 0 ? (
                   <h1 className={styles.noResultsText}>No results</h1>
                 ) : (
                   <Stack spacing={0} sx={{ marginTop: "20px" }}>
-                    {posts.length > 0 &&
+                    {posts?.length > 0 &&
                       posts?.map((post, i) => <Post key={i} post={post} />)}
                   </Stack>
                 )}

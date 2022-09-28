@@ -6,14 +6,18 @@ const getUserByIdGoogleAdmin = async (req, res) => {
   try {
     const user = await Users.findOne({
       where: { idgoogle },
-      include: [
-        {
-          model: Genres,
-          attributes: ["name"],
-          through: { attributes: [] },
-        },
-      ],
-      paranoid: false,
+      include: [{
+        model: Genres,
+        attributes: ['name'],
+        through: { attributes: [] }
+      },
+      {
+        model: Users,
+        as: 'FollowingUsers',
+        attributes: ['id', 'username', 'avatar'],
+        through: { attributes: [] }
+      }],
+      paranoid: false
     });
 
     return res.json(user);
