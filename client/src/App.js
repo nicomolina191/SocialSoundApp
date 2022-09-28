@@ -86,11 +86,6 @@ function App() {
            <PostContainer />
            </ProtectedRoute>
            }/>
-           <Route path="/user/pleasures" element={
-              <ProtectedRoute>
-           <Pleasures />
-           </ProtectedRoute>
-           }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
            <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
            <Route path="/admin/posts" element={<ProtectedRoute><AdminPosts /></ProtectedRoute>} />
