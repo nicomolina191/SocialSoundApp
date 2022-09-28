@@ -6,8 +6,8 @@ import style from "./admin.module.css"
 const UsersPerfil = ({user}) => {
     const [colorUser, setColorUser] = useState("white")
     useEffect(() => {
-        if(user.role === "Admin") return setColorUser("var(--second-page-color)")
-        if(user.isBanned) return setColorUser("red")
+      if(user.isBanned) return setColorUser("red")
+      if(user.role === "Admin") return setColorUser("var(--second-page-color)")
         if(user.plan === "Premium") return setColorUser("yellow")
     }, [user])
     

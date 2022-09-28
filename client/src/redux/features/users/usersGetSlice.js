@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes  } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres } from "./usersSlice";
 
 
 //obtener los users
@@ -30,6 +30,21 @@ export const updateUser = (id, body) => {
       const response = await axios.put(`/users/${id}`, body);
       if (response) {
         dispatch(updateUsers());
+        dispatch(getUser());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const setUserGenres = (body) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(`/users/set/genres`, body);
+      console.log(response.data);
+      if (response) {
+        dispatch(setGenres());
         dispatch(getUser());
       }
     } catch (error) {

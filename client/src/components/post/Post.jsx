@@ -17,6 +17,7 @@ import axios from "axios";
 import CommentsContainer from "../commentsContainer/CommentsContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Audio from "../Audio/Audio.jsx";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -205,9 +206,24 @@ export default function Post({ post, comments, margin }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-      <Grid item className={style.playerWrapper}>
-        <ReactPlayer url={post.content} controls className={style.reactPlayer} width="100%" height="100%" />
-      </Grid>
+      
+      { user?.name && post?.type === 'video' &&
+        <Grid item className={style.playerWrapper}>
+          <ReactPlayer
+          url={post.content}
+          controls
+          className={style.reactPlayer}
+          width="100%"
+          height="100%"
+          />
+        </Grid>
+      }
+      { user?.name && post?.type === 'audio' &&
+        <Audio 
+        song={post} 
+        artist={user}
+        />
+      }
       <Grid item container justifyContent="space-between">
         <Grid item>
           <Typography variant="body2">

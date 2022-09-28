@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import {
   createUserWithEmailAndPassword,
+  getAdditionalUserInfo,
   GoogleAuthProvider,
   onAuthStateChanged,
   sendPasswordResetEmail,
@@ -22,7 +23,6 @@ export function AuthProvider({ children }) {
   const [userFirebase, setUserFirebase] = useState(null);
   const [loading, setLoading] = useState(true)
   
-
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -37,8 +37,9 @@ export function AuthProvider({ children }) {
 
   const loginWithGoogle = () => {
     const googleProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider)
   };
+
 
   const resetPassword = async (email) => sendPasswordResetEmail(auth, email);
 
@@ -59,7 +60,9 @@ export function AuthProvider({ children }) {
         logout,
         loginWithGoogle,
         resetPassword,
-        userFirebase,loading,
+        getAdditionalUserInfo,
+        userFirebase,
+        loading
       }}
     >
       {children}
