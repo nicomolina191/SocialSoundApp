@@ -8,6 +8,7 @@ import {
   Grid,
   Slide,
   SvgIcon,
+  TextField,
   Typography,
 } from "@mui/material";
 import ReactPlayer from "react-player";
@@ -35,13 +36,14 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
-import { deletePost } from "../../redux/features/post/postGetSlice";
+import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
+import share from '../../images/logoiconbg.png'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Post({ post, comments, margin }) {
+export default function Post({ post, comments, margin, border }) {
   const shareURL = `www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
   const [user, setUser] = useState();
@@ -66,6 +68,11 @@ export default function Post({ post, comments, margin }) {
   const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openReport, setOpenReport] = useState(false);
+  const [motiveReport, setMotiveReport] = useState();
+  const [detailsReport, setDetailsReport] = useState();
+  const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
+  const [descriptionShare, setDescriptionShare] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,6 +88,22 @@ export default function Post({ post, comments, margin }) {
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
+  };
+
+  const handleClickOpenReport = () => {
+    setOpenReport(true);
+  };
+
+  const handleCloseReport = () => {
+    setOpenReport(false);
+  };
+
+  const handleClickOpenShareInMyProfile = () => {
+    setOpenShareInMyProfile(true);
+  };
+
+  const handleCloseShareInMyProfile = () => {
+    setOpenShareInMyProfile(false);
   };
 
   async function getLikes() {
@@ -147,7 +170,8 @@ export default function Post({ post, comments, margin }) {
   }, [post]);
 
   return (
-    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin}>
+    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
+      {/* <Post post={post}/> */}
       <Grid item container spacing={1} justifyContent="space-between">
         <Grid item container spacing={2} className={style.avatarName}>
           <Grid item>
@@ -181,7 +205,7 @@ export default function Post({ post, comments, margin }) {
             className={style.dialog}
             PaperProps={{
               style: {
-                backgroundColor: "#000A1F",
+                backgroundColor: "#011f40",
                 color: "#1976FA",
                 padding: "1%",
               },
@@ -206,22 +230,22 @@ export default function Post({ post, comments, margin }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-      
-      { user?.name && post?.type === 'video' &&
+
+      {user?.name && post?.type === 'video' &&
         <Grid item className={style.playerWrapper}>
           <ReactPlayer
-          url={post.content}
-          controls
-          className={style.reactPlayer}
-          width="100%"
-          height="100%"
+            url={post.content}
+            controls
+            className={style.reactPlayer}
+            width="100%"
+            height="100%"
           />
         </Grid>
       }
-      { user?.name && post?.type === 'audio' &&
-        <Audio 
-        song={post} 
-        artist={user}
+      {user?.name && post?.type === 'audio' &&
+        <Audio
+          song={post}
+          artist={user}
         />
       }
       <Grid item container justifyContent="space-between">
@@ -269,7 +293,7 @@ export default function Post({ post, comments, margin }) {
                 className={style.dialog}
                 PaperProps={{
                   style: {
-                    backgroundColor: "#000A1F",
+                    backgroundColor: "#011f40",
                     color: "#1976FA",
                     padding: "1%",
                   },
@@ -278,23 +302,58 @@ export default function Post({ post, comments, margin }) {
                 <h2>Share!</h2>
 
                 <DialogContent className={style.dialogContent}>
+                  <button style={{ width: 42, height: 46, margin: `2%`, border: 'none' }} onClick={handleClickOpenShareInMyProfile}>
+                    <Avatar src={share} sx={{ width: 42, height: 42 }} />
+                  </button>
+                  <Dialog
+                    open={openShareInMyProfile}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                    className={style.dialog}
+                    PaperProps={{
+                      style: {
+                        backgroundColor: "#011f40",
+                        color: "#1976FA",
+                        padding: "1%",
+                      },
+                    }}
+                  >
+                    <h2>Add a description if you want!</h2>
+
+                    <DialogContent className={style.dialogContent}>
+                      <TextField label="Description" variant="standard" fullWidth value={descriptionShare} onChange={(e) => setDescriptionShare(e.target.value)} />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseShareInMyProfile} className={style.button}>
+                        Close
+                      </Button>
+                      <Button onClick={() => {
+                        handleCloseShareInMyProfile()
+                        dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: post.idUser }))
+                      }} className={style.button}>
+                        Share
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   <FacebookShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <FacebookIcon size={32} round={true} />
+                    <FacebookIcon size={42} round={true} />
                   </FacebookShareButton>
                   <TwitterShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <TwitterIcon size={32} round={true} />
+                    <TwitterIcon size={42} round={true} />
                   </TwitterShareButton>
                   <TelegramShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <TelegramIcon size={32} round={true} />
+                    <TelegramIcon size={42} round={true} />
                   </TelegramShareButton>
                   <WhatsappShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <WhatsappIcon size={32} round={true} />
+                    <WhatsappIcon size={42} round={true} />
                   </WhatsappShareButton>
                   <LinkedinShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <LinkedinIcon size={32} round={true} />
+                    <LinkedinIcon size={42} round={true} />
                   </LinkedinShareButton>
                   <EmailShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <EmailIcon size={32} round={true} />
+                    <EmailIcon size={42} round={true} />
                   </EmailShareButton>
                 </DialogContent>
                 <DialogActions>
@@ -317,6 +376,49 @@ export default function Post({ post, comments, margin }) {
                 </button>
               </Link>
             )}
+          </Grid>
+          <Grid item>
+            <button onClick={handleClickOpenReport}>
+              <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
+                <path d="M476.3 0c-6.365 0-13.01 1.35-19.34 4.233c-45.69 20.86-79.56 27.94-107.8 27.94c-59.96 0-94.81-31.86-163.9-31.87c-34.63 0-77.87 8.003-137.2 32.05V24C48 10.75 37.25 0 24 0S0 10.75 0 24v464C0 501.3 10.75 512 24 512s24-10.75 24-24v-104c53.59-23.86 96.02-31.81 132.8-31.81c73.63 0 124.9 31.78 198.6 31.78c31.91 0 68.02-5.971 111.1-23.09C504.1 355.9 512 344.4 512 332.1V30.73C512 11.1 495.3 0 476.3 0zM464 319.8c-30.31 10.82-58.08 16.1-84.6 16.1c-30.8 0-58.31-7-87.44-14.41c-32.01-8.141-68.29-17.37-111.1-17.37c-42.35 0-85.99 9.09-132.8 27.73V84.14l18.03-7.301c47.39-19.2 86.38-28.54 119.2-28.54c28.24 .0039 49.12 6.711 73.31 14.48c25.38 8.148 54.13 17.39 90.58 17.39c35.43 0 72.24-8.496 114.9-26.61V319.8z" />
+              </SvgIcon>
+            </button>
+            <Grid item className={style.dialogContainer}>
+              <Dialog
+                fullWidth={true}
+                maxWidth="xs"
+                open={openReport}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseReport}
+                aria-describedby="alert-dialog-slide-description"
+                className={style.dialog}
+                PaperProps={{
+                  style: {
+                    backgroundColor: "#011f40",
+                    color: "#1976FA",
+                    padding: "1%",
+                  },
+                }}
+              >
+                <h2>Report this post</h2>
+
+                <DialogContent className={style.dialogContent}>
+                  <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} />
+                </DialogContent>
+                <DialogContent className={style.dialogContent}>
+                  <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={async () => {
+                    handleCloseReport()
+                    await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: user.id, idPost: post.id })
+                  }} className={style.button}>
+                    Send
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
