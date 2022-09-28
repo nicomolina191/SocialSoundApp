@@ -11,9 +11,16 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import SupportForm from "./components/supportForm/SupportForm";
 import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
-import Admin from "./components/admin/Admin";
+import AdminUsers from "./components/admin/usersPerfil/AdminUsers";
 import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
+import Pleasures from "./components/userGenresPleasures/Pleasures";
+import Admin from "./components/admin/adminHome/Admin";
+import AdminPosts from "./components/admin/posts/AdminPosts";
+
+
+
+
 
 function App() {
   return (
@@ -80,6 +87,8 @@ function App() {
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+           <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
+           <Route path="/admin/posts" element={<ProtectedRoute><AdminPosts /></ProtectedRoute>} />
            <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
         </Routes>
       </AuthProvider>

@@ -3,7 +3,7 @@ const { Users } = require('../../db.js');
 const updateBanUser = async (req, res) => {
 
   const { id, isBanned } = req.body;
-
+  
   try {
 
     let user = await Users.findByPk(id);

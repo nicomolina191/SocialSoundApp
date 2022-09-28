@@ -6,7 +6,8 @@ const initialState = {
   possListAll: [],
   post: {},
   isLoading: true,
-  error: false
+  error: false,
+  reportedPosts: []
 };
 
 export const postSlice = createSlice({
@@ -75,11 +76,17 @@ export const postSlice = createSlice({
         ...state,
         post:{}
       }
+    },
+        getPostsReported : (state, action) =>{
+      return {
+        ...state,
+        reportedPosts: action.payload
+      }
     }
   }
 });
 
 
-export const { addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } = postSlice.actions;
+export const {getPostsReported, addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } = postSlice.actions;
 
 export default postSlice.reducer;
