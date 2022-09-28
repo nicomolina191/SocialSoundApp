@@ -5,12 +5,18 @@ import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { postsReported } from '../../../redux/features/post/postGetSlice';
+import { Arrow } from '../../componentsIcons';
+import { useNavigate } from 'react-router-dom';
 
 
 const AdminPosts = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-
+  const dispatch = useDispatch()
+  const posts = useSelector(state => state.posts.reportedPosts)
+  const navigate = useNavigate()
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -18,10 +24,14 @@ const AdminPosts = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-
+  
+  useEffect(() => {
+    dispatch(postsReported())
+  }, [])
+  
   return (
   <Box className={style.adminPostsContainer}>
+    <Button onClick={() => navigate("/admin")} className={style.arrow}><Arrow/></Button>
     <Box className={style.divMobileStepper}>
         <MobileStepper 
       variant="dots"
@@ -42,7 +52,9 @@ const AdminPosts = () => {
         </Button>
       }
     /></Box>
+    <Box>
 
+    </Box>
 
     </Box>
   )

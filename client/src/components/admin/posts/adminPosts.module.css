@@ -21,3 +21,14 @@
     align-items: center;
     justify-content: center;
 }
+
+.arrow {
+    opacity: 0.5 !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+}
+
+.arrow:hover {
+    opacity: 1 !important;
+}

@@ -9,46 +9,38 @@ import { getUser } from '../../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import axios from 'axios'
+import { axiosIsBanned, axiosPremium, axiosRole } from '../utils';
 
 const AdminUsers = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const arrUsers = useSelector(state => state.users.usersListAll)
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [userSelected, setUserSelected] = useState({})
   //componente con dos opciones para intercalar entre usuarios y reportes
   //buscar los post por titulo del post nombre del que lo subio y el usuario que lo reporto
   useEffect(() => {
     dispatch(getUser())
-  }, [dispatch, userSelected])
-
-  useEffect(() =>  {
-    axios.put(`/users/admin/${userSelected.idgoogle}`,{
-      ...userSelected
-    })
-    dispatch(getUser())
     setLoading(false)
-  }, [userSelected])
+  }, [dispatch, userSelected])
   
   
 const formatResult = (user) => <UsersPerfil user={user} setUserSelected={setUserSelected}/>
 
-const handleRole = () => {
+const handleRole = async() => {
   setLoading(true)
-  if(userSelected?.role === "Admin") setUserSelected({...userSelected, role:"User"})
-  else if(userSelected?.role === "User") setUserSelected({...userSelected, role:"Admin"})
-}
-const handleBan = () => {
-  setLoading(true)
-  if(userSelected?.isBanned) setUserSelected({...userSelected, isBanned: false})
-  else if(!userSelected?.isBanned) setUserSelected({...userSelected,isBanned: true})
+  axiosRole(userSelected, setUserSelected)
 }
 
-const handlePremium = () => {
+const handleBan = async() => {
   setLoading(true)
-  if(userSelected?.isPremium) setUserSelected({...userSelected, isPremium: false})
-  else if(!userSelected?.isPremium) setUserSelected({...userSelected, isPremium: true})
+  axiosIsBanned(userSelected, setUserSelected)
+}
+
+const handlePremium = async() => {
+  setLoading(true)
+  axiosPremium(userSelected, setUserSelected)
 }
 
 //modal para verificar el baneo handleBan y handleRole usarlos para mostrar el modal, Se cambia el valor al traer todos los usuarios
@@ -56,7 +48,8 @@ const handlePremium = () => {
   return (
     <Box className={style.backgroundAdmin}>
       <Box className={style.containerOptions}>
-        <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)", borderRadius: "10px"}} onClick={() => navigate("/admin")}><Arrow/></Button>
+        <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)",
+         borderRadius: "10px"}} onClick={() => navigate("/admin")}><Arrow/></Button>
         <Box className={style.userSelectedDiv}>
           {userSelected?.avatar && <Avatar src={userSelected?.avatar} />}
 
@@ -69,7 +62,7 @@ const handlePremium = () => {
       className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
       
       {userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 
-      className={style.buttonUser} name={"isPremium"} disable={`${loading}`}>IsPremium: {userSelected?.isPremium ? "Yes": "No"}</Button>}
+      className={style.buttonUser} name={"plan"} disable={`${loading}`}>IsPremium: {userSelected?.plan}</Button>}
         </Box>
       </Box>
       <Box className={style.usersContainer}>

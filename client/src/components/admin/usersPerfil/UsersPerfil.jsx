@@ -8,7 +8,7 @@ const UsersPerfil = ({user}) => {
     useEffect(() => {
       if(user.isBanned) return setColorUser("red")
       if(user.role === "Admin") return setColorUser("var(--second-page-color)")
-        if(user.plan === "Premium") return setColorUser("yellow")
+      if(user.plan === "Premium") return setColorUser("yellow")
     }, [user])
     
   return (
