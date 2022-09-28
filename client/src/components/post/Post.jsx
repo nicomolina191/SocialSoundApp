@@ -36,6 +36,7 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
+import Video from "../Video/Video";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -204,15 +205,10 @@ export default function Post({ post, comments, margin }) {
       </Grid>
       
       { user?.name && post?.type === 'video' &&
-        <Grid item className={style.playerWrapper}>
-          <ReactPlayer
-          url={post.content}
-          controls
-          className={style.reactPlayer}
-          width="100%"
-          height="100%"
-          />
-        </Grid>
+        <Video
+        song={post}
+        artist={user}
+        />
       }
       { user?.name && post?.type === 'audio' &&
         <Audio 
