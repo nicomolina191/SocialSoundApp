@@ -14,11 +14,6 @@ import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
 import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
-import Pleasures from "./components/userGenresPleasures/Pleasures";
-
-
-
-
 
 function App() {
   return (
@@ -82,11 +77,6 @@ function App() {
            <Route path="/home/post/:idPost" element={
               <ProtectedRoute>
            <PostContainer />
-           </ProtectedRoute>
-           }/>
-           <Route path="/user/pleasures" element={
-              <ProtectedRoute>
-           <Pleasures />
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
