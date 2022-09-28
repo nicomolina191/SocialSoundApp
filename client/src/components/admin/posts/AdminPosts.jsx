@@ -7,8 +7,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 
+
 const AdminPosts = () => {
-    
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -25,29 +25,20 @@ const AdminPosts = () => {
     <Box className={style.divMobileStepper}>
         <MobileStepper 
       variant="dots"
-      position={"top"}
       steps={6}
       activeStep={activeStep}
       sx={{ maxWidth: 400, flexGrow: 1 }}
       className={style.carousel}
       nextButton={
-        <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
+        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={activeStep === 5}>
           Next
-          {/* {theme.direction === 'rtl' ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )} */}
+          <KeyboardArrowRight/>
         </Button>
       }
       backButton={
-        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-         {/*  {theme.direction === 'rtl' ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}*/}
-          Back 
+        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <KeyboardArrowLeft/>
+          Back
         </Button>
       }
     /></Box>

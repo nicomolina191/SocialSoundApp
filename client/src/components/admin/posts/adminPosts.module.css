@@ -9,8 +9,9 @@
 }
 
 .carousel {
-    width: 100% !important;
     height: 50px !important;
+    position: relative !important;
+    border-radius: 10px;
 }
 
 .divMobileStepper {
@@ -18,4 +19,5 @@
     height: auto;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
