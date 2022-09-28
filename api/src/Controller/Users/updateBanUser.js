@@ -2,14 +2,15 @@ const { Users } = require('../../db.js');
 
 const updateBanUser = async (req, res) => {
 
-  const { id, isBanned } = req.body;
-
+  const { id, isBanned, reasonBan } = req.body;
+  
   try {
 
     let user = await Users.findByPk(id);
 
     user.update({
-      isBanned
+      isBanned,
+      reasonBan
     });
 
     await user.save();
