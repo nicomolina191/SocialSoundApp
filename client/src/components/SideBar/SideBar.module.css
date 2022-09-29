@@ -134,4 +134,20 @@ a{
     background-color: white;
     color: black;
     border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    text-align: center;
 }
+
+.ratingText {
+    margin-bottom: 10px;
+}
+
+.descriptionText {
+    margin-top: 10px;
+}
+
+.reviewText textarea {
+    color: black !important;
+}
+

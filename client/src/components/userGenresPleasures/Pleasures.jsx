@@ -12,7 +12,7 @@ import { setUserGenres } from "../../redux/features/users/usersGetSlice";
 
 const Pleasures = () => {
   const dispatch = useDispatch();
-  const genres = useSelector((state) => state.genres.genreList).slice(1);
+  const genres = useSelector((state) => state?.genres?.genreList).slice(1);
   const currentUser = useSelector((state) => state.users.currentUser);
   const [genresSelected, setGenresSelected] = useState({
     id: currentUser.id,

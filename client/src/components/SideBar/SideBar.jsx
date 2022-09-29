@@ -11,6 +11,7 @@ import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
 import { Rating, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 
 
@@ -40,6 +41,7 @@ const SideBar = ({userDB}) => {
   const [showForm, setShowForm] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
+  const [open, setOpen] = useState(false);
   const [input, setInput] = useState({
       userId: userFirebase?.auth?.currentUser?.uid,
       name: userFirebase?.auth?.currentUser?.displayName,
@@ -68,10 +70,9 @@ const SideBar = ({userDB}) => {
     })
 };
 
-  const handleButton = (e) => {
-    setShowForm(true);
-    setShowButton(false);
-  };
+const handleButton = (e) => {
+  setOpen(true)
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,7 +81,13 @@ const SideBar = ({userDB}) => {
     await axios.post('/reviews', input);
     setShowForm(false);
     setShowText(true);
+    setShowButton(false);
+    setOpen(false);
   }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
         <div className={s.sidebar}>
@@ -127,16 +134,16 @@ const SideBar = ({userDB}) => {
 
             </ul>
             {
-              showForm && (
-                <div>
-                  <form className={s.form} onSubmit={(e) => handleSubmit(e)} >
-                    <p>Choose the rating:</p>
+              <Dialog onClose={handleClose} open={open}>
+                <div className={s.form}>
+                  <form onSubmit={(e) => handleSubmit(e)} >
+                    <p className={s.ratingText}>Choose the rating:</p>
                     <Rating
                     name="rating"
                     value={input.rating}
                     onChange={(e) => handleChange(e)} 
                     />
-                    <p>Write your review below:</p>
+                    <p className={s.descriptionText}>Write your review below:</p>
                     <TextField 
                     className={s.reviewText}
                     type="multiline"
@@ -144,7 +151,7 @@ const SideBar = ({userDB}) => {
                     required={true}
                     autoComplete="off"
                     variant="standard"
-                    size='normal'
+                    style = {{width: 350}}
                     label="Description"
                     name="description"
                     rows={4}
@@ -156,7 +163,7 @@ const SideBar = ({userDB}) => {
                     </div>
                   </form>
                 </div>
-              )
+              </Dialog>
             }
             {
               showButton && (
