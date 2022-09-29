@@ -24,7 +24,8 @@ export const playerSlice = createSlice({
       set: (state, action) => {
         return {
             ...state,
-            tracks: action.payload
+            tracks: action.payload,
+            currentTrackIndex: 0
         }
       },
       add: (state, action) => {
