@@ -7,7 +7,7 @@ import Pleasures from "../components/userGenresPleasures/Pleasures"
 
 const ProtectedRoute = ({ children }) => {
   const { userFirebase, loading, logout } = useAuth();
-  const pleasures = useSelector(state => state.users.currentUser.genres)
+  const pleasures = useSelector(state => state?.users?.currentUser?.genres)
   const user = useSelector(state => state?.users?.currentUser)
   const urls = ['/admin', '/admin/users', '/admin/posts', '/admin/users/', '/admin/posts/']
   const {pathname} = useLocation()
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
 
   if(pleasures?.length < 1) return <Pleasures />
   
-  if(urls.some(act => act === pathname) && user?.role !== "Admin" && !loading) return <Navigate to="/home" />
+  if(urls?.some(act => act === pathname) && user?.role !== "Admin" && !loading) return <Navigate to="/home" />
 
   if(user?.isBanned) {
     setTimeout(function(){
