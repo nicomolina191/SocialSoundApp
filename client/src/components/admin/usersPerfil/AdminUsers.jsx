@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from '../../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
-import axios from 'axios'
 import { axiosIsBanned, axiosPremium, axiosRole } from '../utils';
 
 const AdminUsers = () => {
@@ -18,8 +17,12 @@ const AdminUsers = () => {
 
   const [loading, setLoading] = useState(true)
   const [userSelected, setUserSelected] = useState({})
+  const [formBan, setFormBan] = useState({})
+  const [showForm, setShowForm] = useState(false)
+
   //componente con dos opciones para intercalar entre usuarios y reportes
   //buscar los post por titulo del post nombre del que lo subio y el usuario que lo reporto
+
   useEffect(() => {
     dispatch(getUser())
     setLoading(false)
@@ -33,20 +36,21 @@ const handleRole = async() => {
   axiosRole(userSelected, setUserSelected)
 }
 
-const handleBan = async() => {
-  setLoading(true)
-  axiosIsBanned(userSelected, setUserSelected)
-}
-
 const handlePremium = async() => {
   setLoading(true)
   axiosPremium(userSelected, setUserSelected)
 }
 
+const handleBan = async() => {
+  setLoading(true)
+  axiosIsBanned(userSelected, setUserSelected)
+}
 //modal para verificar el baneo handleBan y handleRole usarlos para mostrar el modal, Se cambia el valor al traer todos los usuarios
 
   return (
     <Box className={style.backgroundAdmin}>
+      {showForm && <Box onClick={() => setShowForm(false)} className={style.modalBackground}>
+      <Box className={style.modal}></Box></Box>}
       <Box className={style.containerOptions}>
         <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)",
          borderRadius: "10px"}} onClick={() => navigate("/admin")}><Arrow/></Button>
@@ -58,7 +62,7 @@ const handlePremium = async() => {
       {userSelected?.name && <Button onClick={() => handleRole()} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"role"} disable={`${loading}`}>Role: {userSelected?.role}</Button>}
 
-      {userSelected?.name && <Button onClick={() => handleBan()} sx={{textTransform: "none"}} 
+      {userSelected?.name && <Button onClick={() => setShowForm(true)} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
       
       {userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 

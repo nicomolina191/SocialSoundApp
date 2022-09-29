@@ -17,6 +17,7 @@ import Sucess from "./components/sucess/Sucess";
 import Pleasures from "./components/userGenresPleasures/Pleasures";
 import Admin from "./components/admin/adminHome/Admin";
 import AdminPosts from "./components/admin/posts/AdminPosts";
+import Banned from "./components/banned/Banned";
 
 
 
@@ -89,6 +90,7 @@ function App() {
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
            <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
            <Route path="/admin/posts" element={<ProtectedRoute><AdminPosts /></ProtectedRoute>} />
+           <Route path="/youAreBanned" element={<ProtectedRoute><Banned /></ProtectedRoute>} />
            <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
