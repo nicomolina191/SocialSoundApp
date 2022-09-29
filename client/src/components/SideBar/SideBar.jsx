@@ -76,6 +76,7 @@ const SideBar = ({userDB}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(input);
+    if (input.rating === '') return alert("Please choose a rating for the review");
     await axios.post('/reviews', input);
     setShowForm(false);
     setShowText(true);

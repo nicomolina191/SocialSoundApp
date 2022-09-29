@@ -18,6 +18,7 @@
         "@testing-library/jest-dom": "^5.11.10",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^13.1.1",
+        "@videojs/themes": "^1.0.1",
         "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
         "axios": "^0.27.2",
         "babel-plugin-macros": "^3.1.0",
@@ -26,6 +27,7 @@
         "firebase": "^9.10.0",
         "firebase-admin": "^11.0.1",
         "is-react": "^1.5.4",
+        "jol-player": "^3.5.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-h5-audio-player": "^3.8.6",
@@ -65,5 +67,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "video.js": "^7.20.3"
     }
 }

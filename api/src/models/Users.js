@@ -42,6 +42,9 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      reasonBan: {
+        type: DataTypes.TEXT,
+      },
       avatar: {
         type: DataTypes.TEXT,
         defaultValue:
