@@ -12,13 +12,13 @@ export const playerSlice = createSlice({
       next: (state, action) => {
         return {
           ...state,
-          currentTrackIndex: currentTrackIndex < tracks.length - 1 ? currentTrackIndex + 1 : 0
+          currentTrackIndex: state.currentTrackIndex < state.tracks.length - 1 ? state.currentTrackIndex + 1 : 0
         };
       },
       previous: (state, action) => {
         return {
             ...state,
-            currentTrackIndex: currentTrackIndex === 0 ? tracks.length - 1 : currentTrackIndex - 1
+            currentTrackIndex: state.currentTrackIndex === 0 ? state.tracks.length - 1 : state.currentTrackIndex - 1
         }
       },
       set: (state, action) => {
