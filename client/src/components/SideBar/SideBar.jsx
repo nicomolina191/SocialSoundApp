@@ -3,6 +3,7 @@ import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
+import ButtonSupport from '../buttonSupport/ButtonSupport'
 import { useAuth } from '../../context';
 import { db } from '../../firebase'
 import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
@@ -40,9 +41,9 @@ const SideBar = ({userDB}) => {
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
   const [input, setInput] = useState({
-      userId: userFirebase.auth.currentUser.uid,
-      name: userFirebase.auth.currentUser.displayName,
-      avatar: userFirebase.auth.currentUser.photoURL,
+      userId: userFirebase?.auth?.currentUser?.uid,
+      name: userFirebase?.auth?.currentUser?.displayName,
+      avatar: userFirebase?.auth?.currentUser?.photoURL,
       rating: '',
       description: '',
   });
@@ -50,6 +51,7 @@ const SideBar = ({userDB}) => {
   const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
 
   useEffect(() => {
+    
     const getReviews = async () => {
         let allReviews = await axios.get('/reviews');
         if (allReviews.data.find(r => r.userId === input.userId.toString())) {
@@ -113,6 +115,7 @@ const SideBar = ({userDB}) => {
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>ME</h4>
                 <li className={s.optionItem}> <Upload/> </li>
+                <li className={s.optionItem}> <ButtonSupport/> </li>
                 <li className={s.optionItem} onClick={() => {
               logout();
               navigate("/login");

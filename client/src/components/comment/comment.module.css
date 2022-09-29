@@ -1,0 +1,14 @@
+.comment .button{
+    background-color: red;
+    color: white;
+    width: 23px;
+    border-radius: 3px;
+}
+
+.comment .button:hover{
+    background-color: rgb(201, 0, 0);
+}
+
+.comment .buttonContainer{
+    margin-left: 2%;
+}

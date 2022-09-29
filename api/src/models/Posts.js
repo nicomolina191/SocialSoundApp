@@ -17,6 +17,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        cover: {
+            type: DataTypes.STRING
+        },
         content: {
             type: DataTypes.TEXT,
             allowNull: false
@@ -31,6 +34,9 @@ module.exports = (sequelize) => {
         postDate: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
+        },
+        isShared: {
+            type: DataTypes.STRING,
         }
     }, {
         timestamps: false
