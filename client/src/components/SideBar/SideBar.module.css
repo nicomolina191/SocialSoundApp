@@ -129,3 +129,9 @@ a{
 .textReview {
     font-size: 18px;
 }
+
+.form {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+}
