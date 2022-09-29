@@ -100,7 +100,7 @@ const Pleasures = () => {
             flexWrap="wrap"
             sx={{ height: "180px", width: "810px", margin: "20px 0" }}
           >
-            {currentGenres.map((genre, key) => {
+            {currentGenres?.map((genre, key) => {
               return (
                 <div key={key} className={styles.genresContainer}>
                   <input
