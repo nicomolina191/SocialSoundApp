@@ -1,0 +1,25 @@
+.banned {
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-page-color);
+    color: white;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.titleContainer {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reasonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
