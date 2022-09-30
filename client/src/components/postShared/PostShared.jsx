@@ -232,9 +232,9 @@ export default function PostShared({ postShared, margin }) {
                 <Typography variant="body1">{postShared.description}</Typography>
             </Grid>
             <Grid item className={`${style2.postShared}`}>
-                {post ? <Link to={`/home/post/${post?.id}`}><Post post={post} border={{ border: '1px solid #02b599' }} /></Link> : 'This post is not longer available.'}
+                {post ? <Post post={post} border={{ border: '1px solid #02b599' }} margin={'0px'} /> : 'This post is not longer available.'}
             </Grid>
-            <Grid item>
+            <Grid item style={{marginTop:'-30px'}}>
                 <Typography variant="body2">
                     {date &&
                         `${date.split(" ")[1].split(":")[0]}:${date.split(" ")[1].split(":")[1]
