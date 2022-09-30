@@ -13,6 +13,8 @@ import {
   SvgIcon,
   TextField,
   Typography,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import style from "./post.module.css";
 import { useEffect } from "react";
@@ -73,6 +75,7 @@ export default function Post({ post, comments, margin, border }) {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openReport, setOpenReport] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [motiveReport, setMotiveReport] = useState();
   const [detailsReport, setDetailsReport] = useState();
   const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
@@ -142,6 +145,10 @@ export default function Post({ post, comments, margin, border }) {
     setLike(!like);
     setClick(!click);
     if(!like) notification()
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   useEffect(() => {
@@ -291,12 +298,18 @@ export default function Post({ post, comments, margin, border }) {
                     await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: user.id, idPost: post.id })
                     setMotiveReport('')
                     setDetailsReport('')
+                    setOpenAlert(true)
                   }} className={style.button}>
                     Send
                   </Button>
                 </DialogActions>
               </Dialog>
             </Grid>
+            <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+              <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+                Thanks for the report, we'll check it out!
+              </Alert>
+            </Snackbar>
             {
               currentUser.role === 'Admin' || currentUser.id === post.userId ? <MenuItem onClick={handleClickOpenDelete} disableRipple>
                 <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="20 0 552 512" className={style.icon}>
