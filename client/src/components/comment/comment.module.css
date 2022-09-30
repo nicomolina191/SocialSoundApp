@@ -10,5 +10,20 @@
 }
 
 .comment .buttonContainer{
-    margin-left: 2%;
+    margin-left: 1%;
+}
+
+.comment .buttonDelete {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.comment .buttonDelete:hover {
+    background: none;
+}
+
+.comment .icon{
+    color: #C4C4C4;
 }

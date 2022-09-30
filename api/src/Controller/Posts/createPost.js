@@ -11,7 +11,7 @@ const createPost = async (req, res) => {
       content,
       type,
       cover,
-      isShared,
+      idShared,
     });
 
     const user = await Users.findByPk(userId);
