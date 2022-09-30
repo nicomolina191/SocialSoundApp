@@ -6,7 +6,8 @@ const updateUser = async (req, res) => {
   const { name, username, avatar, banner } = req.body;
 
   try {
-    let user = await Users.findOne({ where: { id } });
+
+    const user = await Users.findByPk(id);
 
     user.update({
       name,

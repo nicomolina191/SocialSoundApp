@@ -8,11 +8,12 @@ import { createUserNotification } from '../../redux/features/users/usersGetSlice
 import Comment from '../comment/Comment'
 import style from './commentsContainer.module.css'
 
-export default function CommentsContainer({ post , idPost }) {
+export default function CommentsContainer({ post }) {
     const currentUser = useSelector(state => state.users.currentUser)
     const [comment, setComment] = useState('')
     const [comments, setComments]=useState()
     const dispatch = useDispatch();
+
 
     const notification = async() => {
         if(currentUser.id !== post.userId){
@@ -31,7 +32,7 @@ export default function CommentsContainer({ post , idPost }) {
    
     const handleComment = async () => {
         if (comment) {
-            await axios.post('/comments',{content:comment, idPost, idUser: currentUser.id})
+            await axios.post('/comments', { content: comment, idPost: post.id, idUser: currentUser.id })
             setComment('')
         }
         
@@ -39,14 +40,15 @@ export default function CommentsContainer({ post , idPost }) {
         await notification()
     }
 
-    async function getComments(){
-        const res =await axios.get(`/comments/${idPost}`)
+    async function getComments() {
+        const res = await axios.get(`/comments/${post.id}`)
+        console.log(res.data);
         setComments(res.data)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getComments()
-    },[])
+    }, [])
 
     return (
         <Grid container direction="column" alignSelf="center" className={style.commentsContainer}>
@@ -57,7 +59,7 @@ export default function CommentsContainer({ post , idPost }) {
             <Grid item mt={`2%`}>
                 {
                     comments?.length > 0 ?
-                        comments.slice(0).reverse().map((comment, i) => <Comment key={i} content={comment.content} userId={comment.userId} />)
+                        comments.slice(0).reverse().map((comment, i) => <Comment key={i} content={comment.content} userId={comment.userId} commentId={comment.id} getComments={async () => await getComments()} currentUser={currentUser} post={post} />)
                         :
                         ''
                 }

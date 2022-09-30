@@ -7,7 +7,7 @@ import s from './Upload.module.css'
 import { storage } from '../../firebase.js'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux';
-import { createdPost } from '../../redux/features/post/postGetSlice';
+import { createdPost, getPost } from '../../redux/features/post/postGetSlice';
 import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
@@ -88,11 +88,25 @@ export default function Upload() {
               : setPostData({...postData, [name]: value})
     };
 
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     async function handleSubmit(e){
       e.preventDefault()
-      postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover
-      ? dispatch(createdPost({...postData, idUser: currentUser.id}))
-      : alert('Check the information')
+      if(postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover){
+        await dispatch(createdPost({...postData, idUser: currentUser.id}))
+        setPostData({
+        title: '',
+        description: '',
+        content: '',
+        cover: null,
+        type: '',
+        genres: []
+        })
+        setFileNames({cover: '', content: ''})
+        handleClose()
+      } else alert('Check the information')
     }
 
     const theme = useTheme();
@@ -113,13 +127,10 @@ export default function Upload() {
         setOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    
 
   return (
     <div>
-      {console.log(currentUser)}
       <button className={s.newPostBtn} onClick={handleClickOpen}> <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fillRule="evenodd" clipRule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
         </svg> New Post...</button>
@@ -130,6 +141,9 @@ export default function Upload() {
                     <ul className={s.formInputs}>
                         <li><TextField className={s.titleInput} required value={postData.title} name='title' onChange={handleChange} id="standard-basic" label="Song title" variant="standard" /></li>
                         <li> <TextField
+                            value={postData.description}
+                            onChange={handleChange}
+                            name='description'
                             className={s.description}
                             id="standard-multiline-static"
                             label="Description"

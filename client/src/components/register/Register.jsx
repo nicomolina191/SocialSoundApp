@@ -82,7 +82,7 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
-let googleUser
+    let googleUser
     try {
       const res = await signup(user.email, user.password)
       googleUser = {
@@ -96,7 +96,7 @@ let googleUser
     } catch (err) {
       return console.log(err);
     }
-    if (userFirebase !== null) navigate("/home");
+    navigate("/login");
   };
 
   const handleSignInGoogle = async () => {

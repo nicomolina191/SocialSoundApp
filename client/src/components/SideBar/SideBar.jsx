@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../images/logoicon.png'
 import Upload from '../Upload/Upload'
+import ButtonSupport from '../buttonSupport/ButtonSupport'
 import { useAuth } from '../../context';
 import { db } from '../../firebase'
 import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
-import { Badge, Rating, TextField } from '@mui/material';
+import { Rating, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
 
@@ -44,10 +45,11 @@ const SideBar = ({userDB}) => {
   const [showForm, setShowForm] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
+  const [open, setOpen] = useState(false);
   const [input, setInput] = useState({
-      userId: userFirebase.auth.currentUser.uid,
-      name: userFirebase.auth.currentUser.displayName,
-      avatar: userFirebase.auth.currentUser.photoURL,
+      userId: userFirebase?.auth?.currentUser?.uid,
+      name: userFirebase?.auth?.currentUser?.displayName,
+      avatar: userFirebase?.auth?.currentUser?.photoURL,
       rating: '',
       description: '',
   });
@@ -57,6 +59,7 @@ const SideBar = ({userDB}) => {
 
 
   useEffect(() => {
+    
     const getReviews = async () => {
         let allReviews = await axios.get('/reviews');
         if (allReviews.data.find(r => r.userId === input.userId.toString())) {
@@ -73,19 +76,24 @@ const SideBar = ({userDB}) => {
     })
 };
 
-  const handleButton = (e) => {
-    setShowForm(true);
-    setShowButton(false);
-  };
+const handleButton = (e) => {
+  setOpen(true)
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(input);
+    if (input.rating === '') return alert("Please choose a rating for the review");
     await axios.post('/reviews', input);
     setShowForm(false);
     setShowText(true);
+    setShowButton(false);
+    setOpen(false);
   }
 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
         <div className={s.sidebar}>
@@ -131,6 +139,7 @@ const SideBar = ({userDB}) => {
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>ME</h4>
                 <li className={s.optionItem}> <Upload/> </li>
+                <li className={s.optionItem}> <ButtonSupport/> </li>
                 <li className={s.optionItem} onClick={() => {
               logout();
               navigate("/login");
@@ -141,16 +150,16 @@ const SideBar = ({userDB}) => {
 
             </ul>
             {
-              showForm && (
-                <div>
-                  <form className={s.form} onSubmit={(e) => handleSubmit(e)} >
-                    <p>Choose the rating:</p>
+              <Dialog onClose={handleClose} open={open}>
+                <div className={s.form}>
+                  <form onSubmit={(e) => handleSubmit(e)} >
+                    <p className={s.ratingText}>Choose the rating:</p>
                     <Rating
                     name="rating"
                     value={input.rating}
                     onChange={(e) => handleChange(e)} 
                     />
-                    <p>Write your review below:</p>
+                    <p className={s.descriptionText}>Write your review below:</p>
                     <TextField 
                     className={s.reviewText}
                     type="multiline"
@@ -158,7 +167,7 @@ const SideBar = ({userDB}) => {
                     required={true}
                     autoComplete="off"
                     variant="standard"
-                    size='normal'
+                    style = {{width: 350}}
                     label="Description"
                     name="description"
                     rows={4}
@@ -170,7 +179,7 @@ const SideBar = ({userDB}) => {
                     </div>
                   </form>
                 </div>
-              )
+              </Dialog>
             }
             {
               showButton && (

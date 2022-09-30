@@ -111,12 +111,14 @@
 .getStarted .cardMusic .card2 .line {
     position: relative;
     width: 75%;
+    margin-bottom: 5%;
 }
 
 .getStarted .cardMusic .card2 .line .line1 {
     position: absolute;
     width: 35%;
     border: 1px solid #00FFD6;
+    margin-top: 1.7%;
 }
 
 .getStarted .cardMusic .card2 .line .line2 {
@@ -124,10 +126,11 @@
     width: 65%;
     margin-left: 35%;
     border: 1px solid #003B43;
+    margin-top: 1.7%;
 }
 
 .getStarted .cardMusic .card2 .line .icon {
-    position: relative;
+    position: absolute;
     color: #00FFD6;
     font-size: 60%;
     margin-bottom: 0.8%;

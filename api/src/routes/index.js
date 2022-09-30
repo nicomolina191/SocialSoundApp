@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const express = require('express');
 const createUser = require("../Controller/Users/createUser.js");
 const getByGenre = require("../Controller/Filters/getByGenre.js");
 const createPost = require("../Controller/Posts/createPost.js");
@@ -19,17 +18,16 @@ const getUserByIdGoogle = require("../Controller/Users/getUserByIdGoogle.js");
 const createNoti = require("../Controller/Notifications/createNoti.js");
 const getNotiByUser = require("../Controller/Notifications/getNotiByUser");
 const restoreUser = require("../Controller/Users/restoreUser.js");
-// const postWebhook = require("../Controller/webhook.js");
 const payment = require("../Controller/payment.js");
 const upToPremium = require("../Controller/Users/upToPremium.js");
 const downToRegular = require("../Controller/Users/downToRegular.js");
 const setNotiWatched = require("../Controller/Notifications/setNotiWatched");
 const getUsersAdmin = require("../Controller/Users/getUserAdmin.js");
 const getUserByIdGoogleAdmin = require("../Controller/Users/getUserByIdGoogleAdmin.js");
-const getLikesByPostId = require('../Controller/Likes/getLikesByPostId.js');
+const getLikesByPostId = require("../Controller/Likes/getLikesByPostId.js");
 const getPostById = require("../Controller/Posts/getPostById.js");
-const getLikesByPostandUserId = require('../Controller/Likes/getLikesByPostandUserId.js');
-const changeStatusLike = require('../Controller/Likes/changeStatusLike.js');
+const getLikesByPostandUserId = require("../Controller/Likes/getLikesByPostandUserId.js");
+const changeStatusLike = require("../Controller/Likes/changeStatusLike.js");
 const getByPostId = require("../Controller/Comments/getByPostId.js");
 const getUserByIdAdmin = require('../Controller/Users/getUserByIdAdmin');
 const createReview = require('../Controller/Reviews/createReview.js');
@@ -37,9 +35,13 @@ const getReview = require('../Controller/Reviews/getReview.js');
 const getLikesByUserId = require('../Controller/Likes/getLikesByUserId.js');
 const addFollower = require('../Controller/Follows/addFollower.js');
 const setNotiDisabled = require("../Controller/Notifications/setNotiDisabled.js");
+const changePlanUser = require("../Controller/Users/changePlanUser.js");
+const setUserGenres = require("../Controller/Users/setUserGenres.js");
+const updateBanUser = require("../Controller/Users/updateBanUser.js");
+const updateRoleUser = require("../Controller/Users/updateRoleUser.js");
+const getReports = require("../Controller/Reports/getReports.js");
+const createReport = require("../Controller/Reports/createReport.js");
 
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 
 const router = Router();
 
@@ -54,11 +56,12 @@ router.get("/posts/:id", getPostById);
 router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 router.get("/notifications/:userId", getNotiByUser);
-router.get('/likes/users/:userId', getLikesByUserId);
-router.get('/likes/posts/:postId', getLikesByPostId);
-router.get('/likes/:postId/:userId', getLikesByPostandUserId);
-router.get('/comments/:postId', getByPostId);
+router.get("/likes/users/:userId", getLikesByUserId);
+router.get("/likes/posts/:postId", getLikesByPostId);
+router.get("/likes/:postId/:userId", getLikesByPostandUserId);
+router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
+router.get("/reports", getReports); //Only for admin!
 
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
@@ -67,12 +70,14 @@ router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/posts/genres", getByGenre);
 router.post("/users/follow", addFollower);
-
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post("/reviews", createReview);
-// router.post('/webhook', express.raw({ type: 'application/json' }), postWebhook);
+router.post("/reports", createReport);
 
+router.post("/notifications/create", createNoti);
+router.post("/create-checkout-session", payment);
+router.post("/reviews", createReview);
 
 router.delete("/users/:id", deleteUser);
 router.delete("/posts/:id", deletePost);
@@ -85,10 +90,11 @@ router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
 router.put("/notifications/watched/:id", setNotiWatched);
 router.put("/notifications/disabled/:id", setNotiDisabled);
-
 router.put("/likes", changeStatusLike);
-
-
+router.put("/users/set/plan", changePlanUser);
+router.put("/users/set/genres", setUserGenres);
+router.put("/users/set/update-ban", updateBanUser);
+router.put("/users/set/role", updateRoleUser);
 
 
 module.exports = router;

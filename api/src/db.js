@@ -7,30 +7,30 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 const sequelize =
   process.env.NODE_ENV === "production"
     ? new Sequelize({
-      database: DB_NAME,
-      dialect: "postgres",
-      host: DB_HOST,
-      port: 5432,
-      username: DB_USER,
-      password: DB_PASSWORD,
-      pool: {
-        max: 3,
-        min: 1,
-        idle: 10000,
-      },
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
+        database: DB_NAME,
+        dialect: "postgres",
+        host: DB_HOST,
+        port: 5432,
+        username: DB_USER,
+        password: DB_PASSWORD,
+        pool: {
+          max: 3,
+          min: 1,
+          idle: 10000,
         },
-        keepAlive: true,
-      },
-      ssl: true,
-    })
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+          keepAlive: true,
+        },
+        ssl: true,
+      })
     : new Sequelize(
-      `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-      { logging: false, native: false }
-    );
+        `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+        { logging: false, native: false }
+      );
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -58,15 +58,32 @@ sequelize.models = Object.fromEntries(capsEntries);
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
 
-const { Users, Posts, Likes, Genres, Comments, Message, Chat, Notifications } =
-  sequelize.models;
+const {
+  Users,
+  Posts,
+  Likes,
+  Genres,
+  Comments,
+  Message,
+  Chat,
+  Notifications,
+  Report,
+} = sequelize.models;
 
 // Relaciones
 
 //USERS - USERS
 
-Users.belongsToMany(Users, { through: 'Following', as: 'FollowerUsers', foreignKey: 'following_id' });
-Users.belongsToMany(Users, { through: 'Following', as: 'FollowingUsers', foreignKey: 'follower_id' });
+Users.belongsToMany(Users, {
+  through: "Following",
+  as: "FollowerUsers",
+  foreignKey: "following_id",
+});
+Users.belongsToMany(Users, {
+  through: "Following",
+  as: "FollowingUsers",
+  foreignKey: "follower_id",
+});
 
 // USERS - POSTS
 
@@ -82,6 +99,16 @@ Likes.belongsTo(Users, { through: "users_likes", timestamps: false });
 
 Users.belongsToMany(Genres, { through: "users_genres", timestamps: false });
 Genres.belongsToMany(Users, { through: "users_genres", timestamps: false });
+
+//USERS - REPORTS
+
+Users.belongsToMany(Report, { through: "users_report", timestamps: false });
+Report.belongsTo(Users, { through: "users_report", timestamps: false });
+
+//POST - REPORTS
+
+Posts.belongsToMany(Report, { through: "posts_report", timestamps: false });
+Report.belongsTo(Posts, { through: "posts_report", timestamps: false });
 
 //POSTS - LIKES
 
@@ -110,8 +137,14 @@ Message.belongsTo(Chat, { through: "chat_messages", timestamps: false });
 
 // USERS - NOTIFICATIONS
 
-Users.belongsToMany(Notifications, { through: "users_notifications", timestamps: false });
-Notifications.belongsTo(Users, { through: "users_notifications", timestamps: false });
+Users.belongsToMany(Notifications, {
+  through: "users_notifications",
+  timestamps: false,
+});
+Notifications.belongsTo(Users, {
+  through: "users_notifications",
+  timestamps: false,
+});
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

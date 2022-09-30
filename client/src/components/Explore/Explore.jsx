@@ -37,7 +37,10 @@ const Explore = () => {
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
   let [songsPerPage, setSongsPerPage] = useState(9);
-  let currentSongs = posibleSong().slice(0, songsPerPage);
+  let currentSongs;
+  if (inputValue) {
+    currentSongs = posibleSong().slice(0, songsPerPage);
+  }
 
   const { userFirebase } = useAuth();
 
@@ -73,7 +76,7 @@ const Explore = () => {
 
   function posibleArtist() {
     const posibles = [];
-    users.map((user) => {
+    users?.map((user) => {
       if (
         user.username.toLowerCase().includes(inputValue.toLowerCase()) ||
         user.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -88,9 +91,7 @@ const Explore = () => {
   function posibleSong() {
     const posibles = [];
     posts?.map((post) => {
-      if (
-        post.title.toLowerCase().includes(inputValue.toLowerCase())
-      ) {
+      if (post.title.toLowerCase().includes(inputValue.toLowerCase())) {
         posibles.push(post);
       }
       return null;
@@ -156,11 +157,11 @@ const Explore = () => {
                   For you.
                 </Typography>
 
-                {posts.length === 0 ? (
+                {posts?.length === 0 ? (
                   <h1 className={styles.noResultsText}>No results</h1>
                 ) : (
                   <Stack spacing={0} sx={{ marginTop: "20px" }}>
-                    {posts.length > 0 &&
+                    {posts?.length > 0 &&
                       posts?.map((post, i) => <Post key={i} post={post} />)}
                   </Stack>
                 )}
