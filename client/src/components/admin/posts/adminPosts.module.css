@@ -17,7 +17,7 @@
 
 .divMobileStepper {
     width: 100%;
-    height: auto;
+    height: 15%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,4 +45,20 @@
 .postsDiv {
     width: 90%;
     height: 95%;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.textContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerGetReport {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }

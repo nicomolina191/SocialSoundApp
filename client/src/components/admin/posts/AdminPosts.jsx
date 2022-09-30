@@ -11,6 +11,7 @@ import { postsReported } from '../../../redux/features/post/postGetSlice';
 import { Arrow } from '../../componentsIcons';
 import { useNavigate } from 'react-router-dom';
 import Post from "../../post/Post"
+import ReportUsers from '../reportUsers/ReportUsers';
 
 
 const AdminPosts = () => {
@@ -20,9 +21,8 @@ const AdminPosts = () => {
     dispatch(postsReported())
   }, [dispatch])
 
-  const posts = useSelector(state => state.posts.reportedPosts)
+  const postsReportedArr = useSelector(state => state.posts.reportedPosts)
   const [activeStep, setActiveStep] = useState(0);
-  const [postSelected, setPostSelected] = useState({})
   const navigate = useNavigate()
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -57,11 +57,16 @@ const AdminPosts = () => {
         </Button>
       }
     /></Box>
-    <Box className={style.postsContainer}>
-      <Box className={style.postsDiv}>
-        {typeof posts === "string"? <h1>NotFound</h1> : posts?.map((post, i) => <Post key={i} post={post} comments={false} />)}
-      </Box>
+    
+    <Box className={style.containerGetReport}>
+    {typeof postsReportedArr === "string"? 
+    <Box className={style.textContainer}><h1>{postsReportedArr}</h1></Box>: 
+
+    <Box className={style.postsDiv}>
+      {postsReportedArr?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
     </Box>
+    }
+   </Box>
     </Box>
   )
 }
