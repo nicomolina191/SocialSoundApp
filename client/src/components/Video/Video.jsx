@@ -40,7 +40,6 @@ function Video({song}){
 
   return (
     <div className='video-cont'>
-      {console.log('CURRENT', currentUser)}
     <div data-vjs-player> 
         <video ref={videoRef} preload='none' poster={song?.cover} className={`video-js vjs-big-play-centered vjs-theme-fantasy`}></video>
     </div>

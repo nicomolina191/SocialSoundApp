@@ -45,6 +45,7 @@ const Explore = () => {
   const user = useSelector((state) => state.users.user);
   const genres = useSelector((state) => state.genres.genreList);
   const postsSelector = useSelector((state) => state.posts.postList);
+  const allPostsSelector = useSelector((state) => state.posts.possListAll)
   const [posts, setPosts] = useState(postsSelector);
   const [checked, setChecked] = useState("all");
   const [inputValue, setInputValue] = useState("");
@@ -78,6 +79,10 @@ const Explore = () => {
     dispatch(getUserByFirebaseId(userFirebase.uid));
     dispatch(getUserNotification(userDB.id))
   }, [dispatch]);
+
+  useEffect(() => {
+    setGenresFiltered([])
+  }, [allPostsSelector])
 
   const theme = createTheme({
     typography: {
@@ -167,7 +172,7 @@ const Explore = () => {
     if (newChecked.genres.length === 0) {
       dispatch(getPost());
     } else {
-      dispatch(getPostByGenre({ genres: newChecked.genres, posts: posts }));
+      dispatch(getPostByGenre({ genres: newChecked.genres, posts: allPostsSelector }));
     }
   }
 
