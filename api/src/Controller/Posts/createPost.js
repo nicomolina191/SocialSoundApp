@@ -1,7 +1,7 @@
 const { Users, Posts, Genres } = require("../../db.js");
 
 const createPost = async (req, res) => {
-  const { description, title, content, userId, genres, type, cover, isShared } =
+  const { description, title, content, userId, genres, type, cover, idShared } =
     req.body;
 
   try {
