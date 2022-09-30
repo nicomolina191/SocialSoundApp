@@ -8,7 +8,7 @@ import { clearPost, getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
 import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 import { useAuth } from "../../context";
-import PostShared from "../../postShared/PostShared";
+import PostShared from "../postShared/PostShared";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -21,8 +21,10 @@ export default function Home() {
     dispatch(clearPost())
   }, []);
 
-  const postShared = { id: 1, title: 'juan', cover: 'https://firebasestorage.googleapis.com/v0/b/socialsound-d3e2d.appspot.com/o/cover%2Fmaxresdefault.jpg0.9859373844333883?alt=media&token=d7360dc9-4d0f-448a-abf8-eaaf53b7bb90', content: 'https://firebasestorage.googleapis.com/v0/b/socialsound-d3e2d.appspot.com/o/content%2FMHD%20--%20BZRP%20Music%20Sessions%20%2344.mp40.0411232839917095?alt=media&token=21477a5d-1548-426c-bc07-7fd0aebc03ac', type: 'video', userId: 'dc08588e-3760-4cdc-8249-ce7fc46f48a4', idPostShared: 'eb380f9f-cd2c-40db-be84-61c5c6dfc9b6', postDate: '2022-09-28 11:55:16.395-03' }
+  
 
+  // const postShared = { id: 1, title: 'juan', cover: 'https://firebasestorage.googleapis.com/v0/b/socialsound-d3e2d.appspot.com/o/cover%2Fmaxresdefault.jpg0.9859373844333883?alt=media&token=d7360dc9-4d0f-448a-abf8-eaaf53b7bb90', content: 'https://firebasestorage.googleapis.com/v0/b/socialsound-d3e2d.appspot.com/o/content%2FMHD%20--%20BZRP%20Music%20Sessions%20%2344.mp40.0411232839917095?alt=media&token=21477a5d-1548-426c-bc07-7fd0aebc03ac', type: 'video', userId: 'dc08588e-3760-4cdc-8249-ce7fc46f48a4', idPostShared: 'eb380f9f-cd2c-40db-be84-61c5c6dfc9b6', postDate: '2022-09-28 11:55:16.395-03' }
+console.log(userDB);
 
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
@@ -42,7 +44,7 @@ export default function Home() {
         </Typography>
         {/* <PostShared postShared={postShared}/> */}
         {posts.length > 0 &&
-          posts.slice(0).reverse().map((post, i) => <Post key={i} post={post} comments={false} />)}
+          posts.slice(0).reverse().map((post, i) => post.idShared ? <PostShared postShared={post} /> : <Post key={i} post={post} comments={false} />)}
       </Grid>
     </Grid>
   );
