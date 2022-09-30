@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,15 +11,18 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
-import { Rating, TextField } from '@mui/material';
+import { Badge, Rating, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
+import MailIcon from '@mui/icons-material/Mail';
+
 
 
 const SideBar = ({userDB}) => {
     
   const user = useSelector((state)=> state.users.currentUser)
+  const notification = useSelector((state)=> state.users.userNotifications)
   const [role, setRole] = useState("")
-
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
 
@@ -28,6 +32,7 @@ const SideBar = ({userDB}) => {
     userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
     
   }, [])
+
 
 /*   useEffect(() => {
     if(!role) return setRole(userDB?.role)
@@ -40,6 +45,7 @@ const SideBar = ({userDB}) => {
   const [showForm, setShowForm] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
+  const [open, setOpen] = useState(false);
   const [input, setInput] = useState({
       userId: userFirebase?.auth?.currentUser?.uid,
       name: userFirebase?.auth?.currentUser?.displayName,
@@ -48,7 +54,9 @@ const SideBar = ({userDB}) => {
       description: '',
   });
 
-  const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+
+ const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+
 
   useEffect(() => {
     
@@ -68,18 +76,24 @@ const SideBar = ({userDB}) => {
     })
 };
 
-  const handleButton = (e) => {
-    setShowForm(true);
-    setShowButton(false);
-  };
+const handleButton = (e) => {
+  setOpen(true)
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(input);
+    if (input.rating === '') return alert("Please choose a rating for the review");
     await axios.post('/reviews', input);
     setShowForm(false);
     setShowText(true);
+    setShowButton(false);
+    setOpen(false);
   }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
         <div className={s.sidebar}>
@@ -90,6 +104,16 @@ const SideBar = ({userDB}) => {
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 
                 <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
+                
+                <li className={s.routeItem}>
+                <Link to='/home/notification'>Notifications
+                {
+                  notification?.length > 0 && (
+                 <Badge badgeContent={notification?.length} color="secondary" >
+                 <MailIcon color="action" sx={{paddingLeft: 1,}} />
+                 </Badge> )}
+                </Link>
+                </li>
 
                 {
                   user?.plan !== 'Premium' ? (
@@ -126,16 +150,16 @@ const SideBar = ({userDB}) => {
 
             </ul>
             {
-              showForm && (
-                <div>
-                  <form className={s.form} onSubmit={(e) => handleSubmit(e)} >
-                    <p>Choose the rating:</p>
+              <Dialog onClose={handleClose} open={open}>
+                <div className={s.form}>
+                  <form onSubmit={(e) => handleSubmit(e)} >
+                    <p className={s.ratingText}>Choose the rating:</p>
                     <Rating
                     name="rating"
                     value={input.rating}
                     onChange={(e) => handleChange(e)} 
                     />
-                    <p>Write your review below:</p>
+                    <p className={s.descriptionText}>Write your review below:</p>
                     <TextField 
                     className={s.reviewText}
                     type="multiline"
@@ -143,7 +167,7 @@ const SideBar = ({userDB}) => {
                     required={true}
                     autoComplete="off"
                     variant="standard"
-                    size='normal'
+                    style = {{width: 350}}
                     label="Description"
                     name="description"
                     rows={4}
@@ -155,7 +179,7 @@ const SideBar = ({userDB}) => {
                     </div>
                   </form>
                 </div>
-              )
+              </Dialog>
             }
             {
               showButton && (

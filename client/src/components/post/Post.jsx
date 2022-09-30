@@ -14,7 +14,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ReactPlayer from "react-player";
 import style from "./post.module.css";
 import { useEffect } from "react";
 import axios from "axios";
@@ -41,6 +40,8 @@ import {
 } from "react-share";
 import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
 import share from '../../images/logoiconbg.png'
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
+import Video from "../Video/Video";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -84,6 +85,21 @@ export default function Post({ post, comments, margin, border }) {
   const handleCloseMore = () => {
     setAnchorEl(null);
   };
+  
+  const notification = async() => {
+     if(currentUser.id !== post.userId){
+       await dispatch(createUserNotification({
+           title: JSON.stringify({
+             name:`${currentUser.username} (@${currentUser.name}) liked your post`,
+             img: currentUser.avatar,
+             post: post.title,
+           }),
+           content: post.content,
+           userId: post.userId,
+           fromUser: currentUser.id,
+       }));
+         console.log("notification created!")
+     }};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -121,10 +137,11 @@ export default function Post({ post, comments, margin, border }) {
     const res = await axios.get(`/likes/posts/${post.id}`);
     setLikes(res.data);
   }
-
+  
   const handleLike = () => {
     setLike(!like);
     setClick(!click);
+    if(!like) notification()
   };
 
   useEffect(() => {
@@ -142,7 +159,7 @@ export default function Post({ post, comments, margin, border }) {
         const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
         setLike(res.data[0]?.isActive);
       }
-      getLikeOfThisUser();
+      getLikeOfThisUser(); 
     }
   }, [likes]);
 
@@ -324,23 +341,10 @@ export default function Post({ post, comments, margin, border }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-
-      {user?.name && post?.type === 'video' &&
-        <Grid item className={style.playerWrapper}>
-          <ReactPlayer
-            url={post.content}
-            controls
-            className={style.reactPlayer}
-            width="100%"
-            height="100%"
-          />
-        </Grid>
-      }
-      {user?.name && post?.type === 'audio' &&
-        <Audio
-          song={post}
-          artist={user}
-        />
+      {user?.name && post?.type === 'video'
+        ? <Video song={post}/>
+        : post?.type === 'audio'
+        && <Audio song={post} artist={user}/>
       }
       <Grid item container justifyContent="space-between">
         <Grid item>

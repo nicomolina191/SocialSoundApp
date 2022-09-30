@@ -1,31 +1,21 @@
-const { Posts, Genres } = require('../../db.js');
 
 const getByGenre = async (req, res) => {
 
-    const { genres } = req.body;
+    let { genres, posts } = req.body;
 
-    let filterPosts = [];
+    let filteredPosts = [];
 
     try {
-
-        const posts = await Posts.findAll({
-            include: {
-                model: Genres,
-                attributes: ['name'],
-                through: { attributes: [] }
-            }
-        });
 
         for (const post of posts) {
 
             for (const item of post.genres) {
 
-                if (genres.includes(item.name)) filterPosts.push(post);
-                // if (item.name === genre) filterPosts.push(post);
+                if (genres.includes(item.name)) filteredPosts.push(post);
             };
         };
 
-        return res.json(filterPosts);
+        return res.json(filteredPosts);
 
     } catch (error) {
 

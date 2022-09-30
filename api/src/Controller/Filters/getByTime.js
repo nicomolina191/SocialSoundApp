@@ -1,9 +1,7 @@
-const { Posts } = require('../../db.js');
 
 const getByTime = async (req, res) => {
 
-    const { order } = req.params;
-    let filterPosts = [];
+    let { order, posts } = req.body;
 
     try {
 
@@ -11,33 +9,17 @@ const getByTime = async (req, res) => {
 
             case 'asc':
 
-                filterPosts = await Posts.findAll({
-                    order: [
-                        ['postDate', 'ASC']
-                    ]
-                });
+                posts.sort((a, b) => a.postDate - b.postDate);
 
-                return res.json(filterPosts);
+                return res.json(posts);
 
             case 'desc':
 
-                filterPosts = await Posts.findAll({
-                    order: [
-                        ['postDate', 'DESC']
-                    ]
-                });
+                posts.sort((a, b) => a.postDate - b.postDate);
 
-                return res.json(filterPosts);
+                posts.reverse();
 
-            case 'popu':
-
-                filterPosts = await Posts.findAll({
-                    order: [
-                        ['likesCount', 'DESC']
-                    ]
-                });
-
-                return res.json(filterPosts);
+                return res.json(posts);
 
             default:
 
