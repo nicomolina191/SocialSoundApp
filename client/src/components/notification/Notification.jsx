@@ -67,14 +67,10 @@ const Notification = () => {
         {
             userNotification.length > 0 ? (
                      userNotification?.map((user)=> {
-                      //console.log("user", user)
                     let data = JSON.parse(user?.title)
-                    //console.log("data", data);
                     return (
-                        <>
-                        
+                        <div key={user.id}>
                           <List 
-                            key={user.id} 
                             className={style.list} 
                             sx={{width: '100%'}}>
                             <ListItemButton
@@ -88,47 +84,51 @@ const Notification = () => {
                              <ListItemText
                                component="div"
                                 primary={
-                               <>     
+                                <Stack direction="row">
                                 <Typography
-                                   sx={{ display: 'inline', fontSize: 18, fontWeight: 800, marginLeft: 2 }}
-                                   component="p"
+                                   sx={{ display: 'inline', fontSize: 17, fontWeight: 600, marginLeft: 2 }}
+                                   component="h4"
                                    variant="body2"
                                    color="#9e9e9e"
                                    >
                                    {data?.name} {!user.watched ? '' : <span className={style.watched}>watched</span> }
                                    </Typography>
-                               </>
+                                   <div>
+                                      <IconButton aria-label="delete" size="large" color="primary" sx={{ marginLeft: 94,  color: 'red' }} onClick={()=> handleDelete()}>
+                                       <DeleteIcon fontSize="inherit"/>
+                                     </IconButton>
+                                     </div>
+                                      </Stack>
+                               
                                        }
    
                                 secondary={
                                <>
+                               <Stack>
                                    <Typography
-                                    sx={{ display: 'inline', fontSize: 16,  fontWeight: 550, marginLeft: 2 }}
+                                    sx={{ display: 'inline', fontSize: 16,  fontWeight: 500, marginLeft: 2 }}
                                        component="span"
                                        variant="subtitle1"
                                        color="#757575"
-                                       spacing={2}>
+                                       >
 
                                        {data?.post}: <Link to={user.content}>
-                                       <Button  href="#text-buttons" variant='outlined' sx={{ padding:0, margin:0, color: '#c4c4c4', fontSize: 12, fontWeight: 20, }} onClick={()=> handleWatched()}>Post</Button>
+                                       <Button  href="#text-buttons" variant='outlined' color="success" sx={{ marginLeft: 1, color: '#c4c4c4', fontSize: 12, fontWeight: 16, }} onClick={()=> handleWatched()}>Post</Button>
                                        </Link>
-
+                                      
                                    </Typography>
-                                   <Stack direction="row">
-                                   <IconButton aria-label="delete" size="large" color="primary" sx={{ marginLeft: 150, color: 'white' }} onClick={()=> handleDelete()}>
-                                      <DeleteIcon fontSize="inherit"/>
-                                    </IconButton>
-                                     </Stack>
+                                   </Stack>
+                                   
+                                   <div>
                                    <Typography 
-                                    sx={{ display: 'inline', fontSize: 13, marginLeft: 150 }}
+                                    sx={{ display: 'inline', fontSize: 12, marginLeft: 146 }}
                                    component="span"
                                    variant="body2"
                                    color="#757575" >
 
                                    {DateTime.fromISO(user.date).toFormat('ff')} 
-                                   
                                    </Typography>
-                                   
+                                   </div>  
                                          
                                </>
                                            }
@@ -137,7 +137,7 @@ const Notification = () => {
                            </ListItem>
                            </ListItemButton>
                            </List>
-                           </>
+                           </div>
                            )
                         })) : (<div className={style.divNotNotification}><h2>You don't have any notification.</h2></div> )
 
