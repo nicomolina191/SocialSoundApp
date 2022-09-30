@@ -38,6 +38,7 @@ p {
 
 .songFirstHalf img{
     width: 55px;
+    height: 55px;
     background-color: gray;
     margin-right: 10px;
 }

@@ -6,9 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faChevronDown,
+  faChevronRight,
+  faChevronLeft,
+  faCircleCheck,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
-import { Typography, createTheme, ThemeProvider } from "@mui/material";
+import {
+  Typography,
+  createTheme,
+  ThemeProvider,
+  Button,
+  Modal,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
@@ -16,23 +25,38 @@ import {
   getUser,
   getUserByFirebaseId,
   getUserById,
+  getUserNotification,
 } from "../../redux/features/users/usersGetSlice";
-import { getPost } from "../../redux/features/post/postGetSlice";
+import { getGenre } from "../../redux/features/genres/genreGetSlice";
+import {
+  getPost,
+  getPostByGenre,
+  getPostByTime,
+} from "../../redux/features/post/postGetSlice";
 import { useEffect } from "react";
 import Post from "../post/Post";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../../context";
-import Filters from "./Filters";
 
-//hay que sacar el preload revisar el tipo si es video o audio
 const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
-  const user = useSelector((state) => state.users.user);
-  const posts = useSelector((state) => state.posts.postList);
   const userDB = useSelector((state) => state.users.currentUser);
-
+  const user = useSelector((state) => state.users.user);
+  const genres = useSelector((state) => state.genres.genreList);
+  const postsSelector = useSelector((state) => state.posts.postList);
+  const [posts, setPosts] = useState(postsSelector);
+  const [checked, setChecked] = useState("all");
   const [inputValue, setInputValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [genresFiltered, setGenresFiltered] = useState([]);
+  const [orderChecked, setOrderChecked] = useState("relevance");
+  const [currentPage, setCurrentPage] = useState(1);
+  const genrePerPage = 6;
+  const lastGenre = currentPage * genrePerPage;
+  const firstGenre = lastGenre - genrePerPage;
+  const currentGenres = genres.slice(firstGenre, lastGenre);
+  const pageNumbers = Math.ceil(genres.length / genrePerPage);
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
   let [songsPerPage, setSongsPerPage] = useState(9);
@@ -40,14 +64,19 @@ const Explore = () => {
   if (inputValue) {
     currentSongs = posibleSong().slice(0, songsPerPage);
   }
-
   const { userFirebase } = useAuth();
+
+  useEffect(() => {
+    setPosts(postsSelector);
+  }, [postsSelector]);
 
   useEffect(() => {
     dispatch(getUser());
     dispatch(getPost());
+    dispatch(getGenre());
     dispatch(getUserById(posts.userId));
     dispatch(getUserByFirebaseId(userFirebase.uid));
+    dispatch(getUserNotification(userDB.id))
   }, [dispatch]);
 
   const theme = createTheme({
@@ -104,6 +133,64 @@ const Explore = () => {
     posibleArtist();
     posibleSong();
   }
+
+  function handleOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  function nextPage() {
+    if (currentPage < pageNumbers) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  function previousPage() {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  function handleGenresSelected(e) {
+    const currentGenresChecked = genresFiltered.indexOf(e.target.value);
+    const newChecked = { genres: [...genresFiltered] };
+
+    if (currentGenresChecked === -1) {
+      newChecked.genres.push(e.target.value);
+    } else {
+      newChecked.genres.splice(currentGenresChecked, 1);
+    }
+    setGenresFiltered(newChecked.genres.map((el) => el));
+    if (newChecked.genres.length === 0) {
+      dispatch(getPost());
+    } else {
+      dispatch(getPostByGenre({ genres: newChecked.genres, posts: posts }));
+    }
+  }
+
+  function handleChecked(el) {
+    setOrderChecked(el.target.value);
+    dispatch(getPostByTime({ order: el.target.value, posts: posts }));
+  }
+
+  function handleCheckedAll() {
+    setChecked("all");
+    setPosts(postsSelector);
+  }
+
+  function handleCheckedVideo() {
+    setChecked("video");
+    setPosts(postsSelector.filter((post) => post.type.includes("video")));
+  }
+
+  function handleCheckedAudio() {
+    setChecked("audio");
+    setPosts(postsSelector.filter((post) => post.type.includes("audio")));
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row">
@@ -141,19 +228,353 @@ const Explore = () => {
                 placeholder="Search for users or songs..."
               />
             </div>
-            <Filters />
+            <div>
+              <Button
+                onClick={handleOpen}
+                variant="contained"
+                sx={{
+                  backgroundColor: "rgba(0, 255, 214, 1)",
+                  color: "rgba(0, 10, 31, 1)",
+                  fontWeight: 500,
+                  height: "40px",
+                  textTransform: "none",
+                  width: "110px",
+                  borderRadius: "8px",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 255, 214, 0.7)",
+                  },
+                }}
+              >
+                Filters
+              </Button>
+              <Modal open={open} onClose={handleClose}>
+                <Stack
+                  direction="column"
+                  justifyContent="space-between"
+                  sx={{
+                    width: "600px",
+                    position: "absolute",
+                    right: "15px",
+                    top: "160px",
+                    backgroundColor: "rgba(4, 14, 36, 1)",
+                    borderRadius: "20px",
+                    padding: "10px 20px",
+                  }}
+                  className={styles.modalContainer}
+                >
+                  <div>
+                    <h2>Genres</h2>
+                    <Stack direction="row" justifyContent="space-between">
+                      {currentPage > 1 ? (
+                        <button className={styles.buttonPages}>
+                          <p onClick={previousPage}>
+                            <FontAwesomeIcon icon={faChevronLeft} />
+                          </p>
+                        </button>
+                      ) : (
+                        <button className={styles.buttonPagesDisabled} disabled>
+                          <p onClick={previousPage}>
+                            <FontAwesomeIcon icon={faChevronLeft} />
+                          </p>
+                        </button>
+                      )}
+                      <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        flexWrap="wrap"
+                        sx={{ height: "110px", margin: "20px 0" }}
+                      >
+                        {currentGenres.map((genre, key) => {
+                          return (
+                            <div key={key} className={styles.genresContainer}>
+                              <input
+                                onClick={handleGenresSelected}
+                                id={genre.name}
+                                type="checkbox"
+                                value={genre.name}
+                              ></input>
+                              {!genresFiltered.find(
+                                (el) => el === genre.name
+                              ) ? (
+                                <label htmlFor={genre.name}>{genre.name}</label>
+                              ) : (
+                                <label
+                                  style={{
+                                    backgroundColor: "rgba(0, 255, 214, 1)",
+                                  }}
+                                  htmlFor={genre.name}
+                                >
+                                  {genre.name}
+                                </label>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </Stack>
+                      {currentPage !== pageNumbers ? (
+                        <button className={styles.buttonPages}>
+                          <p onClick={nextPage}>
+                            <FontAwesomeIcon icon={faChevronRight} />
+                          </p>
+                        </button>
+                      ) : (
+                        <button className={styles.buttonPagesDisabled} disabled>
+                          <p onClick={nextPage}>
+                            <FontAwesomeIcon icon={faChevronRight} />
+                          </p>
+                        </button>
+                      )}
+                    </Stack>
+                  </div>
+                  <div>
+                    <h2 style={{ marginBottom: "15px" }}>Sort by</h2>
+                    <div className={styles.sortContainer}>
+                      {orderChecked === "desc" ? (
+                        <div>
+                          <input
+                            name="order"
+                            id="mostRecent"
+                            type="radio"
+                            value="desc"
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                            }}
+                          >
+                            <label
+                              style={{ color: "rgba(0, 226, 190, 1)" }}
+                              htmlFor="mostRecent"
+                            >
+                              Most Recent
+                            </label>
+                            <FontAwesomeIcon
+                              style={{
+                                fontSize: "18px",
+                                marginLeft: "8px",
+                                color: "rgba(0, 226, 190, 1)",
+                              }}
+                              icon={faCircleCheck}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <input
+                            onClick={(e) => handleChecked(e)}
+                            name="order"
+                            id="mostRecent"
+                            type="radio"
+                            value="desc"
+                          />
+                          <label htmlFor="mostRecent">Most Recent</label>
+                        </div>
+                      )}
+
+                      {orderChecked === "asc" ? (
+                        <div>
+                          <input
+                            name="order"
+                            id="oldest"
+                            type="radio"
+                            value="asc"
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                            }}
+                          >
+                            <label
+                              style={{ color: "rgba(0, 226, 190, 1)" }}
+                              htmlFor="oldest"
+                            >
+                              Oldest
+                            </label>
+                            <FontAwesomeIcon
+                              style={{
+                                fontSize: "18px",
+                                marginLeft: "8px",
+                                color: "rgba(0, 226, 190, 1)",
+                              }}
+                              icon={faCircleCheck}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <input
+                            onClick={(e) => handleChecked(e)}
+                            name="order"
+                            id="oldest"
+                            type="radio"
+                            value="asc"
+                          />
+                          <label htmlFor="oldest">Oldest</label>
+                        </div>
+                      )}
+
+                      {orderChecked === "popu" ? (
+                        <div>
+                          <input
+                            name="order"
+                            id="popularity"
+                            type="radio"
+                            value="popu"
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                            }}
+                          >
+                            <label
+                              style={{ color: "rgba(0, 226, 190, 1)" }}
+                              htmlFor="popularity"
+                            >
+                              Popularity
+                            </label>
+                            <FontAwesomeIcon
+                              style={{
+                                fontSize: "18px",
+                                marginLeft: "8px",
+                                color: "rgba(0, 226, 190, 1)",
+                              }}
+                              icon={faCircleCheck}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <input
+                            onClick={(e) => handleChecked(e)}
+                            name="order"
+                            id="popularity"
+                            type="radio"
+                            value="popu"
+                          />
+                          <label htmlFor="popularity">Popularity</label>
+                        </div>
+                      )}
+
+                      {orderChecked === "relevance" ? (
+                        <div>
+                          <input
+                            name="order"
+                            id="relevance"
+                            type="radio"
+                            value="relevance"
+                          />
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                            }}
+                          >
+                            <label
+                              style={{ color: "rgba(0, 226, 190, 1)" }}
+                              htmlFor="relevance"
+                            >
+                              Relevance
+                            </label>
+                            <FontAwesomeIcon
+                              style={{
+                                fontSize: "18px",
+                                marginLeft: "8px",
+                                color: "rgba(0, 226, 190, 1)",
+                              }}
+                              icon={faCircleCheck}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <input
+                            onClick={(e) => handleChecked(e)}
+                            name="order"
+                            id="relevance"
+                            type="radio"
+                            value="relevance"
+                          />
+                          <label htmlFor="relevance">Relevance</label>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Stack>
+              </Modal>
+            </div>
           </Stack>
 
           <div className={styles.containerContent}>
             {!inputValue ? (
               <Stack>
-                <Typography
-                  className={styles.forYouText}
-                  variant="h4"
-                  component="h3"
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  For you.
-                </Typography>
+                  <Typography
+                    className={styles.forYouText}
+                    variant="h4"
+                    component="h3"
+                  >
+                    For you.
+                  </Typography>
+                  <div>
+                    {checked === "all" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        All
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedAll}>All</Button>
+                    )}
+                    {checked === "video" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        Video
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedVideo}>Video</Button>
+                    )}
+                    {checked === "audio" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        Audio
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedAudio}>Audio</Button>
+                    )}
+                  </div>
+                </Stack>
 
                 {posts?.length === 0 ? (
                   <h1 className={styles.noResultsText}>No results</h1>
