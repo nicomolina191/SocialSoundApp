@@ -1,7 +1,7 @@
 const { Report, Posts, Users } = require("../../db.js");
 
 const createReport = async (req, res) => {
-  let { content, title, userId, postId } = req.body;
+  let { content, title, idUser, idPost } = req.body;
 
   try {
     let newReport = await Report.create({
@@ -9,10 +9,10 @@ const createReport = async (req, res) => {
       title,
     });
 
-    let users = await Users.findByPk(userId);
+    let users = await Users.findByPk(idUser);
     await newReport.setUser(users);
 
-    let posts = await Posts.findByPk(postId);
+    let posts = await Posts.findByPk(idPost);
     await newReport.setPost(posts);
 
     res.json("Report created successfully");
