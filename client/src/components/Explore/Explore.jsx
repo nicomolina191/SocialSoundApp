@@ -16,6 +16,7 @@ import {
   getUser,
   getUserByFirebaseId,
   getUserById,
+  getUserNotification,
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { useEffect } from "react";
@@ -48,6 +49,7 @@ const Explore = () => {
     dispatch(getPost());
     dispatch(getUserById(posts.userId));
     dispatch(getUserByFirebaseId(userFirebase.uid));
+    dispatch(getUserNotification(userDB.id))
   }, [dispatch]);
 
   const theme = createTheme({

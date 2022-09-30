@@ -34,6 +34,7 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
 import { deletePost } from "../../redux/features/post/postGetSlice";
 
@@ -66,6 +67,21 @@ export default function Post({ post, comments, margin }) {
   const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  
+  const notification = async() => {
+     if(currentUser.id !== post.userId){
+       await dispatch(createUserNotification({
+           title: JSON.stringify({
+             name:`${currentUser.username} (@${currentUser.name}) liked your post`,
+             img: currentUser.avatar,
+             post: post.title,
+           }),
+           content: post.content,
+           userId: post.userId,
+           fromUser: currentUser.id,
+       }));
+         console.log("notification created!")
+     }};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -87,10 +103,11 @@ export default function Post({ post, comments, margin }) {
     const res = await axios.get(`/likes/posts/${post.id}`);
     setLikes(res.data);
   }
-
+  
   const handleLike = () => {
     setLike(!like);
     setClick(!click);
+    if(!like) notification()
   };
 
   useEffect(() => {
@@ -108,7 +125,7 @@ export default function Post({ post, comments, margin }) {
         const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
         setLike(res.data[0]?.isActive);
       }
-      getLikeOfThisUser();
+      getLikeOfThisUser(); 
     }
   }, [likes]);
 

@@ -3,21 +3,41 @@ import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { createUserNotification } from '../../redux/features/users/usersGetSlice'
 import Comment from '../comment/Comment'
 import style from './commentsContainer.module.css'
 
 export default function CommentsContainer({ post }) {
     const currentUser = useSelector(state => state.users.currentUser)
     const [comment, setComment] = useState('')
-    const [comments, setComments] = useState()
+    const [comments, setComments]=useState()
+    const dispatch = useDispatch();
 
+
+    const notification = async() => {
+        if(currentUser.id !== post.userId){
+          await dispatch(createUserNotification({
+              title: JSON.stringify({
+                name:`${currentUser.username} (@${currentUser.name}) commented on your post`,
+                img: currentUser.avatar,
+                post: post.title,
+              }),
+              content: post.content,
+              userId: post.userId,
+              fromUser: currentUser.id,
+          }));
+            console.log("notification created!")
+        }};
+   
     const handleComment = async () => {
         if (comment) {
             await axios.post('/comments', { content: comment, idPost: post.id, idUser: currentUser.id })
             setComment('')
         }
+        
         await getComments()
+        await notification()
     }
 
     async function getComments() {

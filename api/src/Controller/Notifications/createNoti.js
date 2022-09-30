@@ -17,6 +17,7 @@ const createNoti = async (req, res) => {
         return res.json(notification);
 
     } catch (err) {
+        console.log(err.message);
         return res.status(500).send(err);
     }
 };

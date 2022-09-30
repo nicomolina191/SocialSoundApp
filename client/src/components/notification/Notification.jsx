@@ -1,0 +1,155 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import { Stack, Typography, ListItem, List, ListItemAvatar, Avatar, ListItemText, ListItemButton, Button, IconButton } from '@mui/material';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
+import { disabledUserNotification, getUserByFirebaseId, watchedUserNotification } from '../../redux/features/users/usersGetSlice';
+import SideBar from '../SideBar/SideBar';
+import style from './notification.module.css'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { DateTime } from "luxon";
+import { useAuth } from "../../context/";
+
+const Notification = () => {
+    const dispatch = useDispatch();
+    const currentUser = useSelector((state) => state.users.currentUser);
+    const userNotification = useSelector((state)=> state.users.userNotifications);
+    const { userFirebase } = useAuth();
+
+    useEffect(()=> {
+        dispatch(getUserByFirebaseId(userFirebase.uid))
+     },[]);
+
+   const handleWatched = () => {
+       if(userNotification){
+           userNotification.forEach((el)=>{
+               dispatch(watchedUserNotification(el.id))
+           });
+       };
+   };
+
+   const handleDelete = () => {
+       if(userNotification){
+           userNotification.forEach((el)=> {
+               dispatch(disabledUserNotification(el.id))
+           });
+       };
+   };
+
+    
+  return (
+ <>
+    <div className={style.divContainer}>
+    <Stack direction="row">
+    <div className={style.background}></div>
+    <div style={{ minWidth: "266px"  }}>
+    <SideBar />
+    </div>
+    <div className={style.container}>
+        <Typography
+         variant="h2"
+         component="h1"
+         sx={{ fontWeight: "600", color: "white", paddingTop: "20px" }}
+        >
+        Notifications.
+        </Typography>
+        <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="space-between"
+            alignItems="center"
+            flexWrap="wrap"
+            sx={{ marginTop: "13px" }}
+          >
+        <div className={style.containerDescription}>
+            <>
+        {
+            userNotification.length > 0 ? (
+                     userNotification?.map((user)=> {
+                    let data = JSON.parse(user?.title)
+                    return (
+                        <div key={user.id}>
+                          <List 
+                            className={style.list} 
+                            sx={{width: '100%'}}>
+                            <ListItemButton
+                            >
+                            <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                            <Avatar sx={{ width: 54, height: 54 }}
+                            alt="avatar.." 
+                            src={data?.img} />
+                             </ListItemAvatar>
+                             <ListItemText
+                               component="div"
+                                primary={
+                                <Stack direction="row">
+                                <Typography
+                                   sx={{ display: 'inline', fontSize: 17, fontWeight: 600, marginLeft: 2 }}
+                                   component="h4"
+                                   variant="body2"
+                                   color="#9e9e9e"
+                                   >
+                                   {data?.name} {!user.watched ? '' : <span className={style.watched}>watched</span> }
+                                   </Typography>
+                                   <div>
+                                      <IconButton aria-label="delete" size="large" color="primary" sx={{ marginLeft: 94,  color: 'red' }} onClick={()=> handleDelete()}>
+                                       <DeleteIcon fontSize="inherit"/>
+                                     </IconButton>
+                                     </div>
+                                      </Stack>
+                               
+                                       }
+   
+                                secondary={
+                               <>
+                               <Stack>
+                                   <Typography
+                                    sx={{ display: 'inline', fontSize: 16,  fontWeight: 500, marginLeft: 2 }}
+                                       component="span"
+                                       variant="subtitle1"
+                                       color="#757575"
+                                       >
+
+                                       {data?.post}: <Link to={user.content}>
+                                       <Button  href="#text-buttons" variant='outlined' color="success" sx={{ marginLeft: 1, color: '#c4c4c4', fontSize: 12, fontWeight: 16, }} onClick={()=> handleWatched()}>Post</Button>
+                                       </Link>
+                                      
+                                   </Typography>
+                                   </Stack>
+                                   
+                                   <div>
+                                   <Typography 
+                                    sx={{ display: 'inline', fontSize: 12, marginLeft: 146 }}
+                                   component="span"
+                                   variant="body2"
+                                   color="#757575" >
+
+                                   {DateTime.fromISO(user.date).toFormat('ff')} 
+                                   </Typography>
+                                   </div>  
+                                         
+                               </>
+                                           }
+                            /> 
+                            
+                           </ListItem>
+                           </ListItemButton>
+                           </List>
+                           </div>
+                           )
+                        })) : (<div className={style.divNotNotification}><h2>You don't have any notification.</h2></div> )
+
+          }
+        </>
+       </div>
+       </Stack>
+    </div>
+    </Stack>
+    </div>
+ </>
+  )
+}
+
+export default Notification;
