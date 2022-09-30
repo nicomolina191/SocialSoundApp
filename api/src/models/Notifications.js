@@ -28,7 +28,11 @@ module.exports = (sequelize) => {
         },
         fromUser: {
             type: DataTypes.UUID
-        }
+        },
+        disabled: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
     }, {
         timestamps: false
     });

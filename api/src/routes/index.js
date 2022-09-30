@@ -36,6 +36,7 @@ const createReview = require('../Controller/Reviews/createReview.js');
 const getReview = require('../Controller/Reviews/getReview.js');
 const getLikesByUserId = require('../Controller/Likes/getLikesByUserId.js');
 const addFollower = require('../Controller/Follows/addFollower.js');
+const setNotiDisabled = require("../Controller/Notifications/setNotiDisabled.js");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -83,6 +84,8 @@ router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
 router.put("/notifications/watched/:id", setNotiWatched);
+router.put("/notifications/disabled/:id", setNotiDisabled);
+
 router.put("/likes", changeStatusLike);
 
 
