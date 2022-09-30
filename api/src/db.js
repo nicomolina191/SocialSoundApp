@@ -102,33 +102,13 @@ Genres.belongsToMany(Users, { through: "users_genres", timestamps: false });
 
 //USERS - REPORTS
 
-Users.belongsToMany(Report, {
-  through: "users_report",
-  as: "Reporting_User",
-  foreignKey: "userId",
-  timestamps: false,
-});
-Report.belongsTo(Users, {
-  through: "users_report",
-  as: "Reporting_User",
-  foreignKey: "userId",
-  timestamps: false,
-});
+Users.belongsToMany(Report, { through: "users_report", timestamps: false });
+Report.belongsTo(Users, { through: "users_report", timestamps: false });
 
 //POST - REPORTS
 
-Posts.belongsToMany(Report, {
-  through: "users_report",
-  as: "Reported_User",
-  foreignKey: "userId",
-  timestamps: false,
-});
-Report.belongsTo(Posts, {
-  through: "users_report",
-  as: "Reported_User",
-  foreignKey: "postId",
-  timestamps: false,
-});
+Posts.belongsToMany(Report, { through: "posts_report", timestamps: false });
+Report.belongsTo(Posts, { through: "posts_report", timestamps: false });
 
 //POSTS - LIKES
 
