@@ -6,7 +6,7 @@ const getReports = async (req, res) => {
       include: [
         {
           model: Users,
-          attributes: ["name", "email"]
+          attributes: ["name", "email", "avatar"]
         }
       ],
     });
