@@ -51,7 +51,6 @@ router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle); //user
 router.get("/usersAdmi/idgoogle/:idgoogle", getUserByIdGoogleAdmin); //admin
 router.get("/posts", getPosts);
 router.get("/posts/:id", getPostById);
-router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 router.get("/notifications/:userId", getNotiByUser);
 router.get("/likes/users/:userId", getLikesByUserId);
@@ -61,12 +60,12 @@ router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
 router.get("/reports", getReports); //Only for admin!
 
+router.post("/posts/order", getByTime);
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
 router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
-router.post("/posts/genres", getByGenre);
 router.post("/users/follow", addFollower);
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
