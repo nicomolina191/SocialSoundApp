@@ -1,7 +1,7 @@
 const { Users, Posts, Genres } = require("../../db.js");
 
 const createPost = async (req, res) => {
-  const { description, title, content, userId, genres, type, cover, idShared } =
+  const { description, title, content, idUser, genres, type, cover, idShared } =
     req.body;
 
   try {
@@ -14,7 +14,7 @@ const createPost = async (req, res) => {
       idShared,
     });
 
-    const user = await Users.findByPk(userId);
+    const user = await Users.findByPk(idUser);
     await post.setUser(user);
 
     for (const genre of genres) {
