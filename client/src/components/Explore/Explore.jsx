@@ -8,7 +8,7 @@ import {
   faChevronDown,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
-import { Typography, createTheme, ThemeProvider } from "@mui/material";
+import { Typography, createTheme, ThemeProvider, Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import styles from "./Explore.module.css";
 import logoIcon from "../../images/logoicon.png";
@@ -29,9 +29,10 @@ const Explore = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.usersList);
   const user = useSelector((state) => state.users.user);
-  const posts = useSelector((state) => state.posts.postList);
+  const postsSelector = useSelector((state) => state.posts.postList);
   const userDB = useSelector((state) => state.users.currentUser);
-
+  const [posts, setPosts] = useState(postsSelector);
+  const [checked, setChecked] = useState("all");
   const [inputValue, setInputValue] = useState("");
   let [artistsPerPage, setArtistsPerPage] = useState(10);
   let currentArtists = posibleArtist().slice(0, artistsPerPage);
@@ -40,8 +41,11 @@ const Explore = () => {
   if (inputValue) {
     currentSongs = posibleSong().slice(0, songsPerPage);
   }
-
   const { userFirebase } = useAuth();
+
+  useEffect(() => {
+    setPosts(postsSelector);
+  }, [postsSelector]);
 
   useEffect(() => {
     dispatch(getUser());
@@ -104,6 +108,22 @@ const Explore = () => {
     posibleArtist();
     posibleSong();
   }
+
+  function handleCheckedAll() {
+    setChecked("all");
+    setPosts(postsSelector);
+  }
+
+  function handleCheckedVideo() {
+    setChecked("video");
+    setPosts(postsSelector.filter((post) => post.type.includes("video")));
+  }
+
+  function handleCheckedAudio() {
+    setChecked("audio");
+    setPosts(postsSelector.filter((post) => post.type.includes("audio")));
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Stack direction="row">
@@ -147,13 +167,66 @@ const Explore = () => {
           <div className={styles.containerContent}>
             {!inputValue ? (
               <Stack>
-                <Typography
-                  className={styles.forYouText}
-                  variant="h4"
-                  component="h3"
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  For you.
-                </Typography>
+                  <Typography
+                    className={styles.forYouText}
+                    variant="h4"
+                    component="h3"
+                  >
+                    For you.
+                  </Typography>
+                  <div>
+                    {checked === "all" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        All
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedAll}>All</Button>
+                    )}
+                    {checked === "video" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        Video
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedVideo}>Video</Button>
+                    )}
+                    {checked === "audio" ? (
+                      <Button
+                        sx={{
+                          backgroundColor: "rgba(0, 255, 214, 1)",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "rgba(0, 255, 214, 1)",
+                          },
+                        }}
+                      >
+                        Audio
+                      </Button>
+                    ) : (
+                      <Button onClick={handleCheckedAudio}>Audio</Button>
+                    )}
+                  </div>
+                </Stack>
 
                 {posts?.length === 0 ? (
                   <h1 className={styles.noResultsText}>No results</h1>
