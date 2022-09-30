@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification  } from "./usersSlice";
 
 
 //obtener los users
@@ -80,8 +80,9 @@ export const getUserByFirebaseId = (id) => {
     try {
       const response = await axios.get(`/users/idgoogle/${id}`)
       dispatch(getByFirebaseId(response.data))
+      dispatch(getUserNotification(response.data.id))
     }
-    catch (error) {
+      catch (error) {
       console.log(error)
     }
   }
@@ -109,4 +110,48 @@ export const getUserLikes = (id) => {
       console.log(error);
     }
   }
+};
+
+export const getUserNotification = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/notifications/${id}`)
+      await  dispatch(getNotifications(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+export const createUserNotification = (value) => {
+  return async (dispatch) => {
+    try {
+    const response = await axios.post('/notifications/create', value)
+    // dispatch(createNotification(response.data))
+  } catch (error) {
+    console.log(error);
+  }
 }
+};
+
+export const watchedUserNotification = (id) => {
+ return async(dispatch) => {
+  try {
+    const response = await axios.put(`/notifications/watched/${id}`)
+    dispatch(watchedNotification(response.data))
+  } catch (error) {
+    console.log(error);
+  }
+ }
+};
+
+export const disabledUserNotification = (id) => {
+  return async(dispatch) => {
+    try {
+      const response = await axios.put(`/notifications/disabled/${id}`)
+      dispatch(disabledNotification(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};

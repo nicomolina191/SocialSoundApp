@@ -25,6 +25,7 @@ import {
   getUser,
   getUserByFirebaseId,
   getUserById,
+  getUserNotification,
 } from "../../redux/features/users/usersGetSlice";
 import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import {
@@ -75,6 +76,7 @@ const Explore = () => {
     dispatch(getGenre());
     dispatch(getUserById(posts.userId));
     dispatch(getUserByFirebaseId(userFirebase.uid));
+    dispatch(getUserNotification(userDB.id))
   }, [dispatch]);
 
   const theme = createTheme({

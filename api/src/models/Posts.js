@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        isShared: {
+        idShared: {
             type: DataTypes.STRING,
         }
     }, {
