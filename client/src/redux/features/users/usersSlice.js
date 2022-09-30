@@ -4,6 +4,7 @@ const initialState = {
   usersListAll: [],
   user:{},
   userLikes: [],
+  userNotifications: [],
   isLoading: true,
   currentUser: {}
 }
@@ -72,11 +73,33 @@ const userSlice = createSlice({
         userLikes: action.payload
       }
     },
+    getNotifications: (state, action)=> {
+      return {
+        ...state,
+        userNotifications: action.payload
+      }
+    },
+    createNotification: (state, action)=> {
+        state.userNotifications.push(action.payload)    
+    },
+
+    watchedNotification: (state, action) => {
+      return {
+        ...state,
+        userNotifications: action.payload
+      }
+    },
+    disabledNotification: (state, action) => {
+      return {
+        ...state,
+        userNotifications: action.payload
+      }
+    }
   },
 });
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes  } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, getNotifications, createNotification, watchedNotification, disabledNotification  } = userSlice.actions;
 
 export default userSlice.reducer;
 

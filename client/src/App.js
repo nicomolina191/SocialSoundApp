@@ -14,6 +14,7 @@ import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Admin from "./components/admin/Admin";
 import PostContainer from "./components/postContainer/PostContainer";
 import Sucess from "./components/sucess/Sucess";
+import Notification from "./components/notification/Notification";
 
 
 
@@ -81,6 +82,11 @@ function App() {
            <Route path="/home/post/:idPost" element={
               <ProtectedRoute>
            <PostContainer />
+           </ProtectedRoute>
+           }/>
+              <Route path="/home/notification" element={
+              <ProtectedRoute>
+           <Notification />
            </ProtectedRoute>
            }/>
            <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />

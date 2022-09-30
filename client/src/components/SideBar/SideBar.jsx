@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useState } from 'react'
 import s from './SideBar.module.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,15 +11,17 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useSelector } from 'react-redux'
-import { Rating, TextField } from '@mui/material';
+import { Badge, Rating, TextField } from '@mui/material';
 import axios from 'axios';
+import MailIcon from '@mui/icons-material/Mail';
+
 
 
 const SideBar = ({userDB}) => {
     
   const user = useSelector((state)=> state.users.currentUser)
+  const notification = useSelector((state)=> state.users.userNotifications)
   const [role, setRole] = useState("")
-
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
 
@@ -27,6 +31,7 @@ const SideBar = ({userDB}) => {
     userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
     
   }, [])
+
 
 /*   useEffect(() => {
     if(!role) return setRole(userDB?.role)
@@ -81,6 +86,7 @@ const SideBar = ({userDB}) => {
     setShowText(true);
   }
 
+
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
@@ -90,12 +96,22 @@ const SideBar = ({userDB}) => {
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 
                 <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
+                
+                <li className={s.routeItem}>
+                <Link to='/home/notification'>Notifications
+                {
+                  notification?.length > 0 && (
+                 <Badge badgeContent={notification?.length} color="secondary" >
+                 <MailIcon color="action" sx={{paddingLeft: 1,}} />
+                 </Badge> )}
+                </Link>
+                </li>
+
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
                   ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
                 }
-
 
             </ul>
             <ul className={s.optionsContainer}>

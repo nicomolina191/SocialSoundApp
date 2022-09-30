@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   Slide,
   SvgIcon,
@@ -16,7 +15,7 @@ import style from "./post.module.css";
 import { useEffect } from "react";
 import axios from "axios";
 import CommentsContainer from "../commentsContainer/CommentsContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   EmailShareButton,
@@ -35,6 +34,7 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -64,6 +64,22 @@ export default function Post({ post, comments, margin }) {
   const [likes, setLikes] = useState();
   const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const notification = async() => {
+     if(currentUser.id !== post.userId){
+       await dispatch(createUserNotification({
+           title: JSON.stringify({
+             name:`${currentUser.username} (@${currentUser.name}) liked your post`,
+             img: currentUser.avatar,
+             post: post.title,
+           }),
+           content: post.content,
+           userId: post.userId,
+           fromUser: currentUser.id,
+       }));
+         console.log("notification created!")
+     }};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,12 +92,12 @@ export default function Post({ post, comments, margin }) {
   async function getLikes() {
     const res = await axios.get(`/likes/posts/${post.id}`);
     setLikes(res.data);
-    // setLikes(likesHardcorde.filter(like => like.postId === post.id))
   }
-
+  
   const handleLike = () => {
     setLike(!like);
     setClick(!click);
+    if(!like) notification()
   };
 
   useEffect(() => {
@@ -98,9 +114,8 @@ export default function Post({ post, comments, margin }) {
       async function getLikeOfThisUser() {
         const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
         setLike(res.data[0]?.isActive);
-        // setLike(!!likes?.find(like => like.postId === post.id && like.userId === currentUser.id)?.statusLike)
       }
-      getLikeOfThisUser();
+      getLikeOfThisUser(); 
     }
   }, [likes]);
 
@@ -117,32 +132,24 @@ export default function Post({ post, comments, margin }) {
             userId: currentUser.id,
             isActive: like,
           });
-          // currentLike.statusLike = like
         }
         async function createLike() {
           await axios.post(`/likes`, {
             idPost: post.id,
             idUser: currentUser.id,
           });
-
-          // likesHardcorde.push({ statusLike: like, postId: post.id, userId: currentUser.id })
         }
         Object.keys(currentLike).length === 0
           ? await createLike()
           : await updateLike();
         await getLikes();
       }
+     
     }
     updateLikes();
+
   }, [click]);
-  // useEffect(()=>{
-  //     getLikes()
-  // },[likes])
-
-  console.log(like);
-  console.log(likes);
-  console.log(likes?.filter((likes) => likes.isActive).length);
-
+  
   useEffect(() => {
     setDate(new Date(Date.parse(post.postDate)).toLocaleString("sv"));
   }, [post]);
@@ -321,7 +328,7 @@ export default function Post({ post, comments, margin }) {
           </Grid>
         </Grid>
       </Grid>
-      {comments ? <CommentsContainer idPost={post.id} /> : ""}
+      {comments ? <CommentsContainer post={post} idPost={post.id} /> : ""}
     </Grid>
   );
 }
