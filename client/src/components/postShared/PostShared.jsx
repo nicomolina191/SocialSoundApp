@@ -34,8 +34,8 @@ export default function PostShared({ postShared, margin }) {
         "Dec",
     ];
     const [openReport, setOpenReport] = useState(false);
-    const [motiveReport, setMotiveReport] = useState();
-    const [detailsReport, setDetailsReport] = useState();
+    const [motiveReport, setMotiveReport] = useState('');
+    const [detailsReport, setDetailsReport] = useState('');
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMore = Boolean(anchorEl);
     const handleClickMore = (event) => {
@@ -60,11 +60,11 @@ export default function PostShared({ postShared, margin }) {
     const handleCloseDelete = () => {
         setOpenDelete(false);
     };
-    
+
     async function getPost() {
-            const res = await axios.get(`/posts/${postShared.idShared}`)
-            setPost(res.data)
-        }
+        const res = await axios.get(`/posts/${postShared.idShared}`)
+        setPost(res.data)
+    }
 
     useEffect(() => {
         async function getUser() {
@@ -75,15 +75,17 @@ export default function PostShared({ postShared, margin }) {
         getPost();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         getPost()
-    },[postShared])
+    }, [postShared])
 
     useEffect(() => {
         setDate(new Date(Date.parse(postShared.postDate)).toLocaleString("sv"));
     }, [postShared]);
 
-    console.log(postShared);
+    // console.log(postShared);
+    console.log(detailsReport);
+    console.log(motiveReport);
 
     return (
         <Grid container direction="column" className={style.post} p={`1.5%`} m={margin}>
@@ -164,12 +166,12 @@ export default function PostShared({ postShared, margin }) {
                             >
                                 <h2>Report this post</h2>
 
-                                <DialogContent className={style.dialogContent}>
-                                    <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} />
-                                </DialogContent>
-                                <DialogContent className={style.dialogContent}>
-                                    <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} />
-                                </DialogContent>
+                                {/* <DialogContent className={style.dialogContent}> */}
+                                <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                                {/* </DialogContent>
+                                <DialogContent className={style.dialogContent}> */}
+                                <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                                {/* </DialogContent> */}
                                 <DialogActions>
                                     <Button onClick={handleCloseReport} className={style.button}>
                                         Close
@@ -232,9 +234,9 @@ export default function PostShared({ postShared, margin }) {
                 <Typography variant="body1">{postShared.description}</Typography>
             </Grid>
             <Grid item className={`${style2.postShared}`}>
-                {post ? <Link to={`/home/post/${post?.id}`}><Post post={post} border={{ border: '1px solid #02b599' }} /></Link> : 'This post is not longer available.'}
+                {post ? <Post post={post} border={{ border: '1px solid #02b599' }} margin={'0px'} /> : 'This post is not longer available.'}
             </Grid>
-            <Grid item>
+            <Grid item style={post && { marginTop: '-30px' }}>
                 <Typography variant="body2">
                     {date &&
                         `${date.split(" ")[1].split(":")[0]}:${date.split(" ")[1].split(":")[1]
