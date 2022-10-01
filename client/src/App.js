@@ -13,13 +13,13 @@ import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import AdminUsers from "./components/admin/usersPerfil/AdminUsers";
 import PostContainer from "./components/postContainer/PostContainer";
-import Sucess from "./components/sucess/Sucess";
 import Notification from "./components/notification/Notification";
 import Pleasures from "./components/userGenresPleasures/Pleasures";
 import Admin from "./components/admin/adminHome/Admin";
 import AdminPosts from "./components/admin/posts/AdminPosts";
 import Banned from "./components/banned/Banned";
 import LikedVideos from "./components/likedVideos/LikedVideos";
+import Success from "./components/success/Success";
 
 
 
