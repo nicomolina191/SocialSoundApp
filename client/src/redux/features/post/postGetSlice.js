@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getPostsReported } from "./postSlice";
+import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getPostsReported, getAllPostByPopularity, getAllPostByRelevance } from "./postSlice";
 
 //obtener los users
 export const getPost = () => {
@@ -88,6 +88,28 @@ export const getPostByTime = (order) => {
   }
 }
 
+export const getPostByPopularity = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/posts/order/popular`);
+      dispatch(getAllPostByPopularity(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const getPostByRelevance = (order) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`/posts/genres/with-all`, order);
+      dispatch(getAllPostByRelevance(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
 export const getPostById = (id) => {
   return async (dispatch) => {
     try {
@@ -99,8 +121,8 @@ export const getPostById = (id) => {
   }
 }
 
-export const clearPost=()=>{
-  return (dispatch)=>{
+export const clearPost = () => {
+  return (dispatch) => {
     dispatch(clearCurrentPost())
   }
 }

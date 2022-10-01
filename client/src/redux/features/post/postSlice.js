@@ -16,8 +16,8 @@ export const postSlice = createSlice({
   reducers: {
     addPosts: (state, action) => {
       return {
-      ...state,
-      postList: [...state.postList, action.payload]
+        ...state,
+        postList: [...state.postList, action.payload]
       }
     },
     deletePosts: (state) => {
@@ -65,19 +65,31 @@ export const postSlice = createSlice({
         postList: action.payload,
       }
     },
+    getAllPostByPopularity: (state, action) => {
+      return {
+        ...state,
+        postList: action.payload,
+      }
+    },
+    getAllPostByRelevance: (state, action) => {
+      return {
+        ...state,
+        postList: action.payload,
+      }
+    },
     getCurrentPostById: (state, action) => {
       return {
         ...state,
         post: action.payload
       }
     },
-    clearCurrentPost:(state, action)=>{
-      return{
+    clearCurrentPost: (state, action) => {
+      return {
         ...state,
-        post:{}
+        post: {}
       }
     },
-        getPostsReported : (state, action) =>{
+    getPostsReported: (state, action) => {
       return {
         ...state,
         reportedPosts: action.payload
@@ -87,6 +99,6 @@ export const postSlice = createSlice({
 });
 
 
-export const {getPostsReported, addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } = postSlice.actions;
+export const { getPostsReported, addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getAllPostByPopularity, getAllPostByRelevance } = postSlice.actions;
 
 export default postSlice.reducer;
