@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { postsReported } from '../../../redux/features/post/postGetSlice';
 import { Arrow } from '../../componentsIcons';
 import { useNavigate } from 'react-router-dom';
-import Post from "../../post/Post"
 import ReportUsers from '../reportUsers/ReportUsers';
 
 
@@ -22,30 +21,46 @@ const AdminPosts = () => {
   }, [dispatch])
 
   const postsReportedArr = useSelector(state => state.posts.reportedPosts)
+  const [maxSteps, setMaxSteps] = useState(0)
   const [activeStep, setActiveStep] = useState(0);
+  const [showArrCut, setShowArrCut] = useState([])
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    let ant = activeStep
+    let sig = activeStep + 1
+    setActiveStep(sig);
+    setShowArrCut(postsReportedArr.slice(ant*6, sig*6))
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    let ant = activeStep
+    let sig = activeStep - 1
+    setActiveStep(sig);
+    setShowArrCut(postsReportedArr.slice(sig*6, ant*6))
+    console.log(sig*6, ant*6)
   };
   
 
-  
+useEffect(() => {
+  setMaxSteps((Math.floor(postsReportedArr.length / 6) + 1))
+  setShowArrCut(postsReportedArr.slice(activeStep, 6))
+  setMaxSteps(Math.floor(postsReportedArr.length / 6) + 1)
+}, [postsReportedArr])
+
   return (
   <Box className={style.adminPostsContainer}>
     <Button onClick={() => navigate("/admin")} className={style.arrow}><Arrow/></Button>
     <Box className={style.divMobileStepper}>
         <MobileStepper 
       variant="dots"
-      steps={6}
+      steps={maxSteps+ 1}
       activeStep={activeStep}
       sx={{ maxWidth: 400, flexGrow: 1 }}
       className={style.carousel}
       nextButton={
-        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={activeStep === 5}>
+        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={postsReportedArr[activeStep*6+1] === undefined}>
           Next
           <KeyboardArrowRight/>
         </Button>
@@ -63,7 +78,7 @@ const AdminPosts = () => {
     <Box className={style.textContainer}><h1>{postsReportedArr}</h1></Box>: 
 
     <Box className={style.postsDiv}>
-      {postsReportedArr?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
+      {showArrCut?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
     </Box>
     }
    </Box>
