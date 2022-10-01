@@ -89,3 +89,7 @@
     background-color: antiquewhite;
 
 }
+
+.dialogContainer div {
+    color: white !important;
+}
