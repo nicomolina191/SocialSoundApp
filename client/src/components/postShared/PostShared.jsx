@@ -34,8 +34,8 @@ export default function PostShared({ postShared, margin }) {
         "Dec",
     ];
     const [openReport, setOpenReport] = useState(false);
-    const [motiveReport, setMotiveReport] = useState();
-    const [detailsReport, setDetailsReport] = useState();
+    const [motiveReport, setMotiveReport] = useState('');
+    const [detailsReport, setDetailsReport] = useState('');
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMore = Boolean(anchorEl);
     const handleClickMore = (event) => {
@@ -83,7 +83,9 @@ export default function PostShared({ postShared, margin }) {
         setDate(new Date(Date.parse(postShared.postDate)).toLocaleString("sv"));
     }, [postShared]);
 
-    console.log(postShared);
+    // console.log(postShared);
+    console.log(detailsReport);
+    console.log(motiveReport);
 
     return (
         <Grid container direction="column" className={style.post} p={`1.5%`} m={margin}>
@@ -164,12 +166,12 @@ export default function PostShared({ postShared, margin }) {
                             >
                                 <h2>Report this post</h2>
 
-                                <DialogContent className={style.dialogContent}>
-                                    <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} />
-                                </DialogContent>
-                                <DialogContent className={style.dialogContent}>
-                                    <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} />
-                                </DialogContent>
+                                {/* <DialogContent className={style.dialogContent}> */}
+                                <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                                {/* </DialogContent>
+                                <DialogContent className={style.dialogContent}> */}
+                                <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                                {/* </DialogContent> */}
                                 <DialogActions>
                                     <Button onClick={handleCloseReport} className={style.button}>
                                         Close

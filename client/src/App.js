@@ -76,7 +76,7 @@ function App() {
           />
           <Route path="/home/sucess" element={
             <ProtectedRoute>
-              <Sucess />
+              <Success />
             </ProtectedRoute>
           } />
           <Route path="/support" element={

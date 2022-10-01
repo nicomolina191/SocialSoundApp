@@ -42,7 +42,7 @@ import {
 } from "react-share";
 import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
 import share from '../../images/logoiconbg.png'
-// import { createUserNotification } from "../../redux/features/users/usersGetSlice";
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
 import LikeButton from "./LikeButton";
 
@@ -89,21 +89,22 @@ export default function Post({ post, comments, margin, border }) {
   const handleCloseMore = () => {
     setAnchorEl(null);
   };
-  
-  const notification = async() => {
-     if(currentUser.id !== post.userId){
-       await dispatch(createUserNotification({
-           title: JSON.stringify({
-             name:`${currentUser.username} liked your post`,
-             img: currentUser.avatar,
-             post: post.title,
-           }),
-           content: post.content,
-           userId: post.userId,
-           fromUser: currentUser.id,
-       }));
-         console.log("notification created!")
-     }};
+
+  const notification = async () => {
+    if (currentUser.id !== post.userId) {
+      await dispatch(createUserNotification({
+        title: JSON.stringify({
+          name: `${currentUser.username} liked your post`,
+          img: currentUser.avatar,
+          post: post.title,
+        }),
+        content: post.content,
+        userId: post.userId,
+        fromUser: currentUser.id,
+      }));
+      console.log("notification created!")
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -141,7 +142,7 @@ export default function Post({ post, comments, margin, border }) {
   //   const res = await axios.get(`/likes/posts/${post.id}`);
   //   setLikes(res.data);
   // }
-  
+
   // const handleLike = () => {
   //   setLike(!like);
   //   setClick(!click);
@@ -204,6 +205,8 @@ export default function Post({ post, comments, margin, border }) {
   useEffect(() => {
     setDate(new Date(Date.parse(post.postDate)).toLocaleString("sv"));
   }, [post]);
+
+  console.log(detailsReport);
 
   return (
     <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
@@ -284,12 +287,12 @@ export default function Post({ post, comments, margin, border }) {
               >
                 <h2>Report this post</h2>
 
-                <DialogContent className={style.dialogContent}>
-                  <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} />
-                </DialogContent>
-                <DialogContent className={style.dialogContent}>
-                  <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} />
-                </DialogContent>
+                {/* <DialogContent className={style.dialogContent}> */}
+                <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                {/* </DialogContent>
+                                <DialogContent className={style.dialogContent}> */}
+                <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} style={{ marginTop: '1.5%' }} />
+                {/* </DialogContent> */}
                 <DialogActions>
                   <Button onClick={handleCloseReport} className={style.button}>
                     Close
@@ -357,9 +360,9 @@ export default function Post({ post, comments, margin, border }) {
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
       {user?.name && post?.type === 'video'
-        ? <Video song={post}/>
+        ? <Video song={post} />
         : post?.type === 'audio'
-        && <Audio song={post} artist={user}/>
+        && <Audio song={post} artist={user} />
       }
       <Grid item container justifyContent="space-between">
         <Grid item>
@@ -389,7 +392,7 @@ export default function Post({ post, comments, margin, border }) {
                 )}
               </SvgIcon>
             </button> */}
-            <LikeButton post={post}/>
+            <LikeButton post={post} />
           </Grid>
           {/* <LikeButton post={post}/> */}
           <Grid item>

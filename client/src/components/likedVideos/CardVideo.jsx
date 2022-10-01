@@ -37,7 +37,7 @@ export default function CardVideo({ post, index }) {
                     <p>{index + 1}</p>
                 </div>
                 <button onClick={handleClickOpen}>
-                    <img src={post.cover} alt="" />
+                    <img src={post.cover} alt="" style={{height:'40px', borderRadius:'6px'}} />
                 </button>
                 <button style={{ width: '20px', fontWeight: '600', color: 'white', fontSize: '18px' }} onClick={handleClickOpen}>
                     <p style={{ cursor: "pointer" }}>{post.title}</p>
