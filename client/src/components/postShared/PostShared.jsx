@@ -60,11 +60,11 @@ export default function PostShared({ postShared, margin }) {
     const handleCloseDelete = () => {
         setOpenDelete(false);
     };
-    
+
     async function getPost() {
-            const res = await axios.get(`/posts/${postShared.idShared}`)
-            setPost(res.data)
-        }
+        const res = await axios.get(`/posts/${postShared.idShared}`)
+        setPost(res.data)
+    }
 
     useEffect(() => {
         async function getUser() {
@@ -75,9 +75,9 @@ export default function PostShared({ postShared, margin }) {
         getPost();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         getPost()
-    },[postShared])
+    }, [postShared])
 
     useEffect(() => {
         setDate(new Date(Date.parse(postShared.postDate)).toLocaleString("sv"));
@@ -234,7 +234,7 @@ export default function PostShared({ postShared, margin }) {
             <Grid item className={`${style2.postShared}`}>
                 {post ? <Post post={post} border={{ border: '1px solid #02b599' }} margin={'0px'} /> : 'This post is not longer available.'}
             </Grid>
-            <Grid item style={{marginTop:'-30px'}}>
+            <Grid item style={post && { marginTop: '-30px' }}>
                 <Typography variant="body2">
                     {date &&
                         `${date.split(" ")[1].split(":")[0]}:${date.split(" ")[1].split(":")[1]
