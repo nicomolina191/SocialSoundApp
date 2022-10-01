@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification  } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, getDownToRegular  } from "./usersSlice";
 
 
 //obtener los users
@@ -98,7 +98,18 @@ export const getUserUpdatePremium = (id) => {
       console.log(error);
     }
   }
-}
+};
+
+export const getUserDownToRegular = (id) => {
+  return async (dispatch) => {
+   try {
+      const response = await axios.put(`/users/regular/${id}`)
+      dispatch(getDownToRegular(response.data))
+   } catch (error) {
+     console.log(error);
+   }
+  }
+};
 
 export const getUserLikes = (id) => {
   return async (dispatch) => {

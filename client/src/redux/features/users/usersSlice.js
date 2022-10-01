@@ -72,6 +72,12 @@ const userSlice = createSlice({
         currentUser: action.payload
       }
     },
+    getDownToRegular: (state, action) => {
+      return{
+        ...state,
+        currentUser: action.payload
+      }
+    },
     getLikes : (state, action)=> {
       return {
         ...state,
@@ -105,7 +111,7 @@ const userSlice = createSlice({
 
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification  } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, getDownToRegular  } = userSlice.actions;
 
 export default userSlice.reducer;
 

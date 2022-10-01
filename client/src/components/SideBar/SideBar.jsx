@@ -10,11 +10,16 @@ import { db } from '../../firebase'
 import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
-import { useSelector } from 'react-redux'
-import { Badge, Rating, TextField } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux'
+import { Badge, Rating, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
+import { getUserDownToRegular } from '../../redux/features/users/usersGetSlice'
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 
 
@@ -25,6 +30,7 @@ const SideBar = ({userDB}) => {
   const [role, setRole] = useState("")
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     const docRef = doc(db, "userConversations", userFirebase?.uid);
@@ -42,6 +48,10 @@ const SideBar = ({userDB}) => {
   }
   }, [userDB?.role]) */
 
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openBoolean = Boolean(anchorEl);
+  const [openModal, setOpenModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [showText, setShowText] = useState(false);
@@ -55,7 +65,7 @@ const SideBar = ({userDB}) => {
   });
 
 
- const iconPremium = "https://iopinionweb.com/img/portfolio/gold.png"
+ const iconPremium = "https://www.pngmart.com/files/13/Premium-PNG-Photos.png"
 
 
   useEffect(() => {
@@ -95,6 +105,36 @@ const handleButton = (e) => {
     setOpen(false);
   };
 
+  const handleDownRegular = () => {
+    dispatch(getUserDownToRegular(user.id));
+  };
+
+  const mouseEnter = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const mouseLeave = () => {
+    setAnchorEl(false);
+  };
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  
+
+  
+
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
@@ -118,7 +158,53 @@ const handleButton = (e) => {
                 {
                   user?.plan !== 'Premium' ? (
                   <li className={s.buttonPremium}><PayButton /></li>
-                  ): ( <img className={s.premiumIcon} width='34px' src={iconPremium} />)
+                  ): ( <div>
+                         <Button
+                          onMouseEnter={mouseEnter}
+                          id="demo-positioned-button"
+                          aria-controls={openBoolean ? 'demo-positioned-menu' : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={openBoolean ? 'true' : undefined}
+                          
+                           >
+                          <img className={s.premiumIcon} width='92px'alt='premium' src={iconPremium} />
+                         </Button>
+                          <Menu
+                           id="demo-positioned-menu"
+                           aria-labelledby="demo-positioned-button"
+                           anchorEl={anchorEl}
+                           open={openBoolean}
+                           anchorOrigin={{
+                           vertical: 'top',
+                           horizontal: 'left',
+                          }}
+                          transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'left',
+                          }}
+                          >
+                         <Button
+                         onMouseLeave={!openModal && mouseLeave}
+                         onClick={handleOpenModal}>Cancel Plan</Button>
+                         <Modal
+                          open={openModal}
+                          onClose={handleCloseModal}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                          >
+                         <Box sx={style}>
+                         <Typography id="modal-modal-title" variant="h6" component="h2">
+                           Are you sure to cancel the premium plan?
+                         </Typography>
+                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                           Confirm now and you will lose all premium features!
+                         </Typography>
+                         <Button
+                         onClick={()=> handleDownRegular()}>Confirm!</Button>
+                         </Box>
+                         </Modal>
+                         </Menu>
+                      </div>  )
                 }
 
             </ul>
