@@ -217,10 +217,13 @@ const handleButton = (e) => {
                     <path fillRule="evenodd" clipRule="evenodd" d="M4.80158 15.7356C4.50994 16.0574 4.00333 16.09 3.67003 15.8084C-1.22335 11.6747 -1.22334 4.32532 3.67003 0.191565C4.00333 -0.0899962 4.50994 -0.0573886 4.80158 0.264394C5.09322 0.586177 5.05944 1.07528 4.72614 1.35684C0.563021 4.8737 0.56302 11.1263 4.72614 14.6432C5.05944 14.9247 5.09322 15.4138 4.80158 15.7356Z" fill="white"/>
                     <path d="M11 8C11 8.55228 10.5523 9 10 9C9.44772 9 9 8.55228 9 8C9 7.44772 9.44772 7 10 7C10.5523 7 11 7.44772 11 8Z" fill="white"/>
                     </svg> Liked Songs </li>
-                <li className={s.optionItem}> <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <Link to='/home/likedVideos'>
+                  <li className={s.optionItem}> <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" clipRule="evenodd" d="M1.5 1.5V14.5H18.5V1.5H1.5ZM1 0C0.447715 0 0 0.447715 0 1V15C0 15.5523 0.447716 16 1 16H19C19.5523 16 20 15.5523 20 15V1C20 0.447715 19.5523 0 19 0H1Z" fill="white"/>
                     <path fillRule="evenodd" clipRule="evenodd" d="M14 8L8 4L8 12L14 8ZM11.2958 8L9.5 6.80278L9.5 9.19722L11.2958 8Z" fill="white"/>
                     </svg> Liked Music Videos </li>
+                </Link>
+                
             </ul>
             <ul className={s.optionsContainer}>
                 <h4 className={s.titleItem}>ME</h4>

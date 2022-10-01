@@ -1,0 +1,13 @@
+.likedVideos{
+    background-color: #000A1FE0;
+    min-height: 100vh;
+    color: '#C4C4C4'
+}
+
+.likedVideos svg{
+    color: #C4C4C4;
+}
+
+.likedVideos button{
+    border: none;
+}

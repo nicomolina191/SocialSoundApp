@@ -18,6 +18,7 @@ import Pleasures from "./components/userGenresPleasures/Pleasures";
 import Admin from "./components/admin/adminHome/Admin";
 import AdminPosts from "./components/admin/posts/AdminPosts";
 import Banned from "./components/banned/Banned";
+import LikedVideos from "./components/likedVideos/LikedVideos";
 import Success from "./components/success/Success";
 
 
@@ -48,7 +49,7 @@ function App() {
                 <Explore />
               </ProtectedRoute>
             }
-          />    
+          />
           <Route
             path="/messages"
             element={
@@ -73,31 +74,32 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/home/success" element={
-          <ProtectedRoute>
-           <Success />
-          </ProtectedRoute>
-        }/>
-           <Route path="/support" element={
-              <ProtectedRoute>
-           <SupportForm />
-           </ProtectedRoute>
-           }/>
-           <Route path="/home/post/:idPost" element={
-              <ProtectedRoute>
-           <PostContainer />
-           </ProtectedRoute>
-           }/>
-              <Route path="/home/notification" element={
-              <ProtectedRoute>
-           <Notification />
-           </ProtectedRoute>
-           }/>
-           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-           <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
-           <Route path="/admin/posts" element={<ProtectedRoute><AdminPosts /></ProtectedRoute>} />
-           <Route path="/youAreBanned" element={<ProtectedRoute><Banned /></ProtectedRoute>} />
-           <Route path="*" element={<ProtectedRoute><Navigate to="/login"/></ProtectedRoute>} />
+          <Route path="/home/sucess" element={
+            <ProtectedRoute>
+              <Success />
+            </ProtectedRoute>
+          } />
+          <Route path="/support" element={
+            <ProtectedRoute>
+              <SupportForm />
+            </ProtectedRoute>
+          } />
+          <Route path="/home/post/:idPost" element={
+            <ProtectedRoute>
+              <PostContainer />
+            </ProtectedRoute>
+          } />
+          <Route path="/home/notification" element={
+            <ProtectedRoute>
+              <Notification />
+            </ProtectedRoute>
+          } />
+          <Route path='/home/likedVideos' element={<ProtectedRoute><LikedVideos /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
+          <Route path="/admin/posts" element={<ProtectedRoute><AdminPosts /></ProtectedRoute>} />
+          <Route path="/youAreBanned" element={<ProtectedRoute><Banned /></ProtectedRoute>} />
+          <Route path="*" element={<ProtectedRoute><Navigate to="/login" /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </React.StrictMode>
