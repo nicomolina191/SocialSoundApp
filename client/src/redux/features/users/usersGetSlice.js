@@ -114,7 +114,6 @@ export const getUserUpdatePremium = (id) => {
 export const getUserLikes = (id) => {
   return async (dispatch) => {
     try {
-      console.log(id);
       const response = await axios.get(`/likes/users/${id}`)
       dispatch(getLikes(response.data))
     } catch (error) {
