@@ -75,12 +75,14 @@ const Notification = () => {
                             sx={{width: '100%'}}>
                             <ListItemButton
                             >
+                               
                             <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                             <Avatar sx={{ width: 54, height: 54 }}
                             alt="avatar.." 
                             src={data?.img} />
                              </ListItemAvatar>
+                             
                              <ListItemText
                                component="div"
                                 primary={
@@ -89,37 +91,39 @@ const Notification = () => {
                                    sx={{ display: 'inline', fontSize: 17, fontWeight: 600, marginLeft: 2 }}
                                    component="h4"
                                    variant="body2"
-                                   color="#9e9e9e"
+                                   color="#ffffff"
                                    >
-                                   {data?.name} {!user.watched ? '' : <span className={style.watched}>watched</span> }
+                                   {data?.name} 
+                                   {!user.watched ? '' : <span className={style.watched}>watched</span> }
                                    </Typography>
-                                   <div>
-                                      <IconButton aria-label="delete" size="large" color="primary" sx={{ marginLeft: 94,  color: 'red' }} onClick={()=> handleDelete()}>
-                                       <DeleteIcon fontSize="inherit"/>
-                                     </IconButton>
-                                     </div>
                                       </Stack>
-                               
+                                     
                                        }
    
                                 secondary={
                                <>
                                <Stack>
+
                                    <Typography
                                     sx={{ display: 'inline', fontSize: 16,  fontWeight: 500, marginLeft: 2 }}
                                        component="span"
                                        variant="subtitle1"
                                        color="#757575"
                                        >
-
+                                
                                        {data?.post}: <Link to={user.content}>
                                        <Button  href="#text-buttons" variant='outlined' color="success" sx={{ marginLeft: 1, color: '#c4c4c4', fontSize: 12, fontWeight: 16, }} onClick={()=> handleWatched()}>Post</Button>
                                        </Link>
-                                      
                                    </Typography>
+                                  
                                    </Stack>
                                    
                                    <div>
+                                   <div>
+                                      <IconButton aria-label="delete" size="large" color="primary" sx={{  marginLeft: 146,  color: 'red' }} onClick={()=> handleDelete()}>
+                                       <DeleteIcon fontSize="inherit"/>
+                                     </IconButton>
+                                     </div>
                                    <Typography 
                                     sx={{ display: 'inline', fontSize: 12, marginLeft: 146 }}
                                    component="span"

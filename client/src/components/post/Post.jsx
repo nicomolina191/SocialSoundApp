@@ -90,7 +90,7 @@ export default function Post({ post, comments, margin, border }) {
      if(currentUser.id !== post.userId){
        await dispatch(createUserNotification({
            title: JSON.stringify({
-             name:`${currentUser.username} (@${currentUser.name}) liked your post`,
+             name:`${currentUser.username} liked your post`,
              img: currentUser.avatar,
              post: post.title,
            }),
