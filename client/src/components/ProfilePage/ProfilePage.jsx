@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserById,
   getUserLikes,
+  cleanUserState,
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
@@ -38,12 +39,18 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [followed, setFollowed] = useState(false);
+  const [loaded, setLoaded] = useState();
+
+  useEffect(() => {
+    dispatch(cleanUserState());
+    setLoaded(true);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUserById(id));
     dispatch(getUserLikes(id));
-  }, [dispatch]);
+  }, [loaded]);
 
   function getFollowOfThisUser() {
     if (currentUserFollows) {
