@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import LikeButton from '../post/LikeButton';
 import Post from '../post/Post';
-import styles from '../ProfilePage/Popular.module.css'
+import styles from '../ProfilePage/PopularPost.module.css'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -33,7 +33,7 @@ export default function CardVideo({ post, index }) {
     return (
         <div className={styles.containerSong} style={{ height: '50px' }}>
             <div className={styles.songFirstHalf}>
-                <div className={styles.songFirstHalfIndex}>
+                <div className={styles.songFirstHalfIndex} style={{marginRight:'20%'}}>
                     <p>{index + 1}</p>
                 </div>
                 <button onClick={handleClickOpen}>
