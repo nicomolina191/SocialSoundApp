@@ -1,0 +1,27 @@
+.containerSong {
+    padding: 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: white;
+    font-weight: 100;
+}
+
+.songFirstHalf {
+    display: flex;
+    align-items: center;
+}
+
+.songFirstHalf img{
+    width: 55px;
+    height: 55px;
+    background-color: gray;
+    margin-right: 10px;
+}
+
+.songSecondHalf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 35%;
+}

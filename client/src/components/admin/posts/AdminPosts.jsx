@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { postsReported } from '../../../redux/features/post/postGetSlice';
 import { Arrow } from '../../componentsIcons';
 import { useNavigate } from 'react-router-dom';
-import Post from "../../post/Post"
+import ReportUsers from '../reportUsers/ReportUsers';
 
 
 const AdminPosts = () => {
@@ -20,32 +20,39 @@ const AdminPosts = () => {
     dispatch(postsReported())
   }, [dispatch])
 
-  const posts = useSelector(state => state.posts.reportedPosts)
+  const postsReportedArr = useSelector(state => state.posts.reportedPosts)
+  const [maxSteps, setMaxSteps] = useState(0)
   const [activeStep, setActiveStep] = useState(0);
-  const [postSelected, setPostSelected] = useState({})
   const navigate = useNavigate()
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    let sig = activeStep + 1
+    setActiveStep(sig);
+
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    let sig = activeStep - 1
+    setActiveStep(sig);
   };
   
 
-  
+  useEffect(() => {
+  setMaxSteps((Math.floor(postsReportedArr.length / 6) < 1? 1: Math.floor(postsReportedArr.length / 6)))
+}, [postsReportedArr])
+
   return (
   <Box className={style.adminPostsContainer}>
     <Button onClick={() => navigate("/admin")} className={style.arrow}><Arrow/></Button>
     <Box className={style.divMobileStepper}>
-        <MobileStepper 
+       {postsReportedArr?.length && <MobileStepper 
       variant="dots"
-      steps={6}
+      steps={maxSteps}
       activeStep={activeStep}
       sx={{ maxWidth: 400, flexGrow: 1 }}
       className={style.carousel}
       nextButton={
-        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={activeStep === 5}>
+        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={!postsReportedArr?.slice((activeStep+1)*6, (activeStep+2)*6).length}>
           Next
           <KeyboardArrowRight/>
         </Button>
@@ -56,12 +63,18 @@ const AdminPosts = () => {
           Back
         </Button>
       }
-    /></Box>
-    <Box className={style.postsContainer}>
-      <Box className={style.postsDiv}>
-        {typeof posts === "string"? <h1>NotFound</h1> : posts?.map((post, i) => <Post key={i} post={post} comments={false} />)}
-      </Box>
+    />}
     </Box>
+    
+    <Box className={style.containerGetReport}>
+    {typeof postsReportedArr === "string"? 
+    <Box className={style.textContainer}><h1>{postsReportedArr}</h1></Box>: 
+
+    <Box className={style.postsDiv}>
+      {postsReportedArr?.slice(activeStep*6, (activeStep+1)*6 == 0 ? 6 : (activeStep+1)*6)?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
+    </Box>
+    }
+   </Box>
     </Box>
   )
 }

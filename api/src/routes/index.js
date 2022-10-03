@@ -34,12 +34,16 @@ const createReview = require('../Controller/Reviews/createReview.js');
 const getReview = require('../Controller/Reviews/getReview.js');
 const getLikesByUserId = require('../Controller/Likes/getLikesByUserId.js');
 const addFollower = require('../Controller/Follows/addFollower.js');
+const setNotiDisabled = require("../Controller/Notifications/setNotiDisabled.js");
 const changePlanUser = require("../Controller/Users/changePlanUser.js");
 const setUserGenres = require("../Controller/Users/setUserGenres.js");
 const updateBanUser = require("../Controller/Users/updateBanUser.js");
 const updateRoleUser = require("../Controller/Users/updateRoleUser.js");
 const getReports = require("../Controller/Reports/getReports.js");
 const createReport = require("../Controller/Reports/createReport.js");
+const getPopular = require("../Controller/Filters/getPopular.js");
+const getByGenreWithAll = require("../Controller/Filters/getByGenreWithAll.js");
+
 
 const router = Router();
 
@@ -51,7 +55,6 @@ router.get("/users/idgoogle/:idgoogle", getUserByIdGoogle); //user
 router.get("/usersAdmi/idgoogle/:idgoogle", getUserByIdGoogleAdmin); //admin
 router.get("/posts", getPosts);
 router.get("/posts/:id", getPostById);
-router.get("/posts/order/:order", getByTime);
 router.get("/genres", getGenres);
 router.get("/notifications/:userId", getNotiByUser);
 router.get("/likes/users/:userId", getLikesByUserId);
@@ -60,18 +63,21 @@ router.get("/likes/:postId/:userId", getLikesByPostandUserId);
 router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
 router.get("/reports", getReports); //Only for admin!
+router.get("/posts/order/popular", getPopular);
 
+router.post("/posts/order", getByTime);
 router.post("/posts/genres", getByGenre);
 router.post("/users", createUser);
 router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
-router.post("/posts/genres", getByGenre);
 router.post("/users/follow", addFollower);
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post("/reviews", createReview);
 router.post("/reports", createReport);
+router.post("/posts/genres", getByGenre);
+router.post("/posts/genres/with-all", getByGenreWithAll);
 
 router.post("/notifications/create", createNoti);
 router.post("/create-checkout-session", payment);
@@ -87,6 +93,7 @@ router.put("/restore/:id", restoreUser);
 router.put("/users/premium/:id", upToPremium);
 router.put("/users/regular/:id", downToRegular);
 router.put("/notifications/watched/:id", setNotiWatched);
+router.put("/notifications/disabled/:id", setNotiDisabled);
 router.put("/likes", changeStatusLike);
 router.put("/users/set/plan", changePlanUser);
 router.put("/users/set/genres", setUserGenres);

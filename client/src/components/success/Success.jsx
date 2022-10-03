@@ -9,12 +9,13 @@ import {
 import style from "./index.module.css";
 import axios from "axios";
 
-const Sucess = () => {
+const Success = () => {
   const { userFirebase } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const premium = localStorage.getItem("premium");
+  console.log(premium);
   
   const fetchUser = async () => {
     if(premium) {
@@ -43,4 +44,4 @@ const Sucess = () => {
   );
 };
 
-export default Sucess;
+export default Success;

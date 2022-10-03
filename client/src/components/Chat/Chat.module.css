@@ -1,4 +1,4 @@
-.wholeContainer{
+.wholeContainer {
     color: white;
     display: flex;
     background-size: cover;
@@ -7,14 +7,15 @@
     background-color: #000A1F;
     background-image: url(../../images/svg/polygons.svg);
 }
-.conversations{
+
+.conversations {
     background-color: #000a1fe0;
     height: 100vh;
     width: 30%;
     backdrop-filter: blur(50px);
 }
 
-.convHead{
+.convHead {
     padding: 10px;
     background-color: #000a1fe0;
     width: calc(100% - 20px);
@@ -22,14 +23,16 @@
     flex-direction: column;
     gap: 10px;
 }
-.convTitle{
+
+.convTitle {
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 100%;
     font-size: 50px;
     margin: 0;
 }
-.chatSearch{
+
+.chatSearch {
     height: 10px;
     padding: 10px;
     width: 80%;
@@ -37,7 +40,7 @@
     border-radius: 15px;
 }
 
-.chatContainer{
+.chatContainer {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -45,7 +48,8 @@
     backdrop-filter: blur(30px);
     background-color: #000a1ff7;
 }
-.receiver{
+
+.receiver {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,12 +59,14 @@
     height: 100px;
     background-color: #08132a;
 }
-.recPc{
+
+.recPc {
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
 }
-.mCont{
+
+.mCont {
     width: 100%;
     min-height: 20px;
     max-height: 25vh;
@@ -71,14 +77,16 @@
     align-items: center;
     transition: 0.5s;
 }
-.messageInput{
+
+.messageInput {
     padding: 10px;
     width: calc(100% - 50px);
     border-radius: 15px;
     border: none;
     height: 12px;
 }
-.messagesContainer{
+
+.messagesContainer {
     width: 100%;
     height: calc(100% - 130px);
     overflow-y: scroll;
@@ -87,70 +95,61 @@
     flex-direction: column;
     background-color: #000a1f;
 }
-.resultWrapper{
+
+.resultWrapper {
     display: flex;
     gap: 5px;
 }
-.resultPic{
+
+.resultPic {
     width: 40px;
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
 }
-.resultInfo{
+
+.resultInfo {
     display: flex;
     flex-direction: column;
 }
-.resultName{
+
+.resultName {
     font-size: 15px;
     font-weight: 500;
 }
-.resultUsername{
+
+.resultUsername {
     opacity: 0.7;
     letter-spacing: 0.5px;
 }
-.goBack{
+
+.goBack {
     border: none;
     height: 40px;
     width: 40px;
 }
-.goBack svg{
+
+.goBack svg {
     width: 40px;
     height: 40px;
     opacity: 0.5;
     transition: 0.3s;
 }
-.goBack:hover svg{
+
+.goBack:hover svg {
     opacity: 1;
 }
-.scrollConv{
+
+.scrollConv {
     max-height: calc(100vh - 176px);
     overflow-y: scroll;
-    background-color: rgba(0, 2, 20, 0.62);;
+    background-color: rgba(0, 2, 20, 0.62);
+    ;
 }
-.loading{
+
+.loading {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-/* width */
-::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: transparent !important; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    border-radius: 15px !important;
-    background: rgba(255, 255, 255, 0.224); 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(155, 253, 255, 0.39); 
-  }

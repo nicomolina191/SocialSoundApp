@@ -8,6 +8,7 @@ import { clearPost, getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
 import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 import { useAuth } from "../../context";
+import PostShared from "../postShared/PostShared";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -20,7 +21,8 @@ export default function Home() {
     dispatch(clearPost())
   }, []);
 
-  
+console.log(userDB);
+
   return (
     <Grid container item xs={12} className={style.home} justifyContent="space-between">
       <Grid
@@ -30,15 +32,16 @@ export default function Home() {
         direction="column"
         className={style.sideBar}
         p={`1%`}
-       >
+      >
         <SideBar userDB={userDB} />
       </Grid>
       <Grid container item xs={9} direction="column" className={style.posts}>
         <Typography variant="h3" className={style.text}>
           Home.
         </Typography>
+        {/* <PostShared postShared={postShared}/> */}
         {posts.length > 0 &&
-          posts.slice(0).reverse().map((post, i) => <Post key={i} post={post} comments={false} />)}
+          posts.slice(0).reverse().map((post, i) => post.idShared ? <PostShared postShared={post} /> : <Post key={i} post={post} comments={false} />)}
       </Grid>
     </Grid>
   );

@@ -9,6 +9,12 @@ import { getUser } from '../../../redux/features/users/usersGetSlice';
 import UsersPerfil from './UsersPerfil';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 import { axiosIsBanned, axiosPremium, axiosRole } from '../utils';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const AdminUsers = () => {
   const dispatch = useDispatch()
@@ -16,9 +22,9 @@ const AdminUsers = () => {
   const arrUsers = useSelector(state => state.users.usersListAll)
 
   const [loading, setLoading] = useState(true)
-  const [userSelected, setUserSelected] = useState({})
-  const [formBan, setFormBan] = useState({})
+  const [userSelected, setUserSelected] = useState({name:"", isBanned: false, role:"", plan:"", id:"", avatar:"" })
   const [showForm, setShowForm] = useState(false)
+  const [reasonBan, setReasonBan] = useState("")
 
   //componente con dos opciones para intercalar entre usuarios y reportes
   //buscar los post por titulo del post nombre del que lo subio y el usuario que lo reporto
@@ -36,6 +42,7 @@ const handleRole = async() => {
   axiosRole(userSelected, setUserSelected)
 }
 
+
 const handlePremium = async() => {
   setLoading(true)
   axiosPremium(userSelected, setUserSelected)
@@ -43,14 +50,42 @@ const handlePremium = async() => {
 
 const handleBan = async() => {
   setLoading(true)
-  axiosIsBanned(userSelected, setUserSelected)
+  setShowForm(false)
+  setReasonBan("")
+  axiosIsBanned(userSelected, setUserSelected, reasonBan)
 }
-//modal para verificar el baneo handleBan y handleRole usarlos para mostrar el modal, Se cambia el valor al traer todos los usuarios
 
   return (
     <Box className={style.backgroundAdmin}>
-      {showForm && <Box onClick={() => setShowForm(false)} className={style.modalBackground}>
-      <Box className={style.modal}></Box></Box>}
+       <Box>
+
+        <Dialog className={style.dialogContainer} open={showForm} onClose={() => setShowForm(false)}>
+        <DialogTitle sx={{backgroundColor:"var(--main-page-color)", width: "400px"}}>Ban for {userSelected?.name}</DialogTitle>
+        <DialogContent sx={{backgroundColor:"var(--main-page-color)"}}>
+          <DialogContentText sx={{backgroundColor:"var(--main-page-color)", color:"white"}}>
+          Reason for the ban
+          </DialogContentText>
+          <TextField
+            sx={{backgroundColor:"var(--main-page-color)"}}
+            autoFocus
+            margin="dense"
+            id="standard-multiline-static"
+          label="Reason"
+          multiline
+          rows={4}
+          value={reasonBan}
+          variant="standard"
+          fullWidth
+          onChange={(e) => setReasonBan(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions sx={{backgroundColor:"var(--main-page-color)"}}>
+          <Button onClick={() => setShowForm(false)}>Cancel</Button>
+          <Button onClick={() => handleBan()}>Send</Button>
+        </DialogActions>
+        </Dialog>
+        </Box>
+
       <Box className={style.containerOptions}>
         <Button className={style.arrow} sx={{textAlign: "center", backgroundColor: "var(--second-page-color)",
          borderRadius: "10px"}} onClick={() => navigate("/admin")}><Arrow/></Button>
@@ -62,7 +97,7 @@ const handleBan = async() => {
       {userSelected?.name && <Button onClick={() => handleRole()} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"role"} disable={`${loading}`}>Role: {userSelected?.role}</Button>}
 
-      {userSelected?.name && <Button onClick={() => setShowForm(true)} sx={{textTransform: "none"}} 
+      {userSelected?.name && <Button onClick={() => userSelected?.isBanned ? handleBan() : setShowForm(true)} sx={{textTransform: "none"}} 
       className={style.buttonUser} name={"isBanned"} disable={`${loading}`}>Banned: {userSelected?.isBanned ? "Yes": "No"}</Button>}
       
       {userSelected?.name && <Button onClick={() => handlePremium()} sx={{textTransform: "none"}} 
@@ -70,6 +105,7 @@ const handleBan = async() => {
         </Box>
       </Box>
       <Box className={style.usersContainer}>
+        <Box style={{width: "99%"}}>
       <ReactSearchAutocomplete 
        items={arrUsers}
        fuseOptions={{ keys: ["name"] }}
@@ -77,8 +113,8 @@ const handleBan = async() => {
        formatResult={(e) => formatResult(e)}
        styling={{backgroundColor:"var(--main-page-color)", color: "white", border: "1px solid var(--second-page-color)"}}
        className={style.reactSearchAutocomplete}
-       onSelect={(e)=> setUserSelected(e)}
-       />
+       onSelect={(e)=> setUserSelected({id: e.id, isBanned: e.isBanned, role:e.role, plan:e.plan, name: e.name, avatar:e.avatar})}
+       /></Box>
       </Box>
     </Box>
   )

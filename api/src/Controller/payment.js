@@ -25,7 +25,7 @@ const payment = async (req, res) => {
     ],
     mode: "payment",
 
-    success_url: 'https://www.socialsound.art/home/sucess',
+    success_url: 'https://www.socialsound.art/home/success',
     cancel_url: 'https://www.socialsound.art/home'
   });
 
