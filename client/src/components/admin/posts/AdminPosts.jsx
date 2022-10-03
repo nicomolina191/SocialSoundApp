@@ -28,25 +28,22 @@ const AdminPosts = () => {
   const navigate = useNavigate()
 
   const handleNext = () => {
-    let ant = activeStep
     let sig = activeStep + 1
     setActiveStep(sig);
-    setShowArrCut(postsReportedArr.slice(ant*6, sig*6))
+    console.log(postsReportedArr)
+
   };
 
   const handleBack = () => {
-    let ant = activeStep
     let sig = activeStep - 1
     setActiveStep(sig);
-    setShowArrCut(postsReportedArr.slice(sig*6, ant*6))
-    console.log(sig*6, ant*6)
+    console.log(postsReportedArr)
   };
   
 
 useEffect(() => {
-  setMaxSteps((Math.floor(postsReportedArr.length / 6) + 1))
+  setMaxSteps((Math.floor(postsReportedArr.length / 6) < 1? 1: Math.floor(postsReportedArr.length / 6)))
   setShowArrCut(postsReportedArr.slice(activeStep, 6))
-  setMaxSteps(Math.floor(postsReportedArr.length / 6) + 1)
 }, [postsReportedArr])
 
   return (
@@ -55,12 +52,12 @@ useEffect(() => {
     <Box className={style.divMobileStepper}>
         <MobileStepper 
       variant="dots"
-      steps={maxSteps+ 1}
+      steps={maxSteps}
       activeStep={activeStep}
       sx={{ maxWidth: 400, flexGrow: 1 }}
       className={style.carousel}
       nextButton={
-        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={postsReportedArr[activeStep*6+1] === undefined}>
+        <Button sx={{color: "black", fontWeight:"600"}} size="small" onClick={handleNext} disabled={!postsReportedArr?.slice((activeStep+1)*6, (activeStep+2)*6).length}>
           Next
           <KeyboardArrowRight/>
         </Button>
@@ -78,7 +75,7 @@ useEffect(() => {
     <Box className={style.textContainer}><h1>{postsReportedArr}</h1></Box>: 
 
     <Box className={style.postsDiv}>
-      {showArrCut?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
+      {postsReportedArr?.slice(activeStep*6, (activeStep+1)*6 == 0 ? 6 : (activeStep+1)*6)?.map((data, i) => <ReportUsers key={`ReportUsers ${i}`} data={data}/>)}
     </Box>
     }
    </Box>
