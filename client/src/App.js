@@ -74,7 +74,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/home/sucess" element={
+          <Route path="/home/success" element={
             <ProtectedRoute>
               <Success />
             </ProtectedRoute>
