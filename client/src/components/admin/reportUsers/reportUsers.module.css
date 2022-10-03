@@ -1,8 +1,8 @@
 .containerAll {
-    width: 35%;
+    width: 100vw;
     height: 350px;
     max-width: 530px;
-    min-width: 350px;
+    min-width: 250px;
     display: flex;
     color: white;
     background-color: var(--main-page-color-light);
