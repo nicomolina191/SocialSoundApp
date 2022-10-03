@@ -1,6 +1,7 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./Popular.module.css";
+import PopularPost from "./PopularPost";
 
 const Popular = ({ id }) => {
   const allPosts = useSelector((state) => state.posts.postList);
@@ -15,17 +16,8 @@ const Popular = ({ id }) => {
         {popularPosts.map((post, index) => {
           return (
             <div className={styles.containerSong}>
-              <div className={styles.songFirstHalf}>
-                <div className={styles.songFirstHalfIndex}>
-                  <p>{index + 1}</p>
-                </div>
-                <img src={post.cover} alt="" />
-                <p>{post.title}</p>
-              </div>
-              <div className={styles.songSecondHalf}>
-                <p>6,145,232</p>
-                <p>03:66</p>
-              </div>
+              <p className={styles.songFirstHalfIndex}>{index + 1}</p>
+              <PopularPost post={post} />
             </div>
           );
         })}

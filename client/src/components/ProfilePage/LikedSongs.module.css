@@ -22,7 +22,6 @@
 }
 
 .likedSongs img {
-    width: 75px;
     border-radius: 50%;
     background-color: gray;
 }
@@ -32,8 +31,8 @@
 }
 
 .coverLikedSongs {
-    height: 60px;
-    width: 60px;
+    height: 70px;
+    width: 70px;
 }
 
 .containerImageHeart .heart {
@@ -46,8 +45,8 @@
 }
 
 .likedSongs p{
-    font-size: 23px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 200;
     color: white;
     margin-left: 10px;
 }
