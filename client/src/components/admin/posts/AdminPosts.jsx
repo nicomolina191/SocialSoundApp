@@ -41,7 +41,8 @@ const AdminPosts = () => {
   };
   
 
-useEffect(() => {
+  useEffect(() => {
+  if(!postsReportedArr.length) return setMaxSteps(0)
   setMaxSteps((Math.floor(postsReportedArr.length / 6) < 1? 1: Math.floor(postsReportedArr.length / 6)))
   setShowArrCut(postsReportedArr.slice(activeStep, 6))
 }, [postsReportedArr])
