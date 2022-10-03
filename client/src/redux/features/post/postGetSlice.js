@@ -56,7 +56,10 @@ export const getPostByGenre = (genres) => {
   return async (dispatch) => {
     try {
       let response = await axios.post('/posts/genres', genres)
-      dispatch(getAllPostByGenre(response.data))
+      let array = response.data
+      let hash = {};
+      array = array.filter(o => hash[o.id] ? false : hash[o.id] = true);
+      dispatch(getAllPostByGenre(array))
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +106,10 @@ export const getPostByRelevance = (order) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`/posts/genres/with-all`, order);
-      dispatch(getAllPostByRelevance(response.data))
+      let array = response.data
+      let hash = {};
+      array = array.filter(o => hash[o.id] ? false : hash[o.id] = true);
+      dispatch(getAllPostByRelevance(array))
     } catch (error) {
       console.log(error);
     }
