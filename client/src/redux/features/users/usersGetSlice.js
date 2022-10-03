@@ -1,5 +1,7 @@
 import axios from "axios";
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, getDownToRegular  } from "./usersSlice";
+
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular  } from "./usersSlice";
+
 
 
 //obtener los users
@@ -75,6 +77,17 @@ export const getUserById = (id) => {
     }
   }
 }
+
+export const cleanUserState = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(cleanUser())
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
 export const getUserByFirebaseId = (id) => {
   return async (dispatch) => {
     try {
