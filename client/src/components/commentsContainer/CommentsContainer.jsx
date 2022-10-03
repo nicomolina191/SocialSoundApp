@@ -19,17 +19,17 @@ export default function CommentsContainer({ post }) {
         if(currentUser.id !== post.userId){
           await dispatch(createUserNotification({
               title: JSON.stringify({
-                name:`${currentUser.username} (@${currentUser.name}) commented on your post`,
+                name:`${currentUser.username} commented on your post`,
                 img: currentUser.avatar,
                 post: post.title,
               }),
-              content: post.content,
+              content: `/home/post/${post.id}`,
               userId: post.userId,
               fromUser: currentUser.id,
           }));
             console.log("notification created!")
         }};
-   
+   console.log(post.id);
     const handleComment = async () => {
         if (comment) {
             await axios.post('/comments', { content: comment, idPost: post.id, idUser: currentUser.id })

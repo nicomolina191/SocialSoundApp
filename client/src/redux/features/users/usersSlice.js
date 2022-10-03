@@ -60,6 +60,12 @@ const userSlice = createSlice({
         user: action.payload
       }
     },
+    cleanUser:(state)=>{
+      return {
+        ...state,
+        user: {}
+      }
+    },
     getByFirebaseId: (state, action)=>{
       return {
         ...state,
@@ -68,6 +74,12 @@ const userSlice = createSlice({
     },
     getUpdatePremium : (state, action)=> {
       return {
+        ...state,
+        currentUser: action.payload
+      }
+    },
+    getDownToRegular: (state, action) => {
+      return{
         ...state,
         currentUser: action.payload
       }
@@ -105,7 +117,9 @@ const userSlice = createSlice({
 
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification  } = userSlice.actions;
+
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular  } = userSlice.actions;
+
 
 export default userSlice.reducer;
 

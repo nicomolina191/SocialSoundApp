@@ -2,6 +2,8 @@
     background-image: url(https://i1.wp.com/ultramarinos.co/wp-content/uploads/2016/02/wayf-3.jpg?fit=1164%2C629);
     background-attachment: fixed;
     background-origin: content-box;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: rgb(255, 255, 255);
     width: 100vw;
     height: 100vh;
