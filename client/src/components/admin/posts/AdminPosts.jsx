@@ -23,35 +23,29 @@ const AdminPosts = () => {
   const postsReportedArr = useSelector(state => state.posts.reportedPosts)
   const [maxSteps, setMaxSteps] = useState(0)
   const [activeStep, setActiveStep] = useState(0);
-  const [showArrCut, setShowArrCut] = useState([])
-  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleNext = () => {
     let sig = activeStep + 1
     setActiveStep(sig);
-    console.log(postsReportedArr)
 
   };
 
   const handleBack = () => {
     let sig = activeStep - 1
     setActiveStep(sig);
-    console.log(postsReportedArr)
   };
   
 
   useEffect(() => {
-  if(!postsReportedArr.length) return setMaxSteps(0)
   setMaxSteps((Math.floor(postsReportedArr.length / 6) < 1? 1: Math.floor(postsReportedArr.length / 6)))
-  setShowArrCut(postsReportedArr.slice(activeStep, 6))
 }, [postsReportedArr])
 
   return (
   <Box className={style.adminPostsContainer}>
     <Button onClick={() => navigate("/admin")} className={style.arrow}><Arrow/></Button>
     <Box className={style.divMobileStepper}>
-        <MobileStepper 
+       {postsReportedArr?.length && <MobileStepper 
       variant="dots"
       steps={maxSteps}
       activeStep={activeStep}
@@ -69,7 +63,8 @@ const AdminPosts = () => {
           Back
         </Button>
       }
-    /></Box>
+    />}
+    </Box>
     
     <Box className={style.containerGetReport}>
     {typeof postsReportedArr === "string"? 
