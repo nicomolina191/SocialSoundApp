@@ -7,7 +7,7 @@ import Pleasures from "../components/userGenresPleasures/Pleasures"
 import Banned from "../components/banned/Banned";
 
 const ProtectedRoute = ({ children }) => {
-  const { userFirebase, loading, logout } = useAuth();
+  const { userFirebase, loading } = useAuth();
   const pleasures = useSelector(state => state?.users?.currentUser?.genres)
   const user = useSelector(state => state?.users?.currentUser)
   const urls = ['/admin', '/admin/users', '/admin/posts', '/admin/users/', '/admin/posts/']
