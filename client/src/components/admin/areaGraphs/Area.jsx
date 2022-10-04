@@ -15,8 +15,7 @@ import { Line } from 'react-chartjs-2';
 
 
 
-const AreaComponent = (dates, step) => {
-  console.log(dates)
+const AreaComponent = ({dates, step}) => {
     
 ChartJS.register(
     CategoryScale,
@@ -28,9 +27,7 @@ ChartJS.register(
     Filler,
     Legend
   );
-  const fontSpect = {
-    color:"white"
-  } 
+
    const options = {
     responsive: true,
     plugins: {
@@ -39,29 +36,27 @@ ChartJS.register(
       },
       title: {
         display: true,
-        text: 'Post time',
+        text: `Post in ${[Object.keys(dates[step])][0]}`,
       },
     },
   };
   
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const labels = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   
    const data = {
     labels,
     datasets: [
       {
         fill: true,
-        label: 'Dataset 2',
-        data: [1,2,3,10,5,6,7],
-        borderColor: 'var(--main-page-color',
+        label: 'Posts',
+        data: Object.values(dates[step][Object.keys(dates[step])[0]]),
+        borderColor: 'var(--main-page-color)',
         backgroundColor: 'rgba(53, 235, 208, 0.5)',
       },
     ],
   };
   
-  return (
-     <Line options={options} data={data} />
-  )
+  return <Line options={options} data={data} />
 }
 
 export default AreaComponent
