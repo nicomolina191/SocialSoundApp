@@ -21,6 +21,8 @@ import EditProfile from "./EditProfile";
 import Upload from "../Upload/Upload";
 import axios from "axios";
 import { changeUserChat } from "../../redux/features/chat/chatGetSlice";
+import PlayAllButton from "../PlayAllButton/PlayAllButton";
+import Player from "../Player/Player";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -179,7 +181,9 @@ const ProfilePage = () => {
             <div className={styles.playFollowMessageContainer}>
               <div className={styles.playFollowContainer}>
                 {artistPosts.length > 0 ? (
-                  <img src={playIcon} className={styles.playButton} alt="" />
+                  <div>
+                    <PlayAllButton songs={artistPosts}/>
+                  </div>
                 ) : null}
                 {currentUser.id !== profileUser.id ? (
                   getFollowOfThisUser() === undefined && !followed ? (

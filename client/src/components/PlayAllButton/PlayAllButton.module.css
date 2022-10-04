@@ -1,3 +1,6 @@
+.playBtn{
+    cursor: pointer;
+}
 .playBtn:hover svg circle{
     fill: #051330;
 }
