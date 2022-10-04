@@ -9,17 +9,15 @@ const getByTime = async (req, res) => {
 
             case 'asc':
 
-                posts.sort((a, b) => a.postDate - b.postDate);
+                let sortedAsc = posts.sort((date1, date2) => new Date(date1.postDate) - new Date(date2.postDate));
 
-                return res.json(posts);
+                return res.json(sortedAsc);
 
             case 'desc':
 
-                posts.sort((a, b) => a.postDate - b.postDate);
+                let sortedDesc = posts.sort((date1, date2) => new Date(date2.postDate) - new Date(date1.postDate));
 
-                posts.reverse();
-
-                return res.json(posts);
+                return res.json(sortedDesc);
 
             default:
 

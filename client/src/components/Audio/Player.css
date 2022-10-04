@@ -38,3 +38,7 @@
 .rhap_progress-filled{
     background-color: aqua;
 }
+.rhap_time{
+    color: rgba(255, 255, 255, 0.703);
+    font-size: 13px;
+}

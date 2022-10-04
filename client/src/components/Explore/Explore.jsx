@@ -47,8 +47,9 @@ const Explore = () => {
   const userDB = useSelector((state) => state.users.currentUser);
   const user = useSelector((state) => state.users.user);
   const genres = useSelector((state) => state.genres.genreList);
-  const postsSelector = useSelector((state) => state.posts.postList);
+  const postsFilteredAndOrdered = useSelector((state) => state.posts.postsOrdered);
   const allPostsSelector = useSelector((state) => state.posts.possListAll);
+  const postsFilteredSelector = useSelector((state) => state.posts.postsFiltered);
   const [loaded, setLoaded] = useState(false);
   const [posts, setPosts] = useState();
   const [checked, setChecked] = useState("all");
@@ -73,14 +74,12 @@ const Explore = () => {
 
   useEffect(() => {
     dispatch(getPost());
-  }, []);
-
-  useEffect(() => {
-    setPosts(postsSelector);
+    setPosts(postsFilteredSelector);
     setLoaded(true);
-  }, [postsSelector]);
+  }, [postsFilteredSelector]);  
 
   useEffect(() => {
+    dispatch(getPost());
     dispatch(getUser());
     dispatch(getGenre());
     dispatch(getUserById(posts?.userId));
@@ -191,8 +190,7 @@ const Explore = () => {
           })
         );
       } else if (orderChecked === "popu") {
-        // dispatch(getPostByPopularity({ order: el.target.value, posts: allPostsSelector }));
-        dispatch(getPostByPopularity());
+        dispatch(getPostByPopularity({ posts: allPostsSelector }));
       } else if (orderChecked == "asc") {
         dispatch(getPostByTime({ order: "asc", posts: allPostsSelector }));
       } else {
@@ -200,9 +198,8 @@ const Explore = () => {
       }
     } else {
       dispatch(
-        getPostByGenre({ genres: newChecked.genres, posts: allPostsSelector })
+        getPostByGenre({ genres: newChecked.genres, posts: postsFilteredAndOrdered })
       );
-      setOrderChecked("relevance");
     }
   }
 
@@ -216,8 +213,7 @@ const Explore = () => {
         })
       );
     } else if (el.target.value === "popu") {
-      // dispatch(getPostByPopularity({ order: el.target.value, posts: posts }));
-      dispatch(getPostByPopularity());
+      dispatch(getPostByPopularity({ posts: posts }));
     } else {
       dispatch(getPostByTime({ order: el.target.value, posts: posts }));
     }
@@ -225,17 +221,17 @@ const Explore = () => {
 
   function handleCheckedAll() {
     setChecked("all");
-    setPosts(postsSelector);
+    setPosts(postsFilteredSelector);
   }
 
   function handleCheckedVideo() {
     setChecked("video");
-    setPosts(postsSelector.filter((post) => post.type.includes("video")));
+    setPosts(postsFilteredSelector.filter((post) => post.type.includes("video")));
   }
 
   function handleCheckedAudio() {
     setChecked("audio");
-    setPosts(postsSelector.filter((post) => post.type.includes("audio")));
+    setPosts(postsFilteredSelector.filter((post) => post.type.includes("audio")));
   }
 
   return (

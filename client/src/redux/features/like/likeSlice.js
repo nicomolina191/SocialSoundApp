@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    likesVideoCurrentUser: []
+    likesVideoCurrentUser: [],
+    likesSongCurrentUser: []
 };
 
 export const likeSlice = createSlice({
@@ -12,7 +13,8 @@ export const likeSlice = createSlice({
         addLikeSlice: (state, action) => {
             return {
                 ...state,
-                likesVideoCurrentUser: [...state.likesVideoCurrentUser, action.payload]
+                likesVideoCurrentUser: [...state.likesVideoCurrentUser, action.payload],
+                likesSongCurrentUser: [...state.likesSongCurrentUser, action.payload]
             }
         },
         updateLikesSlice: (state) => {
@@ -25,11 +27,17 @@ export const likeSlice = createSlice({
                 ...state,
                 likesVideoCurrentUser: action.payload
             }
+        },
+        getSongLikesSlice: (state, action) => {
+            return {
+                ...state,
+                likesSongCurrentUser: action.payload
+            }
         }
     }
 });
 
 
-export const { addLikeSlice, updateLikesSlice, getVideoLikesSlice } = likeSlice.actions;
+export const { addLikeSlice, updateLikesSlice, getVideoLikesSlice, getSongLikesSlice } = likeSlice.actions;
 
 export default likeSlice.reducer;

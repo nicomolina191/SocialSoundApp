@@ -4,6 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   postList: [],
   possListAll: [],
+  postsFiltered: [],
+  postsOrdered: [],
   post: {},
   isLoading: true,
   error: false,
@@ -17,7 +19,8 @@ export const postSlice = createSlice({
     addPosts: (state, action) => {
       return {
         ...state,
-        postList: [...state.postList, action.payload]
+        postList: [...state.postList, action.payload],
+        postsFiltered: [action.payload, ...state.postsFiltered]
       }
     },
     deletePosts: (state) => {
@@ -57,24 +60,31 @@ export const postSlice = createSlice({
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload
       }
     },
     getAllPostByTime: (state, action) => {
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
       }
     },
     getAllPostByPopularity: (state, action) => {
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
       }
     },
     getAllPostByRelevance: (state, action) => {
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
       }
     },
     getCurrentPostById: (state, action) => {

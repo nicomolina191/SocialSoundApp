@@ -14,9 +14,8 @@ export default function Audio({song, artist}) {
         <AudioPlayer
             style={{ borderRadius: "1rem"}}
             autoPlay={false}
-            // layout="horizontal"
+            key={'454ffdh65s83'}
             src={song.content}
-            onPlay={(e) => console.log("onPlay")}
             showSkipControls={false}
             showJumpControls={true}
         />
