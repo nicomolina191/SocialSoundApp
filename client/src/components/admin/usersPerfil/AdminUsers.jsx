@@ -105,6 +105,7 @@ const handleBan = async() => {
         </Box>
       </Box>
       <Box className={style.usersContainer}>
+        <Box style={{width: "99%"}}>
       <ReactSearchAutocomplete 
        items={arrUsers}
        fuseOptions={{ keys: ["name"] }}
@@ -113,7 +114,7 @@ const handleBan = async() => {
        styling={{backgroundColor:"var(--main-page-color)", color: "white", border: "1px solid var(--second-page-color)"}}
        className={style.reactSearchAutocomplete}
        onSelect={(e)=> setUserSelected({id: e.id, isBanned: e.isBanned, role:e.role, plan:e.plan, name: e.name, avatar:e.avatar})}
-       />
+       /></Box>
       </Box>
     </Box>
   )
