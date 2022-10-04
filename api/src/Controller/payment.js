@@ -25,8 +25,8 @@ const payment = async (req, res) => {
     ],
     mode: "payment",
 
-    success_url: 'http://localhost:3000/home/success',
-    cancel_url: 'http://localhost:3000/home'
+    success_url: 'https://www.socialsound.art/home/success',
+    cancel_url: 'https://www.socialsound.art/home'
   });
 
   res.json({ url: session.url });

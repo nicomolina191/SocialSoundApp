@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular   } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular  } from "./usersSlice";
 
 
 
