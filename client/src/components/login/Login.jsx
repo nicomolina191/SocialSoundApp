@@ -31,6 +31,8 @@ const Login = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true)
   const [userToResetPassword, setUserToResetPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [openAlert, setOpenAlert] = useState({
     show: false,
     msg: "",
@@ -75,10 +77,20 @@ const Login = () => {
       return;
     }
     try {
+      if (!users.find(el => el.email === user.email)) {
+        setEmailError(true);
+      } else {
+        setEmailError(false);
+      }
       await login(user.email, user.password);
       navigate("/home");
     } catch (err) {
       console.log(err);
+      if (err.message === "Firebase: Error (auth/wrong-password).") {
+        setPasswordError(true);
+      } else {
+        setPasswordError(false);
+      }
     }
   };
 
@@ -205,6 +217,13 @@ const Login = () => {
 
             <form style={{ width: "100%" }} onSubmit={(e) => handleSubmit(e)}>
               <Box className={style.orderForm}>
+                {
+                  emailError && (
+                    <div className={style.tooltip}>
+                      <span className={style.tooltiptext}>Email doesn't exists</span>
+                    </div>
+                  )
+                }
                 <Box
                   sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
                 >
@@ -221,7 +240,13 @@ const Login = () => {
                     value={user.email}
                   />
                 </Box>
-
+                {
+                  passwordError && (
+                    <div className={style.tooltip}>
+                      <span className={style.tooltiptext}>Wrong password</span>
+                    </div>
+                  )
+                }
                 <Box
                   sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
                 >
