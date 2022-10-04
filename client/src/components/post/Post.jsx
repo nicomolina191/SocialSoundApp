@@ -17,6 +17,7 @@ import {
   Alert
 } from "@mui/material";
 import style from "./post.module.css";
+import styleTooltip from '../tooltip/tooltip.module.css'
 import { useEffect } from "react";
 import axios from "axios";
 import CommentsContainer from "../commentsContainer/CommentsContainer";
@@ -50,6 +51,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+export function validate(input) {
+  let errors = {};
+  if (!input.motiveReport) {
+    errors.motiveReport = 'motive is required';
+  }
+
+  if (!input.detailsReport) {
+    errors.detailsReport = 'detail is required';
+  }
+
+  return errors;
+};
+
 export default function Post({ post, comments, margin, border }) {
   const shareURL = `www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
@@ -77,12 +91,18 @@ export default function Post({ post, comments, margin, border }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openReport, setOpenReport] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [motiveReport, setMotiveReport] = useState();
-  const [detailsReport, setDetailsReport] = useState();
+  const [motiveReport, setMotiveReport] = useState('');
+  const [detailsReport, setDetailsReport] = useState('');
   const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
   const [descriptionShare, setDescriptionShare] = useState();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const openMore = Boolean(anchorEl);
+  const [errors, setErrors] = React.useState({});
+  const [input, setInput] = React.useState({
+    motiveReport: '',
+    detailsReport: '',
+  });
+
   const handleClickMore = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -124,6 +144,7 @@ export default function Post({ post, comments, margin, border }) {
 
   const handleClickOpenReport = () => {
     setOpenReport(true);
+    handleCloseMore()
   };
 
   const handleCloseReport = () => {
@@ -208,6 +229,17 @@ export default function Post({ post, comments, margin, border }) {
 
   console.log(detailsReport);
 
+  const handleInputChange = function (e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    });
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+    }));
+  }
+
   return (
     <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
       <Grid item container spacing={1} justifyContent="space-between">
@@ -267,53 +299,6 @@ export default function Post({ post, comments, margin, border }) {
               </SvgIcon>
               Report
             </MenuItem>
-            <Grid item className={style.dialogContainer}>
-              <Dialog
-                fullWidth={true}
-                maxWidth="xs"
-                open={openReport}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleCloseReport}
-                aria-describedby="alert-dialog-slide-description"
-                className={style.dialog}
-                PaperProps={{
-                  style: {
-                    backgroundColor: "#011f40",
-                    color: "#1976FA",
-                    padding: "1%",
-                  },
-                }}
-              >
-                <h2>Report this post</h2>
-
-                {/* <DialogContent className={style.dialogContent}> */}
-                <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} style={{ marginTop: '1.5%' }} />
-                {/* </DialogContent>
-                                <DialogContent className={style.dialogContent}> */}
-                <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} style={{ marginTop: '1.5%' }} />
-                {/* </DialogContent> */}
-                <DialogActions>
-                  <Button onClick={handleCloseReport} className={style.button}>
-                    Close
-                  </Button>
-                  <Button onClick={async () => {
-                    handleCloseReport()
-                    await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: user.id, idPost: post.id })
-                    setMotiveReport('')
-                    setDetailsReport('')
-                    setOpenAlert(true)
-                  }} className={style.button}>
-                    Send
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Grid>
-            <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-              <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
-                Thanks for the report, we'll check it out!
-              </Alert>
-            </Snackbar>
             {
               currentUser.role === 'Admin' || currentUser.id === post.userId ? <MenuItem onClick={handleClickOpenDelete} disableRipple>
                 <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="20 0 552 512" className={style.icon}>
@@ -500,6 +485,67 @@ export default function Post({ post, comments, margin, border }) {
         </Grid>
       </Grid>
       {comments ? <CommentsContainer post={post} /> : ""}
+      <Grid item className={style.dialogContainer}>
+        <Dialog
+          fullWidth={true}
+          maxWidth="xs"
+          open={openReport}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleCloseReport}
+          aria-describedby="alert-dialog-slide-description"
+          className={style.dialog}
+          PaperProps={{
+            style: {
+              backgroundColor: "#011f40",
+              color: "#1976FA",
+              padding: "2%",
+            },
+          }}
+        >
+          <h2>Report this post</h2>
+
+          {/* <DialogContent className={style.dialogContent}> */}
+          {errors.motiveReport ?
+            <div className={styleTooltip.tooltip}>
+              <span className={styleTooltip.tooltiptext}>{errors.motiveReport}</span>
+            </div>
+            : ''}
+          <TextField name="motiveReport" label="Motive" variant="standard" fullWidth value={input['motiveReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
+          {/* </DialogContent>
+                                <DialogContent className={style.dialogContent}> */}
+          <TextField name="detailsReport" label="Details" variant="standard" multiline rows={4} fullWidth value={input['detailsReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
+          {errors.detailsReport ?
+            <div className={styleTooltip.tooltip}>
+              <span className={styleTooltip.tooltiptextBottom}>{errors.detailsReport}</span>
+            </div>
+            : ''}
+          {/* </DialogContent> */}
+          <DialogActions>
+            <Button onClick={handleCloseReport} className={style.button}>
+              Close
+            </Button>
+            <Button onClick={async () => {
+              if (input.motiveReport && input.detailsReport) {
+                handleCloseReport()
+                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: user.id, idPost: post.id })
+                setInput({
+                  detailsReport: '',
+                  motiveReport: ''
+                });
+                setOpenAlert(true)
+              }
+            }} className={style.button}>
+              Send
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+            Thanks for the report, we'll check it out!
+          </Alert>
+        </Snackbar>
+      </Grid>
     </Grid>
   );
 }
