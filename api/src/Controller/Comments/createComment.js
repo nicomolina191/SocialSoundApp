@@ -1,5 +1,5 @@
 const { Users, Posts, Comments } = require("../../db.js");
-const badWords = require("./BadWords.js");
+const badWords = require("./badWords.js");
 
 const createComment = async (req, res) => {
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getPostsReported } from "./postSlice";
+import { addPosts, deletePosts, getPostError, getPostStart, getPostSuccess, updatePosts, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getPostsReported, getAllPostByPopularity, getAllPostByRelevance } from "./postSlice";
 
 //obtener los users
 export const getPost = () => {
@@ -56,7 +56,10 @@ export const getPostByGenre = (genres) => {
   return async (dispatch) => {
     try {
       let response = await axios.post('/posts/genres', genres)
-      dispatch(getAllPostByGenre(response.data))
+      let array = response.data
+      let hash = {};
+      array = array.filter(o => hash[o.id] ? false : hash[o.id] = true);
+      dispatch(getAllPostByGenre(array))
     } catch (error) {
       console.log(error);
     }
@@ -80,8 +83,33 @@ export const postsReported = () => {
 export const getPostByTime = (order) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/posts/order/${order}`);
+      const response = await axios.post(`/posts/order/`, order);
       dispatch(getAllPostByTime(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const getPostByPopularity = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`/posts/order/popular`);
+      dispatch(getAllPostByPopularity(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+export const getPostByRelevance = (order) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`/posts/genres/with-all`, order);
+      let array = response.data
+      let hash = {};
+      array = array.filter(o => hash[o.id] ? false : hash[o.id] = true);
+      dispatch(getAllPostByRelevance(array))
     } catch (error) {
       console.log(error);
     }
@@ -99,8 +127,8 @@ export const getPostById = (id) => {
   }
 }
 
-export const clearPost=()=>{
-  return (dispatch)=>{
+export const clearPost = () => {
+  return (dispatch) => {
     dispatch(clearCurrentPost())
   }
 }

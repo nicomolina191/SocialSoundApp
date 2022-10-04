@@ -8,7 +8,8 @@ const getNotiByUser = async (req, res) => {
         const notifications = await Notifications.findAll({
 
             where: {
-                userId
+                userId,
+                disabled: false
             }
         });
 

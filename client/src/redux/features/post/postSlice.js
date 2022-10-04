@@ -4,6 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   postList: [],
   possListAll: [],
+  postsFiltered: [],
+  postsOrdered: [],
   post: {},
   isLoading: true,
   error: false,
@@ -16,8 +18,9 @@ export const postSlice = createSlice({
   reducers: {
     addPosts: (state, action) => {
       return {
-      ...state,
-      postList: [...state.postList, action.payload]
+        ...state,
+        postList: [...state.postList, action.payload],
+        postsFiltered: [action.payload, ...state.postsFiltered]
       }
     },
     deletePosts: (state) => {
@@ -57,12 +60,31 @@ export const postSlice = createSlice({
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload
       }
     },
     getAllPostByTime: (state, action) => {
       return {
         ...state,
         postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
+      }
+    },
+    getAllPostByPopularity: (state, action) => {
+      return {
+        ...state,
+        postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
+      }
+    },
+    getAllPostByRelevance: (state, action) => {
+      return {
+        ...state,
+        postList: action.payload,
+        postsFiltered: action.payload,
+        postsOrdered: action.payload
       }
     },
     getCurrentPostById: (state, action) => {
@@ -71,13 +93,13 @@ export const postSlice = createSlice({
         post: action.payload
       }
     },
-    clearCurrentPost:(state, action)=>{
-      return{
+    clearCurrentPost: (state, action) => {
+      return {
         ...state,
-        post:{}
+        post: {}
       }
     },
-        getPostsReported : (state, action) =>{
+    getPostsReported: (state, action) => {
       return {
         ...state,
         reportedPosts: action.payload
@@ -87,6 +109,6 @@ export const postSlice = createSlice({
 });
 
 
-export const {getPostsReported, addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost } = postSlice.actions;
+export const { getPostsReported, addPosts, deletePosts, updatePosts, getPostStart, getPostError, getPostSuccess, getAllPostByGenre, getAllPostByTime, getCurrentPostById, clearCurrentPost, getAllPostByPopularity, getAllPostByRelevance } = postSlice.actions;
 
 export default postSlice.reducer;

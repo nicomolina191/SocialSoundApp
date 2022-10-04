@@ -15,23 +15,27 @@ export const axiosRole = (userSelected, setUserSelected) => {
         })
 }
 
-export const axiosIsBanned = (userSelected, setUserSelected) =>{
+export const axiosIsBanned = (userSelected, setUserSelected, reasonBan) =>{
     const newUser = userSelected
     if(userSelected?.isBanned) {
         newUser.isBanned = false
         setUserSelected({...userSelected, isBanned: false})
+        axios.put(`/users/set/update-ban`,{
+            ...newUser,
+            reasonBan: ""
+          })
     }
     else if(!userSelected?.isBanned) {
         newUser.isBanned = true
         setUserSelected({...userSelected, isBanned: true})
+        axios.put(`/users/set/update-ban`,{
+            ...newUser,
+            reasonBan
+          })
     }
-    axios.put(`/users/set/update-ban`,{
-        ...newUser
-      })
 }
 
 export const axiosPremium = (userSelected, setUserSelected) =>{
-    console.log(userSelected)
     const newUser = userSelected
     if(userSelected?.plan === "Premium") {
         newUser.plan = "Regular"

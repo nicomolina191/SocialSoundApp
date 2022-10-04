@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, DialogActions, Grid, Slide, Typography } from '@mui/material'
+import { Avatar, Button, Dialog, DialogActions, Grid, Slide, SvgIcon, Typography } from '@mui/material'
 import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
@@ -40,7 +40,14 @@ export default function Comment({ content, userId, commentId, getComments, curre
             </Grid>
             <Grid item className={style.buttonContainer}>
                 {
-                    currentUser.role === 'Admin' || currentUser.id === userId || post.userId === currentUser.id ? <Button className={style.button} style={{ minWidth: `50%` }} variant="contained" onClick={handleClickOpen}>X</Button> : ''
+                    currentUser.role === 'Admin' || currentUser.id === userId || post.userId === currentUser.id ?
+                        // <Button className={style.button} style={{ minWidth: `50%` }} variant="contained" onClick={handleClickOpen}>X</Button> 
+                        <button onClick={handleClickOpen} className={style.buttonDelete}>
+                            <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 -100 320 742" className={style.icon}>
+                            <path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/>
+                            </SvgIcon>
+                        </button>
+                        : ''
                 }
                 <Dialog
                     open={open}

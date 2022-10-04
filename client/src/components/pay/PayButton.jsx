@@ -10,9 +10,9 @@ const PayButton = () => {
     localStorage.setItem("premium", true)
     axios
       .post("/create-checkout-session", {
-       description: 'Plan Premium',
-       amount: 2400,
-       quantity: 1,
+       description:'',
+       amount: 1000,
+       quantity: 'month',
        
       })
       .then((response) => {

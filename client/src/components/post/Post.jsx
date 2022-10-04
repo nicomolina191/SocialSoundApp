@@ -6,11 +6,18 @@ import {
   DialogActions,
   DialogContent,
   Grid,
+  IconButton,
+  Menu,
+  MenuItem,
   Slide,
   SvgIcon,
+  TextField,
   Typography,
+  Snackbar,
+  Alert
 } from "@mui/material";
 import style from "./post.module.css";
+import styleTooltip from '../tooltip/tooltip.module.css'
 import { useEffect } from "react";
 import axios from "axios";
 import CommentsContainer from "../commentsContainer/CommentsContainer";
@@ -34,18 +41,34 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
+import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
+import share from '../../images/logoiconbg.png'
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
-import { deletePost } from "../../redux/features/post/postGetSlice";
+import LikeButton from "./LikeButton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Post({ post, comments, margin }) {
+export function validate(input) {
+  let errors = {};
+  if (!input.motiveReport) {
+    errors.motiveReport = 'motive is required';
+  }
+
+  if (!input.detailsReport) {
+    errors.detailsReport = 'detail is required';
+  }
+
+  return errors;
+};
+
+export default function Post({ post, comments, margin, border }) {
   const shareURL = `www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
   const [user, setUser] = useState();
-  const [like, setLike] = useState();
+  // const [like, setLike] = useState();
   const monthNames = [
     "Jan",
     "Feb",
@@ -62,10 +85,46 @@ export default function Post({ post, comments, margin }) {
   ];
   const [date, setDate] = useState();
   const currentUser = useSelector((state) => state.users.currentUser);
-  const [likes, setLikes] = useState();
-  const [click, setClick] = useState();
+  // const [likes, setLikes] = useState();
+  // const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openReport, setOpenReport] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [motiveReport, setMotiveReport] = useState('');
+  const [detailsReport, setDetailsReport] = useState('');
+  const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
+  const [descriptionShare, setDescriptionShare] = useState();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMore = Boolean(anchorEl);
+  const [errors, setErrors] = React.useState({});
+  const [input, setInput] = React.useState({
+    motiveReport: '',
+    detailsReport: '',
+  });
+
+  const handleClickMore = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMore = () => {
+    setAnchorEl(null);
+  };
+
+  const notification = async () => {
+    if (currentUser.id !== post.userId) {
+      await dispatch(createUserNotification({
+        title: JSON.stringify({
+          name: `${currentUser.username} liked your post`,
+          img: currentUser.avatar,
+          post: post.title,
+        }),
+        content: post.content,
+        userId: post.userId,
+        fromUser: currentUser.id,
+      }));
+      console.log("notification created!")
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -83,14 +142,36 @@ export default function Post({ post, comments, margin }) {
     setOpenDelete(false);
   };
 
-  async function getLikes() {
-    const res = await axios.get(`/likes/posts/${post.id}`);
-    setLikes(res.data);
-  }
+  const handleClickOpenReport = () => {
+    setOpenReport(true);
+    handleCloseMore()
+  };
 
-  const handleLike = () => {
-    setLike(!like);
-    setClick(!click);
+  const handleCloseReport = () => {
+    setOpenReport(false);
+  };
+
+  const handleClickOpenShareInMyProfile = () => {
+    setOpenShareInMyProfile(true);
+  };
+
+  const handleCloseShareInMyProfile = () => {
+    setOpenShareInMyProfile(false);
+  };
+
+  // async function getLikes() {
+  //   const res = await axios.get(`/likes/posts/${post.id}`);
+  //   setLikes(res.data);
+  // }
+
+  // const handleLike = () => {
+  //   setLike(!like);
+  //   setClick(!click);
+  //   if(!like) notification()
+  // };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   useEffect(() => {
@@ -99,55 +180,68 @@ export default function Post({ post, comments, margin }) {
       setUser(res.data);
     }
     getUser();
-    getLikes();
+    // getLikes();
   }, []);
 
-  useEffect(() => {
-    if (like === undefined && likes !== undefined) {
-      async function getLikeOfThisUser() {
-        const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
-        setLike(res.data[0]?.isActive);
-      }
-      getLikeOfThisUser();
-    }
-  }, [likes]);
+  // useEffect(() => {
+  //   if (like === undefined && likes !== undefined) {
+  //     async function getLikeOfThisUser() {
+  //       const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
+  //       setLike(res.data[0]?.isActive);
+  //     }
+  //     getLikeOfThisUser(); 
+  //   }
+  // }, [likes]);
 
-  useEffect(() => {
-    async function updateLikes() {
-      if (click !== undefined) {
-        await getLikes();
-        const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
-        const currentLike = (res.data && res.data[0]) || {};
-        console.log(currentLike);
-        async function updateLike() {
-          await axios.put(`/likes`, {
-            postId: post.id,
-            userId: currentUser.id,
-            isActive: like,
-          });
-        }
-        async function createLike() {
-          await axios.post(`/likes`, {
-            idPost: post.id,
-            idUser: currentUser.id,
-          });
+  // useEffect(() => {
+  //   async function updateLikes() {
+  //     if (click !== undefined) {
+  //       await getLikes();
+  //       const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
+  //       const currentLike = (res.data && res.data[0]) || {};
+  //       console.log(currentLike);
+  //       async function updateLike() {
+  //         await axios.put(`/likes`, {
+  //           postId: post.id,
+  //           userId: currentUser.id,
+  //           isActive: like,
+  //         });
+  //       }
+  //       async function createLike() {
+  //         await axios.post(`/likes`, {
+  //           idPost: post.id,
+  //           idUser: currentUser.id,
+  //         });
 
-        }
-        Object.keys(currentLike).length === 0
-          ? await createLike()
-          : await updateLike();
-        await getLikes();
-      }
-    }
-    updateLikes();
-  }, [click]);
+  //       }
+  //       Object.keys(currentLike).length === 0
+  //         ? await createLike()
+  //         : await updateLike();
+  //       await getLikes();
+  //     }
+  //   }
+  //   updateLikes();
+  // }, [click]);
 
   useEffect(() => {
     setDate(new Date(Date.parse(post.postDate)).toLocaleString("sv"));
   }, [post]);
 
+  console.log(detailsReport);
+
+  const handleInputChange = function (e) {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    });
+    setErrors(validate({
+      ...input,
+      [e.target.name]: e.target.value
+    }));
+  }
+
   return (
-    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin}>
+    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
       <Grid item container spacing={1} justifyContent="space-between">
         <Grid item container spacing={2} className={style.avatarName}>
           <Grid item>
@@ -169,37 +263,81 @@ export default function Post({ post, comments, margin }) {
           </Grid>
         </Grid>
         <Grid item container justifyContent="center" alignItems="center" className={style.buttonContainer}>
-          {
-            currentUser.role === 'Admin' || currentUser.id === post.userId ? <Button className={style.button} style={{ minWidth: `50%` }} variant="contained" onClick={handleClickOpenDelete}>X</Button> : ''
-          }
-          <Dialog
-            open={openDelete}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleCloseDelete}
-            aria-describedby="alert-dialog-slide-description"
-            className={style.dialog}
-            PaperProps={{
-              style: {
-                backgroundColor: "#000A1F",
-                color: "#1976FA",
-                padding: "1%",
-              },
-            }}
+          <IconButton
+            aria-label="more"
+            id="demo-customized-button"
+            aria-controls={openMore ? 'demo-customized-menu' : undefined}
+            aria-expanded={openMore ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClickMore}
           >
-            <h2>Are you sure you want to delete this post?</h2>
-            <DialogActions>
-              <Button onClick={handleCloseDelete} className={style.button}>
-                Cancel
-              </Button>
-              <Button onClick={() => {
-                handleCloseDelete()
-                dispatch(deletePost(post.id))
-              }} className={style.button}>
-                Accept
-              </Button>
-            </DialogActions>
-          </Dialog>
+            <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className={style.icon}>
+              <path d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" />
+            </SvgIcon>
+          </IconButton>
+          <Menu
+            id="demo-customized-menu"
+            MenuListProps={{
+              'aria-labelledby': 'demo-customized-button',
+            }}
+            elevation={0}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            anchorEl={anchorEl}
+            open={openMore}
+            onClose={handleCloseMore}
+          >
+            <MenuItem onClick={handleClickOpenReport} disableRipple>
+              <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
+                <path d="M476.3 0c-6.365 0-13.01 1.35-19.34 4.233c-45.69 20.86-79.56 27.94-107.8 27.94c-59.96 0-94.81-31.86-163.9-31.87c-34.63 0-77.87 8.003-137.2 32.05V24C48 10.75 37.25 0 24 0S0 10.75 0 24v464C0 501.3 10.75 512 24 512s24-10.75 24-24v-104c53.59-23.86 96.02-31.81 132.8-31.81c73.63 0 124.9 31.78 198.6 31.78c31.91 0 68.02-5.971 111.1-23.09C504.1 355.9 512 344.4 512 332.1V30.73C512 11.1 495.3 0 476.3 0zM464 319.8c-30.31 10.82-58.08 16.1-84.6 16.1c-30.8 0-58.31-7-87.44-14.41c-32.01-8.141-68.29-17.37-111.1-17.37c-42.35 0-85.99 9.09-132.8 27.73V84.14l18.03-7.301c47.39-19.2 86.38-28.54 119.2-28.54c28.24 .0039 49.12 6.711 73.31 14.48c25.38 8.148 54.13 17.39 90.58 17.39c35.43 0 72.24-8.496 114.9-26.61V319.8z" />
+              </SvgIcon>
+              Report
+            </MenuItem>
+            {
+              currentUser.role === 'Admin' || currentUser.id === post.userId ? <MenuItem onClick={handleClickOpenDelete} disableRipple>
+                <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="20 0 552 512" className={style.icon}>
+                  <path d="M160 400C160 408.8 152.8 416 144 416C135.2 416 128 408.8 128 400V192C128 183.2 135.2 176 144 176C152.8 176 160 183.2 160 192V400zM240 400C240 408.8 232.8 416 224 416C215.2 416 208 408.8 208 400V192C208 183.2 215.2 176 224 176C232.8 176 240 183.2 240 192V400zM320 400C320 408.8 312.8 416 304 416C295.2 416 288 408.8 288 400V192C288 183.2 295.2 176 304 176C312.8 176 320 183.2 320 192V400zM317.5 24.94L354.2 80H424C437.3 80 448 90.75 448 104C448 117.3 437.3 128 424 128H416V432C416 476.2 380.2 512 336 512H112C67.82 512 32 476.2 32 432V128H24C10.75 128 0 117.3 0 104C0 90.75 10.75 80 24 80H93.82L130.5 24.94C140.9 9.357 158.4 0 177.1 0H270.9C289.6 0 307.1 9.358 317.5 24.94H317.5zM151.5 80H296.5L277.5 51.56C276 49.34 273.5 48 270.9 48H177.1C174.5 48 171.1 49.34 170.5 51.56L151.5 80zM80 432C80 449.7 94.33 464 112 464H336C353.7 464 368 449.7 368 432V128H80V432z" />
+                </SvgIcon>
+                Delete
+              </MenuItem> :
+                ''
+            }
+            <Dialog
+              open={openDelete}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleCloseDelete}
+              aria-describedby="alert-dialog-slide-description"
+              className={style.dialog}
+              PaperProps={{
+                style: {
+                  backgroundColor: "#011f40",
+                  color: "#1976FA",
+                  padding: "1%",
+                },
+              }}
+            >
+              <h2>Are you sure you want to delete this post?</h2>
+              <DialogActions>
+                <Button onClick={handleCloseDelete} className={style.button}>
+                  Cancel
+                </Button>
+                <Button onClick={() => {
+                  handleCloseDelete()
+                  dispatch(deletePost(post.id))
+                  handleCloseMore()
+                }} className={style.button}>
+                  Accept
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Menu>
         </Grid>
       </Grid>
       <Grid item>
@@ -207,9 +345,9 @@ export default function Post({ post, comments, margin }) {
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
       {user?.name && post?.type === 'video'
-        ? <Video song={post}/>
+        ? <Video song={post} />
         : post?.type === 'audio'
-        && <Audio song={post} artist={user}/>
+        && <Audio song={post} artist={user} />
       }
       <Grid item container justifyContent="space-between">
         <Grid item>
@@ -221,16 +359,16 @@ export default function Post({ post, comments, margin }) {
               }`}
           </Typography>
         </Grid>
-        <Grid item container xs={4} justifyContent="flex-end" spacing={2}>
-          <Grid item>
+        <Grid item container xs={5} justifyContent="flex-end" spacing={2}>
+          {/* <Grid item>
             <Typography>
               {likes?.filter((likes) => likes.isActive).length === 0
                 ? ""
                 : likes?.filter((likes) => likes.isActive).length}
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid item>
-            <button onClick={handleLike}>
+            {/* <button onClick={handleLike}>
               <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
                 {like ? (
                   <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
@@ -238,8 +376,10 @@ export default function Post({ post, comments, margin }) {
                   <path d="M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z" />
                 )}
               </SvgIcon>
-            </button>
+            </button> */}
+            <LikeButton post={post} />
           </Grid>
+          {/* <LikeButton post={post}/> */}
           <Grid item>
             <button onClick={handleClickOpen}>
               <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
@@ -256,7 +396,7 @@ export default function Post({ post, comments, margin }) {
                 className={style.dialog}
                 PaperProps={{
                   style: {
-                    backgroundColor: "#000A1F",
+                    backgroundColor: "#011f40",
                     color: "#1976FA",
                     padding: "1%",
                   },
@@ -265,23 +405,60 @@ export default function Post({ post, comments, margin }) {
                 <h2>Share!</h2>
 
                 <DialogContent className={style.dialogContent}>
+                  <button style={{ width: 42, height: 46, margin: `2%`, border: 'none' }} onClick={handleClickOpenShareInMyProfile}>
+                    <Avatar src={share} sx={{ width: 42, height: 42 }} />
+                  </button>
+                  <Dialog
+                    open={openShareInMyProfile}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                    className={style.dialog}
+                    PaperProps={{
+                      style: {
+                        backgroundColor: "#011f40",
+                        color: "#1976FA",
+                        padding: "1%",
+                      },
+                    }}
+                  >
+                    <h2>Add a description if you want!</h2>
+
+                    <DialogContent className={style.dialogContent}>
+                      <TextField label="Description" variant="standard" fullWidth value={descriptionShare} onChange={(e) => setDescriptionShare(e.target.value)} />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseShareInMyProfile} className={style.button}>
+                        Close
+                      </Button>
+                      <Button onClick={() => {
+                        handleCloseShareInMyProfile()
+                        dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+                        handleClose()
+                        setDescriptionShare('')
+                      }} className={style.button}>
+                        Share
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   <FacebookShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <FacebookIcon size={32} round={true} />
+                    <FacebookIcon size={42} round={true} />
                   </FacebookShareButton>
                   <TwitterShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <TwitterIcon size={32} round={true} />
+                    <TwitterIcon size={42} round={true} />
                   </TwitterShareButton>
                   <TelegramShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <TelegramIcon size={32} round={true} />
+                    <TelegramIcon size={42} round={true} />
                   </TelegramShareButton>
                   <WhatsappShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <WhatsappIcon size={32} round={true} />
+                    <WhatsappIcon size={42} round={true} />
                   </WhatsappShareButton>
                   <LinkedinShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <LinkedinIcon size={32} round={true} />
+                    <LinkedinIcon size={42} round={true} />
                   </LinkedinShareButton>
                   <EmailShareButton url={shareURL} style={{ margin: `2%` }}>
-                    <EmailIcon size={32} round={true} />
+                    <EmailIcon size={42} round={true} />
                   </EmailShareButton>
                 </DialogContent>
                 <DialogActions>
@@ -308,6 +485,67 @@ export default function Post({ post, comments, margin }) {
         </Grid>
       </Grid>
       {comments ? <CommentsContainer post={post} /> : ""}
+      <Grid item className={style.dialogContainer}>
+        <Dialog
+          fullWidth={true}
+          maxWidth="xs"
+          open={openReport}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleCloseReport}
+          aria-describedby="alert-dialog-slide-description"
+          className={style.dialog}
+          PaperProps={{
+            style: {
+              backgroundColor: "#011f40",
+              color: "#1976FA",
+              padding: "2%",
+            },
+          }}
+        >
+          <h2>Report this post</h2>
+
+          {/* <DialogContent className={style.dialogContent}> */}
+          {errors.motiveReport ?
+            <div className={styleTooltip.tooltip}>
+              <span className={styleTooltip.tooltiptext}>{errors.motiveReport}</span>
+            </div>
+            : ''}
+          <TextField name="motiveReport" label="Motive" variant="standard" fullWidth value={input['motiveReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
+          {/* </DialogContent>
+                                <DialogContent className={style.dialogContent}> */}
+          <TextField name="detailsReport" label="Details" variant="standard" multiline rows={4} fullWidth value={input['detailsReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
+          {errors.detailsReport ?
+            <div className={styleTooltip.tooltip}>
+              <span className={styleTooltip.tooltiptextBottom}>{errors.detailsReport}</span>
+            </div>
+            : ''}
+          {/* </DialogContent> */}
+          <DialogActions>
+            <Button onClick={handleCloseReport} className={style.button}>
+              Close
+            </Button>
+            <Button onClick={async () => {
+              if (input.motiveReport && input.detailsReport) {
+                handleCloseReport()
+                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: user.id, idPost: post.id })
+                setInput({
+                  detailsReport: '',
+                  motiveReport: ''
+                });
+                setOpenAlert(true)
+              }
+            }} className={style.button}>
+              Send
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar open={openAlert} autoHideDuration={4000} onClose={handleCloseAlert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+            Thanks for the report, we'll check it out!
+          </Alert>
+        </Snackbar>
+      </Grid>
     </Grid>
   );
 }

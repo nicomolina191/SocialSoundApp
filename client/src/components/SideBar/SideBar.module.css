@@ -114,10 +114,6 @@ a{
     opacity: 0.7;
 }
 
-.premiumIcon{
-    margin-left: 6px;
-}
-
 .btn {
     background-color: #00FFD6;
     color: black;
@@ -129,3 +125,44 @@ a{
 .textReview {
     font-size: 18px;
 }
+
+.form {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    text-align: center;
+}
+
+.ratingText {
+    margin-bottom: 10px;
+}
+
+.descriptionText {
+    margin-top: 10px;
+}
+
+.reviewText textarea {
+    color: black !important;
+}
+
+/* .buttonCancel {
+  padding: 0.5em 1em;
+  margin-left: 30px;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+} */
+
+
+
+
