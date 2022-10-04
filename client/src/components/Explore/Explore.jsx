@@ -190,8 +190,7 @@ const Explore = () => {
           })
         );
       } else if (orderChecked === "popu") {
-        // dispatch(getPostByPopularity({ order: el.target.value, posts: allPostsSelector }));
-        dispatch(getPostByPopularity());
+        dispatch(getPostByPopularity({ posts: allPostsSelector }));
       } else if (orderChecked == "asc") {
         dispatch(getPostByTime({ order: "asc", posts: allPostsSelector }));
       } else {
@@ -214,8 +213,7 @@ const Explore = () => {
         })
       );
     } else if (el.target.value === "popu") {
-      // dispatch(getPostByPopularity({ order: el.target.value, posts: posts }));
-      dispatch(getPostByPopularity());
+      dispatch(getPostByPopularity({ posts: posts }));
     } else {
       dispatch(getPostByTime({ order: el.target.value, posts: posts }));
     }

@@ -63,7 +63,6 @@ router.get("/likes/:postId/:userId", getLikesByPostandUserId);
 router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
 router.get("/reports", getReports); //Only for admin!
-router.get("/posts/order/popular", getPopular);
 
 router.post("/posts/order", getByTime);
 router.post("/posts/genres", getByGenre);
@@ -78,6 +77,7 @@ router.post("/reviews", createReview);
 router.post("/reports", createReport);
 router.post("/posts/genres", getByGenre);
 router.post("/posts/genres/with-all", getByGenreWithAll);
+router.post("/posts/order/popular", getPopular);
 
 router.post("/notifications/create", createNoti);
 router.post("/create-checkout-session", payment);
