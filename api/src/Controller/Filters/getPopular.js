@@ -2,28 +2,25 @@ const { Posts, Genres, Likes } = require('../../db.js');
 
 const getPopular = async (req, res) => {
 
-    try {
-        let posts = await Posts.findAll({
-            include: [{
-                model: Genres,
-                attributes: ["name"],
-                through: { attributes: [] }
-            }]
-        });
+    let { posts } = req.body;
 
+    try {
         const likes = await Likes.findAll();
 
         for (let post of posts) {
 
-            post.dataValues.count = 0;
+            post.count = 0;
 
             for (const like of likes) {
 
-                if (like.dataValues.postId === post.dataValues.id) post.dataValues.count++;
+                if(like.dataValues.isActive){
+
+                    if (like.dataValues.postId === post.id) post.count++;
+                }
             };
         };
 
-        posts.sort((a, b) => a.dataValues.count - b.dataValues.count).reverse();
+        posts.sort((a, b) => a.count - b.count).reverse();
 
         return res.json(posts);
 
