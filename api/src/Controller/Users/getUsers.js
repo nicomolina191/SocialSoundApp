@@ -11,7 +11,11 @@ const getUsers = async (req, res) => {
       {
         model: Users,
         as: 'FollowingUsers',
-        attributes: ['id', 'username', 'avatar'],
+        through: { attributes: [] }
+      },
+      {
+        model: Users,
+        as: 'FollowerUsers',
         through: { attributes: [] }
       }]
     });
