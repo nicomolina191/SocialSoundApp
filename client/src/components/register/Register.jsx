@@ -13,11 +13,11 @@ import { userExistGoogle } from "../utils";
 import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 
 const Register = () => {
-  const dispatch = useDispatch()
-  const users = useSelector(state => state.users.usersListAll)
-  const [idgoogle, setIdGoogle] = useState('')
-  //const [googleUser, setGoogleUser] = useState()
-  const [loading, setLoading] = useState(true)
+
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.users.usersListAll);
+  const [idgoogle, setIdGoogle] = useState('');
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -25,6 +25,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -32,98 +33,102 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
   const { signup, loginWithGoogle, userFirebase } = useAuth();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-    // });
-    
-    useEffect(() => {
-      // if (userFirebase !== null) navigate("/home");
-      dispatch(getUser());
-      setLoading(false)
-    }, [dispatch, userFirebase]);
+  useEffect(() => {
+    dispatch(getUser());
+    setLoading(false);
+  }, [dispatch, userFirebase]);
 
-    useEffect(() => {
-      if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
-        axios
-          .post("/users", {
-            ...user,
-            idgoogle
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-      if (userFirebase !== null) navigate("/home");
-  
-    }, [idgoogle])
+  useEffect(() => {
+    if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
+
+      axios.post("/users", {
+        ...user,
+        idgoogle
+      }).then(function (response) {
+
+        console.log(response);
+      }).catch(function (error) {
+
+        console.log(error);
+      });
+    }
+    if (userFirebase !== null) navigate("/home");
+
+  }, [idgoogle]);
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
-    if (user.password !== user.confirmPassword) {
-      for (const key in user) {
-        if (!user[key]) {
-          setErrors({
-            ...errors,
-            confirmPassword: "The two passwords have to be the same",
-          });
-        }
-      }
-      return;
-    }
-    setErrors({
-      name: "",
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
+
+    let flag = false;
+
+    users.map(item => {
+      if (item.username === user.username) {
+        setErrors({ ...errors, username: "This username isn't available" });
+        flag = true;
+      };
     });
-    let googleUser
+
+    if (user.password !== user.confirmPassword) {
+      setErrors({ ...errors, password: "The passwords doesn't match", confirmPassword: "The passwords doesn't match" });
+      flag = true;
+    };
+
+    if (flag) return;
+
     try {
-      const res = await signup(user.email, user.password)
+      let googleUser;
+      const res = await signup(user.email, user.password);
+
       googleUser = {
         name: res.user.email.split("@")[0],
         username: user.username,
         password: user.password,
         email: user.email,
         idgoogle: res.user.uid,
-      }
-      await userExistGoogle(googleUser, users)
+      };
+
+      await userExistGoogle(googleUser, users);
+
     } catch (err) {
+
       return console.log(err);
-    }
+    };
     navigate("/login");
   };
 
   const handleSignInGoogle = async () => {
     try {
       let googleUser
-      const res = await loginWithGoogle()
+      const res = await loginWithGoogle();
       googleUser = {
         name: res.user.email.split("@")[0],
         username: res.user.email.split("@")[0],
         password: res.user.email,
         email: res.user.email,
         idgoogle: res.user.uid,
-      }
-      await userExistGoogle(googleUser, users)
+      };
+
+      await userExistGoogle(googleUser, users);
+
     } catch (err) {
-      console.log(err);
-      return;
-    }
-    navigate("/home")
+
+      return console.log(err);
+    };
+    navigate("/home");
   };
 
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
-    /* 
-        Estado [usuarios]: [usuarios.some(u => RegExp.test(u))]
-        */
   };
+
+  const handleFocusUsername = e => setErrors({ ...errors, username: "" });
+
+  const handleFocusPass = e => setErrors({ ...errors, password: "", confirmPassword: "" });
 
   return (
     <Box>
@@ -153,7 +158,6 @@ const Register = () => {
           <Box className={style.backgroundImage} />
           <img className={style.logo} src={logo} alt="logo" />
         </Box>
-
         <Box className={style.registerContainer}>
           <Box className={style.containAll}>
             <Box className={style.containerTitleRegister}>
@@ -172,7 +176,6 @@ const Register = () => {
                 </Link>
               </h4>
             </Box>
-
             <Box
               sx={{
                 display: "flex",
@@ -183,9 +186,7 @@ const Register = () => {
             >
               <form onSubmit={(e) => handleSubmit(e)}>
                 <Box className={style.orderForm}>
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
                     <UserIcon />
                     <TextField
                       className={style.input}
@@ -199,10 +200,7 @@ const Register = () => {
                       value={user.name}
                     />
                   </Box>
-
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
                     <EmailIcon />
                     <TextField
                       className={style.input}
@@ -216,10 +214,7 @@ const Register = () => {
                       value={user.email}
                     />
                   </Box>
-
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
                     <UserIcon />
                     <TextField
                       className={style.input}
@@ -229,14 +224,15 @@ const Register = () => {
                       variant="standard"
                       label="Username"
                       name="username"
-                      onChange={(e) => handleChange(e)}
+                      onChange={e => handleChange(e)}
+                      onFocus={e => handleFocusUsername(e)}
                       value={user.username}
                     />
+                    {errors.username ? <div className={style.tooltip}>
+                      <span className={style.tooltiptext}>{errors.username}</span>
+                    </div> : null}
                   </Box>
-
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
                     <PadLock />
                     <TextField
                       className={style.input}
@@ -246,14 +242,15 @@ const Register = () => {
                       variant="standard"
                       label="Password"
                       name="password"
-                      onChange={(e) => handleChange(e)}
+                      onChange={e => handleChange(e)}
+                      onFocus={e => handleFocusPass(e)}
                       value={user.password}
                     />
+                    {errors.password ? <div className={style.tooltip}>
+                      <span className={style.tooltiptext}>{errors.password}</span>
+                    </div> : null}
                   </Box>
-
-                  <Box
-                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
                     <PadLock />
                     <TextField
                       className={style.input}
@@ -263,9 +260,13 @@ const Register = () => {
                       variant="standard"
                       label="Confirm Password"
                       name="confirmPassword"
-                      onChange={(e) => handleChange(e)}
+                      onChange={e => handleChange(e)}
+                      onFocus={e => handleFocusPass(e)}
                       value={user.confirmPassword}
                     />
+                    {errors.confirmPassword ? <div className={style.tooltip}>
+                      <span className={style.tooltiptext}>{errors.confirmPassword}</span>
+                    </div> : null}
                   </Box>
                   <Box style={{ display: "flex", justifyContent: "center" }}>
                     <Button className={style.btnRL} type="submit">
