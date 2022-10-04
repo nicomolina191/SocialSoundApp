@@ -8,9 +8,6 @@ const setUserGenres = async (req, res) => {
 
         const user = await Users.findByPk(id);
 
-        console.log('user' + user);
-        console.log('genres' + genres);
-
         for (const genre of genres) {
 
             const [genreDB, created] = await Genres.findOrCreate({
