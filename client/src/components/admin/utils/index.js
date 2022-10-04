@@ -50,3 +50,15 @@ export const axiosPremium = (userSelected, setUserSelected) =>{
         ...newUser
       })
 }
+
+export const arrayToDataGraphsUser = (array) => {
+    let bannedUser = 0
+    let premiumUser = 0
+    let regularUser = 0
+    array.map(user => user.isBanned ? bannedUser++ : user.plan === "Premium" ? premiumUser++ : regularUser++ )
+    return {bannedUser, premiumUser, regularUser}
+}
+
+export const arrayToDataGraphsPosts = (array) => {
+    console.log(array.map(post => post.postDate))
+}
