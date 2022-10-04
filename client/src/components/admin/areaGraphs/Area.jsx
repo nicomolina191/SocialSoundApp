@@ -15,7 +15,8 @@ import { Line } from 'react-chartjs-2';
 
 
 
-const AreaComponent = ({}) => {
+const AreaComponent = (dates, step) => {
+  console.log(dates)
     
 ChartJS.register(
     CategoryScale,
@@ -27,7 +28,9 @@ ChartJS.register(
     Filler,
     Legend
   );
-  
+  const fontSpect = {
+    color:"white"
+  } 
    const options = {
     responsive: true,
     plugins: {
@@ -36,7 +39,7 @@ ChartJS.register(
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: 'Post time',
       },
     },
   };
@@ -49,9 +52,9 @@ ChartJS.register(
       {
         fill: true,
         label: 'Dataset 2',
-        data: labels.map(() => [10, 40, 50].datatype.number({ min: 0, max: 1000 })),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        data: [1,2,3,10,5,6,7],
+        borderColor: 'var(--main-page-color',
+        backgroundColor: 'rgba(53, 235, 208, 0.5)',
       },
     ],
   };

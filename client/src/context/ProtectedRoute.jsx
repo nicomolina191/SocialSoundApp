@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
   const { userFirebase, loading } = useAuth();
   const pleasures = useSelector(state => state?.users?.currentUser?.genres)
   const user = useSelector(state => state?.users?.currentUser)
-  const urls = ['/admin', '/admin/users', '/admin/posts', '/admin/users/', '/admin/posts/']
+  const urls = ['/admin', '/admin/users', '/admin/posts'/* , "/admin/graphs" */]
   const {pathname} = useLocation()
 
   if(user?.isBanned === true && !loading) return <Banned user={user} />
