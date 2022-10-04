@@ -26,9 +26,10 @@ const userSlice = createSlice({
         ...state,
       };
     },
-    setGenres: (state) => {
+    setGenres: (state, action) => {
       return {
         ...state,
+        currentUser: {...state.currentUser, genres: action.payload}
       };
     },
     getUserStart: (state) => {

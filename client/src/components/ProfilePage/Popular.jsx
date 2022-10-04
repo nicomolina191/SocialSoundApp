@@ -8,7 +8,7 @@ import PopularPost from "./PopularPost";
 const Popular = ({ id }) => {
   const dispatch = useDispatch()
   let allPosts = useSelector((state) => state.posts.postList);
-  allPosts = allPosts.filter((post) => post.userId === id)
+  allPosts = allPosts.filter((post) => post.userId === id && post.idShared === null)
   const popularPosts = useSelector(state => state.posts.postsOrdered).slice(0, 5);
 
   useEffect(() => {

@@ -175,9 +175,9 @@ h4 {
 }
 
 .songContainer .playButton {
-  font-size: 30px;
   position: absolute;
-  top: calc(50% - 40px / 2);
+  top: 13px;
+  left: calc(50% - 26px);
 }
 
 .songDate {
