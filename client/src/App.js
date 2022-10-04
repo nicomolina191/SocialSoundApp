@@ -19,6 +19,7 @@ import Admin from "./components/admin/adminHome/Admin";
 import AdminPosts from "./components/admin/posts/AdminPosts";
 import Banned from "./components/banned/Banned";
 import LikedVideos from "./components/likedVideos/LikedVideos";
+import LikedSongs from "./components/likedSongs/LikedSongs";
 import Success from "./components/success/Success";
 
 
@@ -94,6 +95,7 @@ function App() {
               <Notification />
             </ProtectedRoute>
           } />
+          <Route path='/home/likedSongs' element={<ProtectedRoute><LikedSongs /></ProtectedRoute>} />
           <Route path='/home/likedVideos' element={<ProtectedRoute><LikedVideos /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
