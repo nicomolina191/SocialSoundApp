@@ -30,7 +30,8 @@ export const playerSlice = createSlice({
             ...state,
             tracks: action.payload,
             currentTrackIndex: state.currentTrackIndex !== 0 ? 0 : state.currentTrackIndex,
-            nowPlaying: [...state.tracks][state.currentTrackIndex !== 0 ? 0 : state.currentTrackIndex]
+            nowPlaying: [...state.tracks][state.currentTrackIndex !== 0 ? 0 : state.currentTrackIndex],
+            isPlaying: true
         }
       },
       add: (state, action) => {
@@ -50,11 +51,19 @@ export const playerSlice = createSlice({
             ...state,
             isPlaying: !state.isPlaying
         }
+      },
+      change: (state, action) => {
+        return {
+          ...state,
+          currentTrackIndex: action.payload,
+          isPlaying: true,
+          nowPlaying: [...state.tracks][action.payload]
+        }
       }
   }
 });
 
 
-export const { next, previous, add, remove, set, toggle } = playerSlice.actions;
+export const { next, previous, add, remove, set, toggle, change } = playerSlice.actions;
 
 export default playerSlice.reducer;

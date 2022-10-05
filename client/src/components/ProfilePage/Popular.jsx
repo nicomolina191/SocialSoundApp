@@ -1,4 +1,5 @@
 import React from "react";
+import PlayButton from "../PlayButton/PlayButton";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostByPopularity } from "../../redux/features/post/postGetSlice"
@@ -24,6 +25,7 @@ const Popular = ({ id }) => {
             <div className={styles.containerSong}>
               <p className={styles.songFirstHalfIndex}>{index + 1}</p>
               <PopularPost post={post} />
+              <PlayButton tracks={popularPosts} track={post} trackIndex={index}/>
             </div>
           );
         })}
