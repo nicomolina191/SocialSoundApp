@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserById,
   getUserLikes,
-  cleanUserState,
   setUserFollow,
   setUserUnfollow,
   createUserNotification,
+  cleanUserState
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
@@ -45,7 +45,7 @@ const ProfilePage = () => {
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
-    dispatch(cleanUserState());
+    return () => dispatch(cleanUserState());
   }, []);
 
   useEffect(() => {

@@ -27,3 +27,12 @@
 .comment .icon{
     color: #C4C4C4;
 }
+
+.userName {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.userName:hover {
+    color: white;
+}
