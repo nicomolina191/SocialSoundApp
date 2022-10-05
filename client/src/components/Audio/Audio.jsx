@@ -6,15 +6,15 @@ import './Player.css'
 export default function Audio({song, artist}) {
 
   return (
-    <div className={s.playerContainer}>
+    <div className={s.playerContainer} key={Math.random()}>
       <img src={song.cover} alt="not found" />  
       <div className={s.songInfo}>
         <h3>{song.title}</h3>
         <h4>{artist?.name}</h4>  
         <AudioPlayer
-            style={{ borderRadius: "1rem"}}
+            key={Math.random()}
             autoPlay={false}
-            key={'454ffdh65s83'}
+            style={{ borderRadius: "1rem"}}
             src={song.content}
             showSkipControls={false}
             showJumpControls={true}
