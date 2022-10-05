@@ -12,9 +12,9 @@ import Loading from '../loading/Loading';
 import { useAuth } from '../../context';
 import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
 import { getGenre } from '../../redux/features/genres/genreGetSlice';
-//import newpost from '../../images/svg/newpost.svg'
-// import { getAuth } from 'firebase/auth';
-
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
+import defaultImg from '../Player/default.png'
 
 export default function Upload() {
     const currentUser = useSelector(state => state.users.currentUser)
@@ -25,10 +25,6 @@ export default function Upload() {
     const [loading, setLoading] = React.useState({
       cover: false,
       content: false
-    })
-    const [fileNames, setFileNames] = React.useState({
-      cover: '',
-      content: ''
     })
     const [postData, setPostData] = React.useState({
         title: '',
@@ -49,7 +45,6 @@ export default function Upload() {
       const fileRef = ref(storage, `cover/${file.name + Math.random()}`)
       return uploadBytes(fileRef, file)
       .then((snapshot) => {
-        setFileNames({...fileNames, cover: file.name})
         return getDownloadURL(snapshot.ref)
       })
       .then((url) => {
@@ -64,7 +59,6 @@ export default function Upload() {
       const fileRef = ref(storage, `content/${file.name + Math.random()}`)
       return uploadBytes(fileRef, file)
       .then((snapshot) => {
-        setFileNames({...fileNames, content: file.name})
         return getDownloadURL(snapshot.ref)
       })
       .then((url) => {
@@ -94,7 +88,7 @@ export default function Upload() {
 
     async function handleSubmit(e){
       e.preventDefault()
-      if(postData.title && postData.genres && postData.content && postData.cover && postData.type && !loading.content && !loading.cover){
+      if(postData.title && postData.genres?.length && postData.content && postData.cover && postData.type && !loading.content && !loading.cover){
         await dispatch(createdPost({...postData, idUser: currentUser.id}))
         setPostData({
         title: '',
@@ -104,7 +98,6 @@ export default function Upload() {
         type: '',
         genres: []
         })
-        setFileNames({cover: '', content: ''})
         handleClose()
       } else alert('Check the information')
     }
@@ -154,7 +147,7 @@ export default function Upload() {
                         <li>
                             <Select className={s.selectGenres} name="genres" multiple displayEmpty value={postData.genres} onChange={handleChange} input={<OutlinedInput />} renderValue={(selected) => {
                                 if (selected.length === 0) {
-                                return <em>Select Genres</em>;
+                                return <em>Select Genres *</em>;
                                 }
                                 return selected.join(', ')}}
                                 MenuProps={MenuProps}
@@ -165,8 +158,56 @@ export default function Upload() {
                                   ))}
                             </Select>
                         </li>
-                        <li className={s.fileContainer}><label className={s.btnRL} htmlFor="image">Upload an image for your song<input id='image' disabled={loading.cover || loading.content} onChange={(e) => handleChange(e)} type="file" accept='image/*' name="cover"/></label>{loading.cover ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.cover ? fileNames.cover : ''}</h3> } </li>
-                        <li className={s.fileContainer}><label className={s.btnRL} htmlFor="song">Upload a Song<input disabled={loading.cover || loading.content} onChange={(e)=>handleChange(e)} type="file" id='song' name="content" accept='audio/mp3, video/mp4'/></label> {loading.content ? <Loading height={'50px'} width={'50px'}/> : <h3>{fileNames.content ? fileNames.content : ''}</h3> } </li>
+                        <li className={s.fileContainer}></li>
+                        
+                        <div className={s.playerContainer}>
+                        <label htmlFor="image">
+                          {
+                          loading.cover
+                          ? <div className={s.loadingContainer}><Loading height={'50px'} width={'50px'}/></div>
+                          : <div className={s.songCover}>
+                              <img src={postData?.cover ? postData.cover : defaultImg} alt="not found" />
+                              <div className={!postData?.cover ? s.addImg : s.addNone}>
+                                <svg width="15" height="15" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path fillRule="evenodd" clipRule="evenodd" d="M5.78947 0.789474C5.78947 0.353459 5.43601 0 5 0C4.56399 0 4.21053 0.353459 4.21053 0.789474V4.21053L0.789474 4.21053C0.35346 4.21053 0 4.56399 0 5C0 5.43601 0.353459 5.78947 0.789474 5.78947L4.21053 5.78947V9.21053C4.21053 9.64654 4.56399 10 5 10C5.43602 10 5.78947 9.64654 5.78947 9.21053V5.78947L9.21053 5.78947C9.64654 5.78947 10 5.43602 10 5C10 4.56399 9.64654 4.21053 9.21053 4.21053L5.78947 4.21053V0.789474Z" fill="white"/>
+                                </svg>
+                              </div>
+                            </div>
+                          }
+                          <input id='image' disabled={loading.cover || loading.content}
+                            onChange={(e) => handleChange(e)}
+                            type="file"
+                            accept='image/*'
+                            name="cover"
+                          />
+                        </label>  
+                          <div className={s.songInfo}>
+                            {console.log(postData.content)}
+                            <h3>{postData?.title ? postData.title : 'Song title'}</h3>
+                            { loading.content
+                              ? <div className={s.songLoading}><Loading height={'50px'} width={'50px'}/></div>
+                              :  <div>
+                                  <AudioPlayer
+                                    style={{ borderRadius: "1rem"}}
+                                    autoPlay={false}
+                                    key={Math.random()}
+                                    src={postData?.content}
+                                    showSkipControls={false}
+                                    showJumpControls={true}
+                                  />
+                                  <label className={s.btnRL} htmlFor="song">Upload a Song
+                                  <input
+                                    disabled={loading.cover || loading.content}
+                                    onChange={(e)=>handleChange(e)}
+                                    type="file"
+                                    id='song'
+                                    name="content"
+                                    accept='audio/mp3, video/mp4'/>
+                                </label>
+                                </div>
+                            }
+                          </div>
+                      </div>
                     </ul>
                 </DialogContent>
                 <DialogActions>

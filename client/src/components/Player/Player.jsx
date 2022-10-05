@@ -4,7 +4,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { togglePlay } from '../../redux/features/player/playerGetSlice';
+import { nextTrack, previousTrack, setStoredTracks, togglePlay } from '../../redux/features/player/playerGetSlice';
 import s from './Player.module.css';
 import defaultImg from './default.png'
 import { motion } from 'framer-motion/dist/framer-motion'
@@ -16,10 +16,10 @@ function Player() {
   const tracks = useSelector(state => state.player.tracks);
   const playerRef = useRef();
   const location = useLocation();
-
+  const { currentTrackIndex } = useSelector(state => state.player)
 
   useEffect(() => {
-    isPlaying ? playerRef.current.audio.current.play() : playerRef.current.audio.current.pause()
+    isPlaying ? playerRef.current?.audio.current.play() : playerRef.current?.audio.current.pause()
   }, [isPlaying]);
 
   const handlePlay = () => {
@@ -33,22 +33,26 @@ function Player() {
   const [musicTracks, setMusicTracks] = useState([])
 
   useEffect(() => {
-    setMusicTracks(tracks)
-    setTrackIndex(0)
+    if(tracks?.length){
+      let tracksCopy = [...tracks];
+      let stringTracks = JSON.stringify(tracksCopy);
+      localStorage.setItem("tracks", stringTracks);
+    } else{
+      let persistentTracks = localStorage.getItem("tracks");
+      let parsedTracks = JSON.parse(persistentTracks);
+      parsedTracks?.length && dispatch(setStoredTracks(parsedTracks))
+    };
+    const func = (function(){
+      setMusicTracks(tracks)
+    })();
   }, [tracks])
 
-  const [trackIndex, setTrackIndex] = useState(0);
-
   const handleClickPrevious = () => {
-    setTrackIndex((currentTrack) =>
-      currentTrack === 0 ? musicTracks.length - 1 : currentTrack - 1
-    );
+    dispatch(nextTrack())
   };
 
   const handleClickNext = () => {
-    setTrackIndex((currentTrack) =>
-      currentTrack < musicTracks.length - 1 ? currentTrack + 1 : 0
-    );
+    dispatch(previousTrack())
   };
 
   
@@ -57,22 +61,22 @@ function Player() {
       {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/home/sucess' && !location.pathname.includes('admin') &&
         <motion.div
           drag
-          dragConstraints={{top: -750,
-          right: 1000,
+          dragConstraints={{top: -700,
+          right: 0,
           bottom: 0,
-          left: 0}}
+          left: -800}}
           className={location.pathname !== '/' ? s.playerContainer : s.playerNone}>
-          <img src={musicTracks?.length && musicTracks[trackIndex]?.cover ? musicTracks[trackIndex].cover : defaultImg} alt="not found" />
+          <img src={musicTracks?.length && musicTracks[currentTrackIndex]?.cover ? musicTracks[currentTrackIndex].cover : defaultImg} alt="not found" />
           <div className={s.songInfo}>
-            <Queue tracks={musicTracks} setTrackIndex={setTrackIndex} trackIndex={trackIndex}/>
-            <h3>{musicTracks?.length ? musicTracks[trackIndex].title : ''}</h3>
+            <Queue tracks={musicTracks} trackIndex={currentTrackIndex}/>
+            <h3>{musicTracks?.length ? musicTracks[currentTrackIndex].title : ''}</h3>
             <AudioPlayer
               className='player-a'
               ref={playerRef}
               key={'23dg26ah21'}
               style={{ borderRadius: "1rem"}}
               autoPlay={isPlaying}
-              src={musicTracks?.length && musicTracks[trackIndex].content}
+              src={musicTracks?.length && musicTracks[currentTrackIndex].content}
               showSkipControls={true}
               showJumpControls={false}
               onClickPrevious={handleClickPrevious}

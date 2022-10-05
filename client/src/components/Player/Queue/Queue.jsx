@@ -14,14 +14,14 @@ import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
 import defaultImg from '../default.png'
 import s from './Queue.module.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { togglePlay } from '../../../redux/features/player/playerGetSlice';
+import { changeIndex, togglePlay } from '../../../redux/features/player/playerGetSlice';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Queue({setTrackIndex, tracks, trackIndex}) {
+export default function Queue({tracks, trackIndex}) {
 
   const [open, setOpen] = React.useState(false);
   const {isPlaying} = useSelector(state => state.player)
@@ -38,7 +38,7 @@ export default function Queue({setTrackIndex, tracks, trackIndex}) {
   const handleTrack = (i) => {
     trackIndex === i
     ? dispatch(togglePlay())
-    : setTrackIndex(i)
+    : dispatch(changeIndex(i))
   };
 
 return (

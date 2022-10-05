@@ -43,6 +43,8 @@ const getReports = require("../Controller/Reports/getReports.js");
 const createReport = require("../Controller/Reports/createReport.js");
 const getPopular = require("../Controller/Filters/getPopular.js");
 const getByGenreWithAll = require("../Controller/Filters/getByGenreWithAll.js");
+const getCountUserGraphs = require("../Controller/Users/getCountUserGraphs.js");
+const removeFollower = require("../Controller/Follows/removeFollower.js");
 
 
 const router = Router();
@@ -63,6 +65,8 @@ router.get("/likes/:postId/:userId", getLikesByPostandUserId);
 router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
 router.get("/reports", getReports); //Only for admin!
+router.get("/posts/order/popular", getPopular);
+router.get("/users/data/graphs", getCountUserGraphs)
 
 router.post("/posts/order", getByTime);
 router.post("/posts/genres", getByGenre);
@@ -71,6 +75,7 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/users/follow", addFollower);
+router.post("/users/unfollow", removeFollower);
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post("/reviews", createReview);
@@ -99,6 +104,5 @@ router.put("/users/set/plan", changePlanUser);
 router.put("/users/set/genres", setUserGenres);
 router.put("/users/set/update-ban", updateBanUser);
 router.put("/users/set/role", updateRoleUser);
-
 
 module.exports = router;

@@ -47,10 +47,6 @@ function Chat() {
     );
   };
   
-    
-  const handleOnSearch = (string, results) => {
-    console.log('SEARCHED', results);
-  };
 
   const handleOnSelect = async(user) => {
     const combinedId = currentUser.idgoogle > user.idgoogle ? currentUser.idgoogle + user.idgoogle : user.idgoogle + currentUser.idgoogle;
@@ -95,7 +91,6 @@ function Chat() {
             placeholder="Search a user to start a conversation"
             fuseOptions={{ keys: ["name", "username"] }} // Search on both fields
             resultStringKeyName="name" // String to display in the results
-            onSearch={handleOnSearch}
             onSelect={handleOnSelect}
             showIcon={false}
             formatResult={formatResult}

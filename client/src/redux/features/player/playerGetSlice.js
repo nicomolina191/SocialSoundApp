@@ -1,4 +1,4 @@
-import { next, previous, add, remove, set, toggle } from "./playerSlice";
+import { next, previous, add, remove, set, toggle, change, setStored } from "./playerSlice";
 
 
 export const nextTrack = () => {
@@ -34,6 +34,18 @@ export const setTracks = (tracks) => {
 export const togglePlay = () => {
     return (dispatch) => {
         dispatch(toggle())
+    };
+};
+
+export const changeIndex = (i) => {
+    return (dispatch) => { 
+        dispatch(change(i))
+    };
+};
+
+export const setStoredTracks = (tracks) => {
+    return (dispatch) => {
+        dispatch(setStored(tracks))
     };
 };
 

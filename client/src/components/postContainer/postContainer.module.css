@@ -1,5 +1,6 @@
 .postContainer {
     background-color: #000A1FE0;
+    min-height: 100vh;
 }
 
 .postContainer .back {
@@ -22,4 +23,5 @@
     box-shadow: 5px 5px 27px 14px rgba(0, 255, 214, 0.14);
     border: 1px solid #00FFD6;
     border-radius: 13px;
+    /* height: 57%; */
 }

@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, Slide, Typography } from 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import PlayButton from '../PlayButton/PlayButton';
 import LikeButton from '../post/LikeButton';
 import Post from '../post/Post';
 import styles from '../ProfilePage/PopularPost.module.css'
@@ -10,7 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CardSong({ post, index }) {
+export default function CardSong({ arrayMap, post, index }) {
     const [user, setUser] = useState()
     const [open, setOpen] = React.useState(false);
 
@@ -31,7 +32,7 @@ export default function CardSong({ post, index }) {
     }, [])
 
     return (
-        <div className={styles.containerSong} style={{ height: '50px' }}>
+        <div className={styles.containerSong} style={{ height: '50px', width: "99%" }}>
             <div className={styles.songFirstHalf}>
                 <div className={styles.songFirstHalfIndex} style={{marginRight:'20%'}}>
                     <p>{index + 1}</p>
@@ -78,6 +79,7 @@ export default function CardSong({ post, index }) {
                     </Typography>
                 </Link>
                 <LikeButton post={post} />
+                <PlayButton tracks={arrayMap} track={post} trackIndex={index}/>
             </div>
         </div>
     )
