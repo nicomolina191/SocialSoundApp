@@ -19,7 +19,7 @@ function Player() {
   const { currentTrackIndex } = useSelector(state => state.player)
 
   useEffect(() => {
-    isPlaying ? playerRef.current.audio.current.play() : playerRef.current.audio.current.pause()
+    isPlaying ? playerRef.current?.audio.current.play() : playerRef.current?.audio.current.pause()
   }, [isPlaying]);
 
   const handlePlay = () => {
@@ -61,10 +61,10 @@ function Player() {
       {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/home/sucess' && !location.pathname.includes('admin') &&
         <motion.div
           drag
-          dragConstraints={{top: -750,
-          right: 1000,
+          dragConstraints={{top: -700,
+          right: 0,
           bottom: 0,
-          left: 0}}
+          left: -800}}
           className={location.pathname !== '/' ? s.playerContainer : s.playerNone}>
           <img src={musicTracks?.length && musicTracks[currentTrackIndex]?.cover ? musicTracks[currentTrackIndex].cover : defaultImg} alt="not found" />
           <div className={s.songInfo}>
