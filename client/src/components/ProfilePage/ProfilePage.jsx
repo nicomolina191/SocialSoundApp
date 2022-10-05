@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserById,
   getUserLikes,
-  cleanUserState,
   setUserFollow,
   setUserUnfollow,
 } from "../../redux/features/users/usersGetSlice";
@@ -42,10 +41,6 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [followed, setFollowed] = useState(false);
-
-  useEffect(() => {
-    dispatch(cleanUserState());
-  }, []);
 
   useEffect(() => {
     dispatch(getPost());

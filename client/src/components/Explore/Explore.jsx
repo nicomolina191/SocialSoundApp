@@ -25,6 +25,7 @@ import {
   getUserByFirebaseId,
   getUserById,
   getUserNotification,
+  cleanUserState
 } from "../../redux/features/users/usersGetSlice";
 import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import {
@@ -77,6 +78,10 @@ const Explore = () => {
     currentSongs = posibleSong().slice(0, songsPerPage);
   }
   const { userFirebase } = useAuth();
+
+  useEffect(() => {
+    dispatch(cleanUserState());
+  }, [])
 
   useEffect(() => {
     dispatch(getPost());

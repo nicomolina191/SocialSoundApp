@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../context";
-import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
+import { getUserByFirebaseId, cleanUserState } from "../../redux/features/users/usersGetSlice";
 import SideBar from "../SideBar/SideBar";
 import style from "./likedSongs.module.css";
 import CardSong from "./CardSong";
@@ -18,6 +18,7 @@ export default function LikedSongs() {
   const { userFirebase } = useAuth();
 
   useEffect(() => {
+    dispatch(cleanUserState())
     dispatch(getUserByFirebaseId(userFirebase.uid));
   }, []);
 
