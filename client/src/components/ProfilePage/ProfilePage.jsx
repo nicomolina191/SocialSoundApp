@@ -6,6 +6,7 @@ import {
   getUserLikes,
   setUserFollow,
   setUserUnfollow,
+  cleanUserState
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
@@ -41,6 +42,10 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    return () => dispatch(cleanUserState());
+  }, []);
 
   useEffect(() => {
     dispatch(getPost());

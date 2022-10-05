@@ -6,7 +6,7 @@ import style from "./home.module.css";
 import { useEffect } from "react";
 import { clearPost, getPost } from "../../redux/features/post/postGetSlice";
 import SideBar from "../SideBar/SideBar";
-import { getUserByFirebaseId, cleanUserState } from "../../redux/features/users/usersGetSlice";
+import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 import { useAuth } from "../../context";
 import PostShared from "../postShared/PostShared";
 
@@ -19,7 +19,6 @@ export default function Home() {
     dispatch(getPost());
     dispatch(getUserByFirebaseId(userFirebase.uid))
     dispatch(clearPost())
-    dispatch(cleanUserState());
   }, []);
 
 console.log(userDB);
