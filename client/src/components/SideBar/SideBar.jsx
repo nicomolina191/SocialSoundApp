@@ -15,7 +15,7 @@ import { Badge, Rating, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
-import { getUserDownToRegular } from '../../redux/features/users/usersGetSlice'
+import { getUserDownToRegular, getUserNotification } from '../../redux/features/users/usersGetSlice'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Modal from '@mui/material/Modal';
@@ -31,6 +31,7 @@ const SideBar = ({userDB}) => {
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
   const dispatch = useDispatch();
+  const post = useSelector((state)=> state.posts.postList)
 
   useEffect(async () => {
     const docRef = doc(db, "userConversations", userFirebase?.uid);
@@ -38,6 +39,11 @@ const SideBar = ({userDB}) => {
     userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
     
   }, [])
+
+  useEffect(()=>{
+   dispatch(getUserNotification(user.idgoogle))
+  
+  },[post])
 
 
 /*   useEffect(() => {
@@ -139,7 +145,7 @@ const handleButton = (e) => {
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
                 <img width='70px' alt='logo' src={logo} />
-                <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src="https://png.pngitem.com/pimgs/s/678-6785829_my-account-instagram-profile-icon-hd-png-download.png"/> <button>...</button></li>
+                <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/> <button>...</button></li>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 

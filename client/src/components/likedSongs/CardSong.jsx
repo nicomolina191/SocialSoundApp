@@ -6,6 +6,7 @@ import PlayButton from '../PlayButton/PlayButton';
 import LikeButton from '../post/LikeButton';
 import Post from '../post/Post';
 import styles from '../ProfilePage/PopularPost.module.css'
+import style from '../likedVideos/cardVideo.module.css'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +33,7 @@ export default function CardSong({ arrayMap, post, index }) {
     }, [])
 
     return (
-        <div className={styles.containerSong} style={{ height: '50px', width: "99%" }}>
+        <div className={`${styles.containerSong} ${style.containerSong}`} style={{ height: '50px', padding: '0.5%', borderRadius: '6px' }}>
             <div className={styles.songFirstHalf}>
                 <div className={styles.songFirstHalfIndex} style={{marginRight:'20%'}}>
                     <p>{index + 1}</p>
@@ -58,17 +59,11 @@ export default function CardSong({ arrayMap, post, index }) {
                     }}
                     maxWidth={'lg'}
                     fullWidth={true}>
-                    {/* <DialogTitle>{"Use Google's location service?"}</DialogTitle> */}
                     <DialogContent>
-                        {/* <DialogContentText id="alert-dialog-slide-description">
-                            Let Google help apps determine location. This means sending anonymous
-                            location data to Google, even when no apps are running.
-                        </DialogContentText> */}
                         <Post post={post} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Close</Button>
-                        {/* <Button onClick={handleClose}>Agree</Button> */}
                     </DialogActions>
                 </Dialog>
             </div>

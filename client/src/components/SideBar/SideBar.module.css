@@ -35,10 +35,11 @@ ul{
     padding-right: 16px;
     gap: 45px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.559);
-    backdrop-filter: blur(25px) opacity(0.5) ;
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(50px) opacity(0.5) ;
+    -webkit-backdrop-filter: blur(50px);
     border-radius: 0px 10px 10px 0px;
-    background-color: #00061658;
+    background-color: #00071c9a;
+    z-index: 2;
 }
 a{
     color: inherit;
