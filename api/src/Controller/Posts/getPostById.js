@@ -1,4 +1,4 @@
-const { Posts, Genres } = require('../../db.js');
+const { Posts, Genres, Users } = require('../../db.js');
 
 const getPostById = async (req, res) => {
 
@@ -11,6 +11,9 @@ const getPostById = async (req, res) => {
                 model: Genres,
                 attributes: ['name'],
                 through: { attributes: [] }
+            },
+            {
+                model: Users
             }]
         });
 

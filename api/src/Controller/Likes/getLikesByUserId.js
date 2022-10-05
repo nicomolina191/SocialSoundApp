@@ -1,4 +1,4 @@
-const { Likes, Posts } = require('../../db.js');
+const { Likes, Posts, Users } = require('../../db.js');
 
 const getLikesByUserId = async (req, res) => {
 
@@ -9,7 +9,10 @@ const getLikesByUserId = async (req, res) => {
         const likes = await Likes.findAll({
             where: { userId },
             include: [{
-                model: Posts
+                model: Posts,
+                include: [{
+                    model: Users
+                }]
             }]
         });
 
