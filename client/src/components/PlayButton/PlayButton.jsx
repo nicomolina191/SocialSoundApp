@@ -13,10 +13,12 @@ const PlayButton = ({trackIndex, tracks, track}) => {
         const func = (function(i){
             dispatch(changeIndex(i))
         })(trackIndex);
-    }
+    };
+
     const handleToggle = () => {
         dispatch(togglePlay())
-    }
+    };
+    
     return (
         <div className={s.playBtn} onClick={songs[currentTrackIndex]?.id === track?.id ? handleToggle : handleClick}>
             { !isPlaying

@@ -1,8 +1,9 @@
 .container{
     position: fixed;
-    bottom: 5px;
-    left: 10px;
+    bottom: 10px;
+    right: 10px;
     z-index: 99999999999999;
+    pointer-events: none;
 }
 .playerContainer{
     position: relative;
@@ -10,6 +11,7 @@
     overflow: hidden;
     width: 240px;
     height: 180px;
+    pointer-events: all;
 }
 .playerContainer img{
     width: 100%;
