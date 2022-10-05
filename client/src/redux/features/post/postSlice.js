@@ -67,24 +67,23 @@ export const postSlice = createSlice({
       return {
         ...state,
         postList: action.payload,
-        postsFiltered: action.payload,
-        postsOrdered: action.payload
+        postsFiltered: action.payload.posts,
+        postsOrdered: action.payload.allPosts
       }
     },
     getAllPostByPopularity: (state, action) => {
       return {
         ...state,
-        postList: action.payload,
-        postsFiltered: action.payload,
-        postsOrdered: action.payload
+        postsFiltered: action.payload.posts,
+        postsOrdered: action.payload.allPosts
       }
     },
     getAllPostByRelevance: (state, action) => {
       return {
         ...state,
         postList: action.payload,
-        postsFiltered: action.payload,
-        postsOrdered: action.payload
+        postsFiltered: action.payload.posts,
+        postsOrdered: action.payload.allPosts
       }
     },
     getCurrentPostById: (state, action) => {

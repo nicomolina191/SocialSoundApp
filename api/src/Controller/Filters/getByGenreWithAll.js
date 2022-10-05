@@ -6,8 +6,15 @@ const getByGenreWithAll = async (req, res) => {
 
     let filteredPosts = [];
     let nonFilteredPosts = [];
+    let allFilteredPosts = [];
+    let nonAllFilteredPosts = [];
 
     try {
+        let allPosts = await Posts.findAll({include: [{
+            model: Genres,
+            as: "genres",
+            through: { attributes: [] }
+        }]})
 
         for (const post of posts) {
 
@@ -18,9 +25,18 @@ const getByGenreWithAll = async (req, res) => {
             };
         };
 
-        const allJoined = [...filteredPosts, ...nonFilteredPosts];
+        for (const post of allPosts) {
 
-        return res.json(allJoined);
+            for (const item of post.dataValues.genres) {
+                if (genres.includes(item)) allFilteredPosts.push(post);
+                if (!genres.includes(item)) nonAllFilteredPosts.push(post);
+            };
+        };
+
+        const allJoined = [...filteredPosts, ...nonFilteredPosts];
+        const allPostsOrder = [...allFilteredPosts, ...nonAllFilteredPosts];
+
+        return res.json({posts: allJoined, allPosts: allPostsOrder});
 
     } catch (error) {
 
