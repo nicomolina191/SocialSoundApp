@@ -43,11 +43,11 @@ import {
 } from "react-share";
 import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
 import share from '../../images/logoiconbg.png'
-// import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
 import LikeButton from "./LikeButton";
 import PlaylistAddRoundedIcon from '@mui/icons-material/PlaylistAddRounded';
 import { addTrack, removeTrack } from "../../redux/features/player/playerGetSlice";
+import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -107,21 +107,21 @@ export default function Post({ post, comments, margin, border, height }) {
     setAnchorEl(null);
   };
 
-  // const notification = async () => {
-  //   if (currentUser.id !== post.userId) {
-  //     await dispatch(createUserNotification({
-  //       title: JSON.stringify({
-  //         name: `${currentUser.username} liked your post`,
-  //         img: currentUser.avatar,
-  //         post: post.title,
-  //       }),
-  //       content: post.content,
-  //       userId: post.userId,
-  //       fromUser: currentUser.id,
-  //     }));
-  //     console.log("notification created!")
-  //   }
-  // };
+  const notification = async () => {
+    if (currentUser.id !== post.userId) {
+      await dispatch(createUserNotification({
+        title: JSON.stringify({
+          name: `${currentUser.username} has shared your post`,
+          img: currentUser.avatar,
+          post: post.title,
+        }),
+        content: `/home/explore/${currentUser.id}`,
+        userId: post.userId,
+        fromUser: currentUser.id,
+      }));
+      console.log("notification created!")
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -359,7 +359,8 @@ export default function Post({ post, comments, margin, border, height }) {
                       </Button>
                       <Button onClick={() => {
                         handleCloseShareInMyProfile()
-                        dispatch(createdPost({ title: '', description: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+                        dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+                        notification()
                         handleClose()
                         setDescriptionShare('')
                       }} className={style.button}>

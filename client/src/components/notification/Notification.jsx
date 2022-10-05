@@ -4,7 +4,7 @@ import { Stack, Typography, ListItem, List, ListItemAvatar, Avatar, ListItemText
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { disabledUserNotification, getUserByFirebaseId, watchedUserNotification } from '../../redux/features/users/usersGetSlice';
+import { disabledUserNotification, getUserByFirebaseId, getUserNotification, watchedUserNotification } from '../../redux/features/users/usersGetSlice';
 import SideBar from '../SideBar/SideBar';
 import style from './notification.module.css'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -19,6 +19,7 @@ const Notification = () => {
 
     useEffect(()=> {
         dispatch(getUserByFirebaseId(userFirebase.uid))
+        dispatch(getUserNotification())
      },[]);
 
    const handleWatched = () => {
@@ -78,9 +79,11 @@ const Notification = () => {
                                
                             <ListItem alignItems="flex-start">
                             <ListItemAvatar>
+                            <Link to={`/home/explore/${user.fromUser}`}>   
                             <Avatar sx={{ width: 54, height: 54 }}
                             alt="avatar.." 
                             src={data?.img} />
+                            </Link>
                              </ListItemAvatar>
                              
                              <ListItemText
@@ -93,7 +96,7 @@ const Notification = () => {
                                    variant="body2"
                                    color="#ffffff"
                                    >
-                                   {data?.name} 
+                                   <Link to={`/home/explore/${user.fromUser}`}> {data?.name}</Link>
                                    {!user.watched ? '' : <span className={style.watched}>watched</span> }
                                    </Typography>
                                       </Stack>
@@ -111,16 +114,30 @@ const Notification = () => {
                                        color="#757575"
                                        >
                                 
-                                       {data?.post}: <Link to={user.content}>
-                                       <Button  href="#text-buttons" variant='outlined' color="success" sx={{ marginLeft: 1, color: '#c4c4c4', fontSize: 12, fontWeight: 16, }} onClick={()=> handleWatched()}>Post</Button>
-                                       </Link>
+                                       {data?.post}  <Link to={user.content}>
+                                       
+                                        {
+                                            user?.content && (
+                                                <Button  
+                                                href="#text-buttons" 
+                                                variant='outlined' 
+                                                color="success" 
+                                                sx={{ marginLeft: 1, color: '#c4c4c4', fontSize: 12, fontWeight: 16, }} 
+                                                onClick={()=> handleWatched()}>
+                                                 Post
+                                                </Button>
+                                             )
+                                        }
+                                      
+                                       
+                                       </Link> 
                                    </Typography>
                                   
                                    </Stack>
                                    
                                    <div>
                                    <div>
-                                      <IconButton aria-label="delete" size="large" color="primary" sx={{  marginLeft: 146,  color: 'red' }} onClick={()=> handleDelete()}>
+                                      <IconButton aria-label="delete" size="large" color="primary" sx={{  marginLeft: 150,  color: 'red' }} onClick={()=> handleDelete()}>
                                        <DeleteIcon fontSize="inherit"/>
                                      </IconButton>
                                      </div>
