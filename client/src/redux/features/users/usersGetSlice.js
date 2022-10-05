@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular, getUserDataGraphs  } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular, setFollow, setUnfollow, getUserDataGraphs } from "./usersSlice";
 
 
 
@@ -45,7 +45,7 @@ export const setUserGenres = (body) => {
     try {
       const response = await axios.put(`/users/set/genres`, body);
       if (response) {
-        dispatch(setGenres());
+        dispatch(setGenres(response.data.genres));
         dispatch(getUser());
       }
     } catch (error) {
@@ -177,6 +177,34 @@ export const disabledUserNotification = (id) => {
       console.log(error);
     }
   }
+};
+
+export const setUserFollow = (body) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`/users/follow`, body);
+      if (response) {
+        dispatch(setFollow(response.data.FollowerUsers));
+        dispatch(getUser());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const setUserUnfollow = (body) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`/users/unfollow`, body);
+      if (response) {
+        dispatch(setUnfollow(response.data.FollowerUsers));
+        dispatch(getUser());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };
 
 export const getDataForGraphs = () => {

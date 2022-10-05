@@ -1,0 +1,28 @@
+.customDialog div[role=dialog]{
+    background-color: transparent !important;
+}
+
+.queueItem{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+.queueItem img{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.trackInfo p {
+    cursor: inherit;
+    color: rgba(255, 255, 255, 0.434) !important;
+}
+.queueItem svg path{
+    fill: white;
+    justify-self: flex-end;
+    transition: 0.3s;
+}
+.queueTrack:hover .queueItem svg path{
+    fill: aqua;
+}

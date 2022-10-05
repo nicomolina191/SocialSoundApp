@@ -1,6 +1,6 @@
 const { Users } = require('../../db.js');
 
-const addFollower = async (req, res) => {
+const removeFollower = async (req, res) => {
     const { idUser, followTo } = req.body;
 
     try {
@@ -15,7 +15,7 @@ const addFollower = async (req, res) => {
             }]
         });
 
-        await user.addFollowingUser(userToFollow);
+        await user.removeFollowingUser(userToFollow);
 
         userToFollow = await Users.findByPk(followTo, {
             include: [
@@ -29,9 +29,9 @@ const addFollower = async (req, res) => {
         return res.json(userToFollow);
 
     } catch (err) {
-        console.log(err);
-        return res.status(500).send(err);
+        console.log(err.message);
+        return res.status(500).send(err.message);
     }
 };
 
-module.exports = addFollower;
+module.exports = removeFollower;

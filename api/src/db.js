@@ -74,16 +74,8 @@ const {
 
 //USERS - USERS
 
-Users.belongsToMany(Users, {
-  through: "Following",
-  as: "FollowerUsers",
-  foreignKey: "following_id",
-});
-Users.belongsToMany(Users, {
-  through: "Following",
-  as: "FollowingUsers",
-  foreignKey: "follower_id",
-});
+Users.belongsToMany(Users, { through: "Following", as: "FollowerUsers", foreignKey: "following_id", });
+Users.belongsToMany(Users, { through: "Following", as: "FollowingUsers", foreignKey: "follower_id", });
 
 // USERS - POSTS
 

@@ -5,6 +5,8 @@ import {
   getUserById,
   getUserLikes,
   cleanUserState,
+  setUserFollow,
+  setUserUnfollow,
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
 import { Stack, ThemeProvider } from "@mui/system";
@@ -12,7 +14,6 @@ import { Button, createTheme, Menu, MenuItem, Modal } from "@mui/material";
 import styles from "./ProfilePage.module.css";
 import SideBar from "../SideBar/SideBar";
 import checkIcon from "../../images/checkIcon.png";
-import playIcon from "../../images/play.png";
 import Popular from "./Popular";
 import LikedSongs from "./LikedSongs";
 import AllPosts from "./AllPosts";
@@ -20,16 +21,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import EditProfile from "./EditProfile";
 import Upload from "../Upload/Upload";
-import axios from "axios";
 import { changeUserChat } from "../../redux/features/chat/chatGetSlice";
+import PlayAllButton from "../PlayAllButton/PlayAllButton";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { db } from '../../firebase'
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const profileUser = useSelector((state) => state.users.user);
   const currentUser = useSelector((state) => state.users.currentUser);
-  const currentUserFollows = useSelector(
-    (state) => state.users.currentUser.FollowingUsers
+  const profileUserFollowers = useSelector(
+    (state) => state.users.user.FollowerUsers
   );
   const allPosts = useSelector((state) => state.posts.possListAll);
   const artistPosts = Array.isArray(allPosts)
@@ -39,26 +42,34 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [followed, setFollowed] = useState(false);
-  const [loaded, setLoaded] = useState();
 
   useEffect(() => {
     dispatch(cleanUserState());
-    setLoaded(true);
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUserById(id));
     dispatch(getUserLikes(id));
-  }, [loaded]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    getFollowOfThisUser();
+  });
 
   function getFollowOfThisUser() {
-    if (currentUserFollows) {
-      const check = currentUserFollows.find(
-        (user) => user.id === profileUser.id
+    let check
+    if (profileUserFollowers) {
+      check = profileUserFollowers.find(
+        (user) => user.id === currentUser.id
       );
-      return check;
     }
+    if (check !== undefined) {
+      setFollowed(true);
+    } else {
+      setFollowed(false);
+    }
+    return check
   }
 
   const handleOpen = () => {
@@ -78,11 +89,23 @@ const ProfilePage = () => {
   };
 
   const handleFollow = () => {
-    axios.post("/users/follow", {
-      idUser: currentUser.id,
-      followTo: profileUser.id,
-    });
+    dispatch(
+      setUserFollow({
+        idUser: currentUser.id,
+        followTo: profileUser.id,
+      })
+    );
     setFollowed(true);
+  };
+
+  const handleUnfollow = () => {
+    dispatch(
+      setUserUnfollow({
+        idUser: currentUser.id,
+        followTo: profileUser.id,
+      })
+    );
+    setFollowed(false);
   };
 
   const theme = createTheme({
@@ -97,12 +120,36 @@ const ProfilePage = () => {
     },
   });
 
-  const sendMessage = async () => {
-    const combinedId =
-      currentUser.idgoogle > profileUser.idgoogle
-        ? currentUser.idgoogle + profileUser.idgoogle
-        : profileUser.idgoogle + currentUser.idgoogle;
-    dispatch(changeUserChat({ destination: profileUser, chatId: combinedId }));
+  const handleOnSelect = async() => {
+    const combinedId = currentUser.idgoogle > profileUser.idgoogle ? currentUser.idgoogle + profileUser.idgoogle : profileUser.idgoogle + currentUser.idgoogle;
+    dispatch(changeUserChat({destination: profileUser, chatId: combinedId}))
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+
+      if (!res.exists()) {
+        //create a chat in chats collection
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+
+        //create user chats
+        await updateDoc(doc(db, "userConversations", currentUser.idgoogle), {
+          [combinedId + ".userInfo"]: {
+            uid: profileUser.idgoogle,
+            displayName: profileUser.name,
+            photoURL: profileUser.avatar,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+
+        await updateDoc(doc(db, "userConversations", profileUser.idgoogle), {
+          [combinedId + ".userInfo"]: {
+            uid: currentUser.idgoogle,
+            displayName: currentUser.name,
+            photoURL: currentUser.avatar,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+      }
+    } catch (err){console.log(err)}
   };
 
   return (
@@ -118,7 +165,7 @@ const ProfilePage = () => {
           <div className={styles.containerProfileData}>
             <div
               style={{
-                background: `url(${profileUser.banner})`,
+                background: `url(${profileUser?.banner})`,
                 backgroundSize: "cover",
                 backgroundColor: "brightness(50%)",
                 position: "absolute",
@@ -140,11 +187,13 @@ const ProfilePage = () => {
                 <h1>{profileUser.name}</h1>
                 <div className={styles.followersCount}>
                   <p className={styles.followersCount}>
-                    {profileUser.followersCount} Followers
+                    {profileUser.FollowerUsers?.length === 1
+                      ? `${profileUser?.FollowerUsers?.length} follower `
+                      : `${profileUser?.FollowerUsers?.length} followers `}
                     {profileUser.FollowingUsers?.length > 0
                       ? profileUser.FollowingUsers.length === 1
-                        ? ` ・ Follow ${profileUser.FollowingUsers.length} user`
-                        : ` ・ Follow ${profileUser.FollowingUsers.length} users`
+                        ? ` ・ Follow ${profileUser?.FollowingUsers?.length} user`
+                        : ` ・ Follow ${profileUser?.FollowingUsers?.length} users`
                       : null}
                   </p>
                 </div>
@@ -186,10 +235,12 @@ const ProfilePage = () => {
             <div className={styles.playFollowMessageContainer}>
               <div className={styles.playFollowContainer}>
                 {artistPosts.length > 0 ? (
-                  <img src={playIcon} className={styles.playButton} alt="" />
+                  <div>
+                    <PlayAllButton songs={artistPosts} />
+                  </div>
                 ) : null}
                 {currentUser.id !== profileUser.id ? (
-                  getFollowOfThisUser() === undefined && !followed ? (
+                  !followed ? (
                     <Button
                       onClick={handleFollow}
                       variant="contained"
@@ -211,7 +262,7 @@ const ProfilePage = () => {
                     </Button>
                   ) : (
                     <Button
-                      onClick={handleFollow}
+                      onClick={handleUnfollow}
                       variant="contained"
                       sx={{
                         height: "48px",
@@ -243,7 +294,7 @@ const ProfilePage = () => {
                   >
                     <Link to="/messages">
                       <FontAwesomeIcon
-                        onClick={sendMessage}
+                        onClick={handleOnSelect}
                         icon={faEnvelope}
                       />
                     </Link>

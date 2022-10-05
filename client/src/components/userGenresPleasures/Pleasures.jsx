@@ -9,6 +9,8 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { setUserGenres } from "../../redux/features/users/usersGetSlice";
+import { useAuth } from "../../context";
+import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
 
 const Pleasures = () => {
   const dispatch = useDispatch();
@@ -24,10 +26,18 @@ const Pleasures = () => {
   const firstGenre = lastGenre - genrePerPage;
   const currentGenres = genres.slice(firstGenre, lastGenre);
   const pageNumbers = Math.ceil(genres.length / genrePerPage);
+  const { userFirebase } = useAuth();
 
   useEffect(() => {
     dispatch(getGenre());
+    dispatch(getUserByFirebaseId(userFirebase.uid))
   }, [dispatch]);
+
+  useEffect(() => {
+    if(currentUser.genres.length > 1){
+      window.location.reload();
+    }
+  }, [currentUser])
 
   function nextPage() {
     if (currentPage < pageNumbers) {
@@ -53,12 +63,7 @@ const Pleasures = () => {
   }
 
   function handleSubmit() {
-    try {
-      dispatch(setUserGenres(genresSelected));
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(setUserGenres(genresSelected));
   }
 
   return (
@@ -100,7 +105,7 @@ const Pleasures = () => {
             flexWrap="wrap"
             sx={{ height: "180px", width: "810px", margin: "20px 0" }}
           >
-            {currentGenres.map((genre, key) => {
+            {currentGenres?.map((genre, key) => {
               return (
                 <div key={key} className={styles.genresContainer}>
                   <input
