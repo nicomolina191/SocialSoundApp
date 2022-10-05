@@ -139,7 +139,9 @@ const handleButton = (e) => {
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
                 <img width='70px' alt='logo' src={logo} />
-                <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/> <button>...</button></li>
+                <Link to={`/home/explore/${user.id}`}>
+                <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/></li>
+                </Link>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 

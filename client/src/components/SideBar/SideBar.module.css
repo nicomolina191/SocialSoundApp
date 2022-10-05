@@ -53,6 +53,7 @@ a{
     gap: 20px;
 }
 .profilePic{
+    cursor: pointer;
     object-fit: cover;
     border-radius: 50%;
     height: 40px;
