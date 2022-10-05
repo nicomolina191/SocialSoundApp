@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import PlayButton from "../PlayButton/PlayButton";
 import styles from "./Popular.module.css";
 import PopularPost from "./PopularPost";
 
@@ -18,6 +19,7 @@ const Popular = ({ id }) => {
             <div className={styles.containerSong}>
               <p className={styles.songFirstHalfIndex}>{index + 1}</p>
               <PopularPost post={post} />
+              <PlayButton tracks={popularPosts} track={post} trackIndex={index}/>
             </div>
           );
         })}

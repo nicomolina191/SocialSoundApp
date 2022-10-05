@@ -21,6 +21,7 @@ import Banned from "./components/banned/Banned";
 import LikedVideos from "./components/likedVideos/LikedVideos";
 import LikedSongs from "./components/likedSongs/LikedSongs";
 import Success from "./components/success/Success";
+import Player from "./components/Player/Player";
 
 
 
@@ -103,6 +104,7 @@ function App() {
           <Route path="/youAreBanned" element={<ProtectedRoute><Banned /></ProtectedRoute>} />
           <Route path="*" element={<ProtectedRoute><Navigate to="/login" /></ProtectedRoute>} />
         </Routes>
+        <Player/>
       </AuthProvider>
     </React.StrictMode>
   );
