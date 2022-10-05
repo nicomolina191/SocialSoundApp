@@ -1,0 +1,21 @@
+.backgroundContainer {
+    background-color: var(--main-page-color);
+    height: 100%;
+    width: 100%;
+    min-width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+
+}
+
+.containerGraphs {
+    width: 90%;
+    max-width: 50vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

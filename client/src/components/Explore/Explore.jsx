@@ -9,7 +9,6 @@ import {
   faChevronRight,
   faChevronLeft,
   faCircleCheck,
-  faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Typography,
@@ -40,6 +39,8 @@ import Post from "../post/Post";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../../context";
 import Loading from "../loading/Loading";
+import PostShared from "../postShared/PostShared";
+import PlayAllButton from "../PlayAllButton/PlayAllButton";
 
 const Explore = () => {
   const dispatch = useDispatch();
@@ -47,9 +48,13 @@ const Explore = () => {
   const userDB = useSelector((state) => state.users.currentUser);
   const user = useSelector((state) => state.users.user);
   const genres = useSelector((state) => state.genres.genreList);
-  const postsFilteredAndOrdered = useSelector((state) => state.posts.postsOrdered);
+  const postsFilteredAndOrdered = useSelector(
+    (state) => state.posts.postsOrdered
+  );
   const allPostsSelector = useSelector((state) => state.posts.possListAll);
-  const postsFilteredSelector = useSelector((state) => state.posts.postsFiltered);
+  const postsFilteredSelector = useSelector(
+    (state) => state.posts.postsFiltered
+  );
   const [loaded, setLoaded] = useState(false);
   const [posts, setPosts] = useState();
   const [checked, setChecked] = useState("all");
@@ -76,7 +81,7 @@ const Explore = () => {
     dispatch(getPost());
     setPosts(postsFilteredSelector);
     setLoaded(true);
-  }, [postsFilteredSelector]);  
+  }, [postsFilteredSelector]);
 
   useEffect(() => {
     dispatch(getPost());
@@ -190,8 +195,7 @@ const Explore = () => {
           })
         );
       } else if (orderChecked === "popu") {
-        // dispatch(getPostByPopularity({ order: el.target.value, posts: allPostsSelector }));
-        dispatch(getPostByPopularity());
+        dispatch(getPostByPopularity({ posts: allPostsSelector }));
       } else if (orderChecked == "asc") {
         dispatch(getPostByTime({ order: "asc", posts: allPostsSelector }));
       } else {
@@ -199,7 +203,10 @@ const Explore = () => {
       }
     } else {
       dispatch(
-        getPostByGenre({ genres: newChecked.genres, posts: postsFilteredAndOrdered })
+        getPostByGenre({
+          genres: newChecked.genres,
+          posts: postsFilteredAndOrdered,
+        })
       );
     }
   }
@@ -214,8 +221,7 @@ const Explore = () => {
         })
       );
     } else if (el.target.value === "popu") {
-      // dispatch(getPostByPopularity({ order: el.target.value, posts: posts }));
-      dispatch(getPostByPopularity());
+      dispatch(getPostByPopularity({ posts: posts }));
     } else {
       dispatch(getPostByTime({ order: el.target.value, posts: posts }));
     }
@@ -228,12 +234,16 @@ const Explore = () => {
 
   function handleCheckedVideo() {
     setChecked("video");
-    setPosts(postsFilteredSelector.filter((post) => post.type.includes("video")));
+    setPosts(
+      postsFilteredSelector.filter((post) => post.type.includes("video"))
+    );
   }
 
   function handleCheckedAudio() {
     setChecked("audio");
-    setPosts(postsFilteredSelector.filter((post) => post.type.includes("audio")));
+    setPosts(
+      postsFilteredSelector.filter((post) => post.type.includes("audio"))
+    );
   }
 
   return (
@@ -635,7 +645,13 @@ const Explore = () => {
                   ) : (
                     <Stack spacing={0} sx={{ marginTop: "20px" }}>
                       {posts?.length > 0 &&
-                        posts?.map((post, i) => <Post key={i} post={post} />)}
+                        posts?.map((post, i) =>
+                          post.idShared ? (
+                            <PostShared postShared={post} />
+                          ) : (
+                            <Post key={i} post={post} comments={false} />
+                          )
+                        )}
                     </Stack>
                   )}
                 </Stack>
@@ -674,6 +690,9 @@ const Explore = () => {
                       >
                         <Stack direction="row" flexWrap="wrap">
                           {currentSongs.map((results) => {
+                            {
+                              console.log(results);
+                            }
                             return (
                               <Stack
                                 direction="row"
@@ -687,9 +706,9 @@ const Explore = () => {
                                   style={{ position: "relative" }}
                                 >
                                   <img src={logoIcon} alt="" />
-                                  <p className={styles.playButton}>
-                                    <FontAwesomeIcon icon={faPlay} />
-                                  </p>
+                                  <div className={styles.playButton}>
+                                    <PlayAllButton songs={[results]} />
+                                  </div>
                                 </div>
                                 <div>
                                   <p>{results.title}</p>
@@ -704,7 +723,8 @@ const Explore = () => {
                                         marginTop: "20px",
                                       }}
                                     >
-                                      {user && user.username}
+                                      {results.user?.username}
+                                      {console.log(results)}
                                     </p>
                                   </Link>
                                 </div>

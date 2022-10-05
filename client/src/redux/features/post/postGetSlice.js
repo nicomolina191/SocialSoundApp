@@ -91,10 +91,10 @@ export const getPostByTime = (order) => {
   }
 }
 
-export const getPostByPopularity = () => {
+export const getPostByPopularity = (body) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`/posts/order/popular`);
+      const response = await axios.post(`/posts/order/popular`, body);
       dispatch(getAllPostByPopularity(response.data))
     } catch (error) {
       console.log(error);

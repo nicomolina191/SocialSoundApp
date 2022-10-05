@@ -1,7 +1,7 @@
 .review {
     display: grid;
     width: 700px;
-    height: 300px;
+    height: 270px;
     background-color: white;
     border-radius: 10px;
     color: black;
@@ -14,6 +14,10 @@
     grid-row: 1;
     margin-top: 30px;
     margin-left: 30px;
+    border: 3px solid #00FFD6;
+    width: 130px;
+    height: 130px;
+    border-radius: 5px;
 }
 
 .name {
@@ -22,6 +26,8 @@
     grid-row: 1;
     margin-top: 175px;
     margin-left: 20px;
+    text-align: center;
+    font-size: 18px;
 }
 
 .rating {
@@ -29,6 +35,8 @@
     grid-column-end: 3;
     grid-row: 1;
     margin-top: 50px;
+    text-align: left;
+    margin-left: 25px;
 }
 
 .description {
@@ -36,6 +44,9 @@
     grid-column-end: 3;
     grid-row: 1;
     margin-top: 100px;
+    text-align: left;
+    margin-left: 30px;
+    font-size: 20px;
 }
 
 .btn {

@@ -45,7 +45,7 @@ export const setUserGenres = (body) => {
     try {
       const response = await axios.put(`/users/set/genres`, body);
       if (response) {
-        dispatch(setGenres());
+        dispatch(setGenres(response.data.genres));
         dispatch(getUser());
       }
     } catch (error) {

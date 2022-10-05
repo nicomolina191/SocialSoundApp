@@ -3,10 +3,23 @@ import React from 'react'
 import { Arrow } from '../componentsIcons'
 import style from "./banned.module.css"
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useAuth } from "../../context";
+
 
 
 const Banned = ({user}) => {
   const navigate = useNavigate()
+  const { logout } = useAuth();
+
+
+  useEffect(() => {
+  
+    return () => {
+      logout()
+    }
+  }, [])
+  
   
   return (
     <Box className={style.banned}>
