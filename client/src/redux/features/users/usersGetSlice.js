@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular, setFollow, setUnfollow  } from "./usersSlice";
+import { addUsers, deleteUsers, getUserError, getUserStart, getUserSuccess, updateUsers, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular, setFollow, setUnfollow, getUserDataGraphs } from "./usersSlice";
 
 
 
@@ -206,3 +206,14 @@ export const setUserUnfollow = (body) => {
     }
   };
 };
+
+export const getDataForGraphs = () => {
+  return async(dispatch) => {
+    try {
+      const response = await axios.get(`/users/data/graphs`)
+      dispatch(getUserDataGraphs(response.data))
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
