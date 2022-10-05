@@ -46,6 +46,8 @@ import share from '../../images/logoiconbg.png'
 import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
 import LikeButton from "./LikeButton";
+import PlaylistAddRoundedIcon from '@mui/icons-material/PlaylistAddRounded';
+import { addTrack } from "../../redux/features/player/playerGetSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -481,6 +483,11 @@ export default function Post({ post, comments, margin, border }) {
                 </button>
               </Link>
             )}
+          </Grid>
+          <Grid item>
+            <button onClick={()=>dispatch(addTrack(post))}>
+              <PlaylistAddRoundedIcon className={style.icon} style={{fontSize:'29px', marginLeft:'-40%'}}/>
+            </button>
           </Grid>
         </Grid>
       </Grid>

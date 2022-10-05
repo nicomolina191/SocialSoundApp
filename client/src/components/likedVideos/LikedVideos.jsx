@@ -9,6 +9,7 @@ import style from './likedVideos.module.css'
 import styles from '../ProfilePage/Popular.module.css'
 import CardVideo from './CardVideo';
 import { getLikesByUserId } from '../../redux/features/like/likeGetSlice';
+import PlayAllButton from "../PlayAllButton/PlayAllButton";
 
 export default function LikedVideos() {
     const dispatch = useDispatch();
@@ -30,14 +31,15 @@ export default function LikedVideos() {
             // getLikedPosts()
             dispatch(getLikesByUserId(userDB.id))
         }
-    }, [userDB]) 
+    }, [userDB])
 
     return (
         <Grid container className={style.likedVideos} xs={12}>
             <Grid item container xs={2.5}>
                 <SideBar userDB={userDB} />
             </Grid>
-            <Grid item container xs={9.5} p={`2%`}>
+            <Grid item container xs={9.5} p={`2%`} style={{height:'10px'}}>
+                <PlayAllButton songs={likesCurrentUser}/>
                 {likesCurrentUser?.map((post, index) => <CardVideo post={post} index={index} />)}
             </Grid>
         </Grid>
