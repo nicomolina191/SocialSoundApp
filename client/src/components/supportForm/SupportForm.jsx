@@ -29,13 +29,11 @@ export function validate(input) {
 
 export default function SupportForm() {
     const dispatch = useDispatch()
-    const [area, setArea] = useState('');
-    const [detail, setDetail] = useState('');
     const user = useSelector(state => state.users.currentUser)
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const { userFirebase } = useAuth();
-    const [errors, setErrors] = React.useState({});
-    const [input, setInput] = React.useState({
+    const [errors, setErrors] = useState({});
+    const [input, setInput] = useState({
         detail: '',
         area: ''
     });
@@ -55,16 +53,10 @@ export default function SupportForm() {
     };
 
     useEffect(() => {
-        dispatch(getUserByFirebaseId(userFirebase.uid))
+        if (userFirebase) {
+            dispatch(getUserByFirebaseId(userFirebase.uid))
+        }
     }, [userFirebase])
-
-    // const handleSelectChange = (event) => {
-    //     setArea(event.target.value);
-    // };
-
-    // const handleInputChange = (event) => {
-    //     setDetail(event.target.value);
-    // };
 
     const handleInputChange = function (e) {
         setInput({
@@ -96,7 +88,7 @@ export default function SupportForm() {
                 </Typography>
             </Grid>
             <Grid item className={style.form}>
-                <form action="https://formsubmit.co/7209873a505fa805d588ba7a9486f6b9" method='POST'>
+                <form action="https://formsubmit.co/socialsound.web@gmail.com" method='POST'>
                     <Grid container direction="column" spacing={2} alignItems="center">
                         {errors.area ?
                             <div className={styleTooltip.tooltip} style={{ marginRight: '80%' }}>
@@ -146,7 +138,7 @@ export default function SupportForm() {
                             <input name='email' value={user && user.email} />
                             <input name='username' value={user && user.username} />
                             <input type="hidden" name="_subject" value="Support Social Sound" />
-                            <input type="hidden" name="_next" value="http://localhost:3000/support" />
+                            <input type="hidden" name="_next" value="socialsound.web@gmail.com/support" />
                             <input type="hidden" name="_autoresponse" value="Your message was sent successfully!" />
                         </div>
                         <Grid item>

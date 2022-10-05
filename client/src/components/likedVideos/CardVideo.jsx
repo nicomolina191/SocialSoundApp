@@ -61,17 +61,11 @@ export default function CardVideo({ post, index, allPosts }) {
                     }}
                     maxWidth={'lg'}
                     fullWidth={true}>
-                    {/* <DialogTitle>{"Use Google's location service?"}</DialogTitle> */}
                     <DialogContent>
-                        {/* <DialogContentText id="alert-dialog-slide-description">
-                            Let Google help apps determine location. This means sending anonymous
-                            location data to Google, even when no apps are running.
-                        </DialogContentText> */}
                         <Post post={post} margin={0} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Close</Button>
-                        {/* <Button onClick={handleClose}>Agree</Button> */}
                     </DialogActions>
                 </Dialog>
             </div>

@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, DialogActions, DialogContent, Grid, IconButton, Menu, MenuItem, Slide, SvgIcon, TextField, Typography } from '@mui/material'
+import { Avatar, Button, Dialog, DialogActions, Grid, IconButton, Menu, MenuItem, Slide, SvgIcon, TextField, Typography } from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function PostShared({ postShared, margin }) {
     const [openDelete, setOpenDelete] = useState(false);
-    // const [user, setUser] = useState();
     const [post, setPost] = useState();
     const [date, setDate] = useState();
     const currentUser = useSelector((state) => state.users.currentUser);
@@ -67,11 +66,6 @@ export default function PostShared({ postShared, margin }) {
     }
 
     useEffect(() => {
-        // async function getUser() {
-        //     const res = await axios.get(`/users/${postShared.userId}`);
-        //     setUser(res.data);
-        // }
-        // getUser();
         getPost();
     }, []);
 
@@ -82,10 +76,6 @@ export default function PostShared({ postShared, margin }) {
     useEffect(() => {
         setDate(new Date(Date.parse(postShared.postDate)).toLocaleString("sv"));
     }, [postShared]);
-
-    // console.log(postShared);
-    console.log(detailsReport);
-    console.log(motiveReport);
 
     return (
         <Grid container direction="column" className={style.post} p={`1.5%`} m={margin}>
@@ -165,11 +155,7 @@ export default function PostShared({ postShared, margin }) {
                                 }}
                             >
                                 <h2>Report this post</h2>
-
-                                {/* <DialogContent className={style.dialogContent}> */}
                                 <TextField label="Motive" variant="standard" fullWidth value={motiveReport} onChange={(e) => setMotiveReport(e.target.value)} style={{ marginTop: '1.5%' }} />
-                                {/* </DialogContent>
-                                <DialogContent className={style.dialogContent}> */}
                                 <TextField label="Details" variant="standard" multiline rows={4} fullWidth value={detailsReport} onChange={(e) => setDetailsReport(e.target.value)} style={{ marginTop: '1.5%' }} />
                                 {/* </DialogContent> */}
                                 <DialogActions>
