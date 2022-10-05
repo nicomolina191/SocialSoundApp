@@ -256,6 +256,7 @@ const Explore = () => {
     <ThemeProvider theme={theme}>
       <Stack direction="row">
         <div className={styles.fondo}></div>
+        <div className={styles.filter}></div>
         <div style={{ minWidth: "266px" }}>
           <SideBar userDB={userDB} />
         </div>
@@ -266,7 +267,7 @@ const Explore = () => {
               component="h1"
               sx={{ fontWeight: "700", color: "white", paddingTop: "30px" }}
             >
-              Explore.
+              Explore
             </Typography>
             <Stack
               direction="row"
