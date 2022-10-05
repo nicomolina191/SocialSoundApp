@@ -93,8 +93,9 @@ export default function Post({ post, comments, margin, border }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openReport, setOpenReport] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [motiveReport, setMotiveReport] = useState('');
-  const [detailsReport, setDetailsReport] = useState('');
+  const [openAlertAddPlaylist, setOpenAlertAddPlaylist] = useState(false);
+  // const [motiveReport, setMotiveReport] = useState('');
+  // const [detailsReport, setDetailsReport] = useState('');
   const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
   const [descriptionShare, setDescriptionShare] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -175,6 +176,12 @@ export default function Post({ post, comments, margin, border }) {
   const handleCloseAlert = () => {
     setOpenAlert(false);
   };
+  const handleCloseAlertAddPlaylist = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+  }
+    setOpenAlertAddPlaylist(false);
+  };
 
   useEffect(() => {
     async function getUser() {
@@ -228,8 +235,6 @@ export default function Post({ post, comments, margin, border }) {
   useEffect(() => {
     setDate(new Date(Date.parse(post.postDate)).toLocaleString("sv"));
   }, [post]);
-
-  console.log(detailsReport);
 
   const handleInputChange = function (e) {
     setInput({
@@ -485,10 +490,16 @@ export default function Post({ post, comments, margin, border }) {
             )}
           </Grid>
           <Grid item>
-            <button onClick={()=>dispatch(addTrack(post))}>
-              <PlaylistAddRoundedIcon className={style.icon} style={{fontSize:'29px', marginLeft:'-40%'}}/>
+            <button onClick={() => {dispatch(addTrack(post))
+            setOpenAlertAddPlaylist(true)}}>
+              <PlaylistAddRoundedIcon className={style.icon} style={{ fontSize: '29px', marginLeft: '-40%' }} />
             </button>
           </Grid>
+          <Snackbar open={openAlertAddPlaylist} autoHideDuration={4000} onClose={handleCloseAlertAddPlaylist} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+            <Alert onClose={handleCloseAlertAddPlaylist} severity="success" sx={{ width: '100%' }}>
+              Added to playlist successfully!
+            </Alert>
+          </Snackbar>
         </Grid>
       </Grid>
       {comments ? <CommentsContainer post={post} /> : ""}
