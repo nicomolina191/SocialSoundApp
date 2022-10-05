@@ -6,11 +6,27 @@ const addFollower = async (req, res) => {
     try {
 
         const user = await Users.findByPk(idUser);
-        const userToFollow = await Users.findByPk(followTo);
+        let userToFollow = await Users.findByPk(followTo, {
+            include: [
+            {
+              model: Users,
+              as: 'FollowerUsers',
+              through: { attributes: [] }
+            }]
+        });
 
         await user.addFollowingUser(userToFollow);
 
-        return res.send('Follower added');
+        userToFollow = await Users.findByPk(followTo, {
+            include: [
+            {
+              model: Users,
+              as: 'FollowerUsers',
+              through: { attributes: [] }
+            }]
+        });
+
+        return res.json(userToFollow);
 
     } catch (err) {
         console.log(err);

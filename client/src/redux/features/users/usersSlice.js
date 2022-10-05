@@ -112,6 +112,18 @@ const userSlice = createSlice({
         ...state,
         userNotifications: action.payload
       }
+    },
+    setFollow: (state, action) => {
+      return {
+        ...state,
+        user: {...state.user, FollowerUsers: action.payload}
+      }
+    },
+    setUnfollow: (state, action) => {
+      return {
+        ...state,
+        user: {...state.user, FollowerUsers: action.payload}
+      }
     }
   },
 });
@@ -121,7 +133,7 @@ const userSlice = createSlice({
 
 
 
-export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular  } = userSlice.actions;
+export const { addUsers, deleteUsers, updateUsers, getUserStart, getUserError, getUserSuccess, getById, getByFirebaseId, getUpdatePremium, getLikes, setGenres, getNotifications, createNotification, watchedNotification, disabledNotification, cleanUser, getDownToRegular, setFollow, setUnfollow  } = userSlice.actions;
 
 
 export default userSlice.reducer;
