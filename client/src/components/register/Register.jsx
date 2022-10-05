@@ -5,19 +5,26 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Box, Button, Grid, TextField } from "@mui/material";
-import { Arrow, EmailIcon, GoogleIcon, PadLock, UserIcon } from "../componentsIcons/index";
+import {
+  Arrow,
+  EmailIcon,
+  GoogleIcon,
+  PadLock,
+  UserIcon,
+} from "../componentsIcons/index";
 import logo from "../../images/logoicon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/features/users/usersGetSlice";
 import { userExistGoogle } from "../utils";
 import LoadingProtectRoute from "../../context/LoadingProtectRoute";
+import Conditions from "../conditions/Conditions";
 
 const Register = () => {
-
   const dispatch = useDispatch();
-  const users = useSelector(state => state.users.usersListAll);
-  const [idgoogle, setIdGoogle] = useState('');
+  const users = useSelector((state) => state.users.usersListAll);
+  const [idgoogle, setIdGoogle] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showConditions, setShowConditions] = useState(false);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -43,40 +50,42 @@ const Register = () => {
   }, [dispatch, userFirebase]);
 
   useEffect(() => {
-    if (idgoogle && users.filter(u => u.email === user.email).length === 0) {
-
-      axios.post("/users", {
-        ...user,
-        idgoogle
-      }).then(function (response) {
-
-        console.log(response);
-      }).catch(function (error) {
-
-        console.log(error);
-      });
+    if (idgoogle && users.filter((u) => u.email === user.email).length === 0) {
+      axios
+        .post("/users", {
+          ...user,
+          idgoogle,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
     if (userFirebase !== null) navigate("/home");
-
   }, [idgoogle]);
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     let flag = false;
 
-    users.map(item => {
+    users.map((item) => {
       if (item.username === user.username) {
         setErrors({ ...errors, username: "This username isn't available" });
         flag = true;
-      };
+      }
     });
 
     if (user.password !== user.confirmPassword) {
-      setErrors({ ...errors, password: "The passwords doesn't match", confirmPassword: "The passwords doesn't match" });
+      setErrors({
+        ...errors,
+        password: "The passwords doesn't match",
+        confirmPassword: "The passwords doesn't match",
+      });
       flag = true;
-    };
+    }
 
     if (flag) return;
 
@@ -93,17 +102,15 @@ const Register = () => {
       };
 
       await userExistGoogle(googleUser, users);
-
     } catch (err) {
-
       return console.log(err);
-    };
+    }
     navigate("/login");
   };
 
   const handleSignInGoogle = async () => {
     try {
-      let googleUser
+      let googleUser;
       const res = await loginWithGoogle();
       googleUser = {
         name: res.user.email.split("@")[0],
@@ -114,11 +121,9 @@ const Register = () => {
       };
 
       await userExistGoogle(googleUser, users);
-
     } catch (err) {
-
       return console.log(err);
-    };
+    }
     navigate("/home");
   };
 
@@ -126,9 +131,10 @@ const Register = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const handleFocusUsername = e => setErrors({ ...errors, username: "" });
+  const handleFocusUsername = (e) => setErrors({ ...errors, username: "" });
 
-  const handleFocusPass = e => setErrors({ ...errors, password: "", confirmPassword: "" });
+  const handleFocusPass = (e) =>
+    setErrors({ ...errors, password: "", confirmPassword: "" });
 
   return (
     <Box>
@@ -186,7 +192,9 @@ const Register = () => {
             >
               <form onSubmit={(e) => handleSubmit(e)}>
                 <Box className={style.orderForm}>
-                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                  >
                     <UserIcon />
                     <TextField
                       className={style.input}
@@ -200,7 +208,9 @@ const Register = () => {
                       value={user.name}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                  >
                     <EmailIcon />
                     <TextField
                       className={style.input}
@@ -214,7 +224,9 @@ const Register = () => {
                       value={user.email}
                     />
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                  >
                     <UserIcon />
                     <TextField
                       className={style.input}
@@ -224,15 +236,21 @@ const Register = () => {
                       variant="standard"
                       label="Username"
                       name="username"
-                      onChange={e => handleChange(e)}
-                      onFocus={e => handleFocusUsername(e)}
+                      onChange={(e) => handleChange(e)}
+                      onFocus={(e) => handleFocusUsername(e)}
                       value={user.username}
                     />
-                    {errors.username ? <div className={style.tooltip}>
-                      <span className={style.tooltiptext}>{errors.username}</span>
-                    </div> : null}
+                    {errors.username ? (
+                      <div className={style.tooltip}>
+                        <span className={style.tooltiptext}>
+                          {errors.username}
+                        </span>
+                      </div>
+                    ) : null}
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                  >
                     <PadLock />
                     <TextField
                       className={style.input}
@@ -242,15 +260,21 @@ const Register = () => {
                       variant="standard"
                       label="Password"
                       name="password"
-                      onChange={e => handleChange(e)}
-                      onFocus={e => handleFocusPass(e)}
+                      onChange={(e) => handleChange(e)}
+                      onFocus={(e) => handleFocusPass(e)}
                       value={user.password}
                     />
-                    {errors.password ? <div className={style.tooltip}>
-                      <span className={style.tooltiptext}>{errors.password}</span>
-                    </div> : null}
+                    {errors.password ? (
+                      <div className={style.tooltip}>
+                        <span className={style.tooltiptext}>
+                          {errors.password}
+                        </span>
+                      </div>
+                    ) : null}
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
+                  >
                     <PadLock />
                     <TextField
                       className={style.input}
@@ -260,13 +284,17 @@ const Register = () => {
                       variant="standard"
                       label="Confirm Password"
                       name="confirmPassword"
-                      onChange={e => handleChange(e)}
-                      onFocus={e => handleFocusPass(e)}
+                      onChange={(e) => handleChange(e)}
+                      onFocus={(e) => handleFocusPass(e)}
                       value={user.confirmPassword}
                     />
-                    {errors.confirmPassword ? <div className={style.tooltip}>
-                      <span className={style.tooltiptext}>{errors.confirmPassword}</span>
-                    </div> : null}
+                    {errors.confirmPassword ? (
+                      <div className={style.tooltip}>
+                        <span className={style.tooltiptext}>
+                          {errors.confirmPassword}
+                        </span>
+                      </div>
+                    ) : null}
                   </Box>
                   <Box style={{ display: "flex", justifyContent: "center" }}>
                     <Button className={style.btnRL} type="submit">
@@ -275,6 +303,15 @@ const Register = () => {
                   </Box>
                 </Box>
               </form>
+              <h5>
+                By registering and logging in, you accept the{" "}
+                <h4
+                  style={{ color: "var(--second-page-color)" }}
+                  onClick={() => setShowConditions(true)}
+                >
+                  terms and conditions
+                </h4>
+              </h5>
               <Grid
                 className={style.googleBox}
                 alignItems="center"
@@ -282,7 +319,9 @@ const Register = () => {
                 direction="column"
                 container
               >
-                <h5 style={{ width: "auto", margin: "5px" }}>or continue with</h5>
+                <h5 style={{ width: "auto", margin: "5px" }}>
+                  or continue with
+                </h5>
                 <Button
                   sx={{ padding: "20px", borderRadius: "50%" }}
                   onClick={() => handleSignInGoogle("/")}
@@ -295,6 +334,12 @@ const Register = () => {
           </Box>
         </Box>
       </Box>
+      {showConditions && (
+        <Conditions
+          showConditions={showConditions}
+          setShowConditions={setShowConditions}
+        />
+      )}
     </Box>
   );
 };
