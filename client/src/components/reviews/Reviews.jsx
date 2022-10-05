@@ -57,7 +57,7 @@ const Reviews = () => {
             navButtonsAlwaysVisible="true"
             >
                 {
-                    reviews.map((item) => (
+                    reviews?.map((item) => (
                         <Item key={item.id} avatar={item.avatar} name={item.name} rating={item.rating} description={item.description} />
                 ))
                 }
