@@ -3,7 +3,7 @@ import style from "./graphs.module.css";
 import { Box } from "@mui/system";
 import PieComponent from "../pieGraph/Pie";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../redux/features/users/usersGetSlice";
+import { getDataForGraphs, getUser } from "../../../redux/features/users/usersGetSlice";
 import { getPost } from "../../../redux/features/post/postGetSlice";
 import { arrayToDataGraphsPosts, arrayToDataGraphsUser } from "../utils";
 import AreaComponent from "../areaGraphs/Area";
@@ -22,11 +22,12 @@ const AdminGraphs = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [maxSteps, setMaxSteps] = useState(0)
   const dispatch = useDispatch();
-  const userDataGraphs = useSelector((state) => arrayToDataGraphsUser(state.users.usersListAll));
+  const userDataGraphs = useSelector((state) => state.users.userGraphsData);
   const postDataGraphs = useSelector((state) => arrayToDataGraphsPosts(state.posts.possListAll));
   useEffect(() => {
     dispatch(getPost());
     dispatch(getUser());
+    dispatch(getDataForGraphs())
   }, [dispatch]);
 
   useEffect(() => {

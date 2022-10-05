@@ -80,6 +80,5 @@ datesArr.map(date => {
    }
    return 
 })
-console.log(postedIn)
     return postedIn
 }
