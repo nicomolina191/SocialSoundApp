@@ -58,7 +58,6 @@ function Player() {
   
   return (
     <div className={s.container}>
-      {console.log(isPlaying)}
       {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/home/sucess' && !location.pathname.includes('admin') &&
         <motion.div
           drag
