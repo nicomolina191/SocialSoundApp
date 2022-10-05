@@ -691,9 +691,6 @@ const Explore = () => {
                       >
                         <Stack direction="row" flexWrap="wrap">
                           {currentSongs.map((results, index) => {
-                            {
-                              console.log(results);
-                            }
                             return (
                               <Stack
                                 direction="row"
