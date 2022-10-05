@@ -66,10 +66,10 @@ export function validate(input) {
   return errors;
 };
 
-export default function Post({ post, comments, margin, border }) {
+export default function Post({ post, comments, margin, border, height }) {
   const shareURL = `www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
   // const [like, setLike] = useState();
   const monthNames = [
     "Jan",
@@ -179,18 +179,18 @@ export default function Post({ post, comments, margin, border }) {
   const handleCloseAlertAddPlaylist = (event, reason) => {
     if (reason === 'clickaway') {
       return;
-  }
+    }
     setOpenAlertAddPlaylist(false);
   };
 
-  useEffect(() => {
-    async function getUser() {
-      const res = await axios.get(`/users/${post.userId}`);
-      setUser(res.data);
-    }
-    getUser();
-    // getLikes();
-  }, []);
+  // useEffect(() => {
+  //   async function getUser() {
+  //     const res = await axios.get(`/users/${post.userId}`);
+  //     setUser(res.data);
+  //   }
+  //   getUser();
+  //   // getLikes();
+  // }, []);
 
   // useEffect(() => {
   //   if (like === undefined && likes !== undefined) {
@@ -248,23 +248,23 @@ export default function Post({ post, comments, margin, border }) {
   }
 
   return (
-    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
+    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={{ border, height }}>
       <Grid item container spacing={1} justifyContent="space-between">
         <Grid item container spacing={2} className={style.avatarName}>
           <Grid item>
             <Link to={`/home/explore/${post.userId}`}>
-              <Avatar src={user && user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
+              <Avatar src={post.user && post.user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
             </Link>
           </Grid>
           <Grid item container xs={4} direction="column">
             <Link to={`/home/explore/${post.userId}`}>
               <Typography sx={{ "&:hover": { color: "white", cursor: "pointer", }, }} variant="body1">
-                {user && user.name}
+                {post.user && post.user.name}
               </Typography>
             </Link>
             <Link to={`/home/explore/${post.userId}`}>
               <Typography sx={{ "&:hover": { cursor: "pointer", textDecoration: "underline" }, }} variant="body2">
-                {user && `@${user.username}`}
+                {post.user && `@${post.user.username}`}
               </Typography>
             </Link>
           </Grid>
@@ -352,10 +352,10 @@ export default function Post({ post, comments, margin, border }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-      {user?.name && post?.type === 'video'
+      {post.user?.name && post?.type === 'video'
         ? <Video song={post} />
         : post?.type === 'audio'
-        && <Audio song={post} artist={user} />
+        && <Audio song={post} artist={post.user} />
       }
       <Grid item container justifyContent="space-between">
         <Grid item>
@@ -442,7 +442,7 @@ export default function Post({ post, comments, margin, border }) {
                       </Button>
                       <Button onClick={() => {
                         handleCloseShareInMyProfile()
-                        dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+                        dispatch(createdPost({ title: '', description: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
                         handleClose()
                         setDescriptionShare('')
                       }} className={style.button}>
@@ -491,8 +491,10 @@ export default function Post({ post, comments, margin, border }) {
             )}
           </Grid>
           <Grid item>
-            <button onClick={() => {dispatch(addTrack(post))
-            setOpenAlertAddPlaylist(true)}}>
+            <button onClick={() => {
+              dispatch(addTrack(post))
+              setOpenAlertAddPlaylist(true)
+            }}>
               <PlaylistAddRoundedIcon className={style.icon} style={{ fontSize: '29px', marginLeft: '-40%' }} />
             </button>
           </Grid>
@@ -547,7 +549,7 @@ export default function Post({ post, comments, margin, border }) {
             <Button onClick={async () => {
               if (input.motiveReport && input.detailsReport) {
                 handleCloseReport()
-                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: user.id, idPost: post.id })
+                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: post.user.id, idPost: post.id })
                 setInput({
                   detailsReport: '',
                   motiveReport: ''
