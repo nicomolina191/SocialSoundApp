@@ -22,6 +22,7 @@ import { getUser } from "../../redux/features/users/usersGetSlice";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingProtectRoute from "../../context/LoadingProtectRoute";
 import axios from "axios";
+import Conditions from "../conditions/Conditions";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Login = () => {
   const [googleUser, setGoogleUser] = useState();
   const [user, setUser] = useState({ password: "", email: "" });
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [userToResetPassword, setUserToResetPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -38,13 +39,19 @@ const Login = () => {
     msg: "",
     severity: "",
   });
-  const { login, loginWithGoogle, userFirebase, resetPassword, getAdditionalUserInfo } = useAuth();
+  const [showConditions, setShowConditions] = useState(false);
+  const {
+    login,
+    loginWithGoogle,
+    userFirebase,
+    resetPassword,
+    getAdditionalUserInfo,
+  } = useAuth();
   const navigate = useNavigate();
   //const [error, setError] = useState({ password: "", email: "" });
   //const usersListAll = useSelector((state) => state.usersListAll);
 
   useEffect(() => {
-  
     if (
       googleUser &&
       users?.filter((u) => u.email === googleUser.email).length === 0
@@ -61,14 +68,12 @@ const Login = () => {
         });
     }
     if (userFirebase !== null) navigate("/home");
-  }, [googleUser]); 
-
-
+  }, [googleUser]);
 
   useEffect(() => {
     // if (userFirebase !== null) navigate("/home");
     dispatch(getUser());
-    setLoading(false)
+    setLoading(false);
   }, [dispatch, userFirebase]);
 
   const handleSubmit = async (e) => {
@@ -77,7 +82,7 @@ const Login = () => {
       return;
     }
     try {
-      if (!users.find(el => el.email === user.email)) {
+      if (!users.find((el) => el.email === user.email)) {
         setEmailError(true);
       } else {
         setEmailError(false);
@@ -94,11 +99,9 @@ const Login = () => {
     }
   };
 
-
   const handleSignInGoogle = async () => {
     try {
-
-      const res = await loginWithGoogle()
+      const res = await loginWithGoogle();
       //console.log(getAdditionalUserInfo(res))
       setGoogleUser({
         name: res.user.email.split("@")[0],
@@ -107,9 +110,9 @@ const Login = () => {
         email: res.user.email,
         idgoogle: res.user.uid,
         avatar: res.user.photoURL,
-      })
-     
-      navigate("/home")
+      });
+
+      navigate("/home");
     } catch (err) {
       console.log(err);
       return;
@@ -217,13 +220,13 @@ const Login = () => {
 
             <form style={{ width: "100%" }} onSubmit={(e) => handleSubmit(e)}>
               <Box className={style.orderForm}>
-                {
-                  emailError && (
-                    <div className={style.tooltip}>
-                      <span className={style.tooltiptext}>Email doesn't exists</span>
-                    </div>
-                  )
-                }
+                {emailError && (
+                  <div className={style.tooltip}>
+                    <span className={style.tooltiptext}>
+                      Email doesn't exists
+                    </span>
+                  </div>
+                )}
                 <Box
                   sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
                 >
@@ -240,13 +243,11 @@ const Login = () => {
                     value={user.email}
                   />
                 </Box>
-                {
-                  passwordError && (
-                    <div className={style.tooltip}>
-                      <span className={style.tooltiptext}>Wrong password</span>
-                    </div>
-                  )
-                }
+                {passwordError && (
+                  <div className={style.tooltip}>
+                    <span className={style.tooltiptext}>Wrong password</span>
+                  </div>
+                )}
                 <Box
                   sx={{ display: "flex", alignItems: "flex-end", gap: "5px" }}
                 >
@@ -278,7 +279,15 @@ const Login = () => {
                 </Box>
               </Box>
             </form>
-
+            <h5>
+              By registering and logging in, you accept the{" "}
+              <h4
+                style={{ color: "var(--second-page-color)" }}
+                onClick={() => setShowConditions(true)}
+              >
+                terms and conditions
+              </h4>
+            </h5>
             <Grid
               className={style.googleBox}
               alignItems="center"
@@ -351,7 +360,7 @@ const Login = () => {
                 backgroundColor: "#00FFD6",
                 color: "black",
                 fontWeight: "bold",
-                "&:hover": { backgroundColor: "#00FFD6" }
+                "&:hover": { backgroundColor: "#00FFD6" },
               }}
             >
               Cancel
@@ -370,6 +379,12 @@ const Login = () => {
             </Button>
           </DialogActions>
         </Dialog>
+      )}
+      {showConditions && (
+        <Conditions
+          showConditions={showConditions}
+          setShowConditions={setShowConditions}
+        />
       )}
     </Box>
   );
