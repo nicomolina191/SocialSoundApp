@@ -5,17 +5,14 @@ const getCountUserGraphs = async (req, res) => {
     const { count: bannedCount } = await Users.findAndCountAll({
       where: { isBanned: true },
     });
-    console.log(bannedCount);
 
     const { count: premiumCount } = await Users.findAndCountAll({
       where: { isBanned: false, plan: "Premium" },
     });
-    console.log(premiumCount);
 
     const { count: regularCount } = await Users.findAndCountAll({
       where: { isBanned: false, plan: "Regular" },
     });
-    console.log(regularCount);
 
     return res.json({ bannedCount, premiumCount, regularCount });
   } catch (err) {
