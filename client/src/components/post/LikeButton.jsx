@@ -39,7 +39,7 @@ export default function LikeButton({ post }) {
         setLike(!like);
         setClick(!click);
         if (!like) notification()
-         
+
     };
 
     useEffect(() => {
@@ -72,16 +72,16 @@ export default function LikeButton({ post }) {
                     : await updateLike();
                 await getLikes();
             }
-           dispatch(getLikesByUserId(currentUser.id))
-           dispatch(getPost()); 
+            dispatch(getLikesByUserId(currentUser.id))
+            dispatch(getPost());
         }
         updateLikes();
     }, [click]);
 
     async function getLikeOfThisUser() {
-                const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
-                setLike(res.data[0]?.isActive);
-            }
+        const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
+        setLike(res.data[0]?.isActive);
+    }
 
     useEffect(() => {
         if (like === undefined && likes !== undefined) {

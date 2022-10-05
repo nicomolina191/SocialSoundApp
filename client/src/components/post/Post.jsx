@@ -43,9 +43,11 @@ import {
 } from "react-share";
 import { createdPost, deletePost } from "../../redux/features/post/postGetSlice";
 import share from '../../images/logoiconbg.png'
-import { createUserNotification } from "../../redux/features/users/usersGetSlice";
+// import { createUserNotification } from "../../redux/features/users/usersGetSlice";
 import Video from "../Video/Video";
 import LikeButton from "./LikeButton";
+import PlaylistAddRoundedIcon from '@mui/icons-material/PlaylistAddRounded';
+import { addTrack, removeTrack } from "../../redux/features/player/playerGetSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -64,11 +66,9 @@ export function validate(input) {
   return errors;
 };
 
-export default function Post({ post, comments, margin, border }) {
+export default function Post({ post, comments, margin, border, height }) {
   const shareURL = `www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
-  const [user, setUser] = useState();
-  // const [like, setLike] = useState();
   const monthNames = [
     "Jan",
     "Feb",
@@ -85,14 +85,11 @@ export default function Post({ post, comments, margin, border }) {
   ];
   const [date, setDate] = useState();
   const currentUser = useSelector((state) => state.users.currentUser);
-  // const [likes, setLikes] = useState();
-  // const [click, setClick] = useState();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openReport, setOpenReport] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [motiveReport, setMotiveReport] = useState('');
-  const [detailsReport, setDetailsReport] = useState('');
+  const [openAlertAddPlaylist, setOpenAlertAddPlaylist] = useState(false);
   const [openShareInMyProfile, setOpenShareInMyProfile] = useState(false);
   const [descriptionShare, setDescriptionShare] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -110,6 +107,7 @@ export default function Post({ post, comments, margin, border }) {
     setAnchorEl(null);
   };
 
+<<<<<<< HEAD
   const notification = async () => {
     if (currentUser.id !== post.userId) {
       await dispatch(createUserNotification({
@@ -125,6 +123,23 @@ export default function Post({ post, comments, margin, border }) {
       console.log("notification created!")
     }
   };
+=======
+  // const notification = async () => {
+  //   if (currentUser.id !== post.userId) {
+  //     await dispatch(createUserNotification({
+  //       title: JSON.stringify({
+  //         name: `${currentUser.username} liked your post`,
+  //         img: currentUser.avatar,
+  //         post: post.title,
+  //       }),
+  //       content: post.content,
+  //       userId: post.userId,
+  //       fromUser: currentUser.id,
+  //     }));
+  //     console.log("notification created!")
+  //   }
+  // };
+>>>>>>> development
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -159,75 +174,19 @@ export default function Post({ post, comments, margin, border }) {
     setOpenShareInMyProfile(false);
   };
 
-  // async function getLikes() {
-  //   const res = await axios.get(`/likes/posts/${post.id}`);
-  //   setLikes(res.data);
-  // }
-
-  // const handleLike = () => {
-  //   setLike(!like);
-  //   setClick(!click);
-  //   if(!like) notification()
-  // };
-
   const handleCloseAlert = () => {
     setOpenAlert(false);
   };
-
-  useEffect(() => {
-    async function getUser() {
-      const res = await axios.get(`/users/${post.userId}`);
-      setUser(res.data);
+  const handleCloseAlertAddPlaylist = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
     }
-    getUser();
-    // getLikes();
-  }, []);
-
-  // useEffect(() => {
-  //   if (like === undefined && likes !== undefined) {
-  //     async function getLikeOfThisUser() {
-  //       const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
-  //       setLike(res.data[0]?.isActive);
-  //     }
-  //     getLikeOfThisUser(); 
-  //   }
-  // }, [likes]);
-
-  // useEffect(() => {
-  //   async function updateLikes() {
-  //     if (click !== undefined) {
-  //       await getLikes();
-  //       const res = await axios.get(`/likes/${post.id}/${currentUser.id}`);
-  //       const currentLike = (res.data && res.data[0]) || {};
-  //       console.log(currentLike);
-  //       async function updateLike() {
-  //         await axios.put(`/likes`, {
-  //           postId: post.id,
-  //           userId: currentUser.id,
-  //           isActive: like,
-  //         });
-  //       }
-  //       async function createLike() {
-  //         await axios.post(`/likes`, {
-  //           idPost: post.id,
-  //           idUser: currentUser.id,
-  //         });
-
-  //       }
-  //       Object.keys(currentLike).length === 0
-  //         ? await createLike()
-  //         : await updateLike();
-  //       await getLikes();
-  //     }
-  //   }
-  //   updateLikes();
-  // }, [click]);
+    setOpenAlertAddPlaylist(false);
+  };
 
   useEffect(() => {
     setDate(new Date(Date.parse(post.postDate)).toLocaleString("sv"));
   }, [post]);
-
-  console.log(detailsReport);
 
   const handleInputChange = function (e) {
     setInput({
@@ -241,23 +200,23 @@ export default function Post({ post, comments, margin, border }) {
   }
 
   return (
-    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={border}>
+    <Grid container direction="column" className={style.post} p={`1.5%`} m={margin} style={{ border, height }}>
       <Grid item container spacing={1} justifyContent="space-between">
         <Grid item container spacing={2} className={style.avatarName}>
           <Grid item>
             <Link to={`/home/explore/${post.userId}`}>
-              <Avatar src={user && user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
+              <Avatar src={post.user && post.user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
             </Link>
           </Grid>
           <Grid item container xs={4} direction="column">
             <Link to={`/home/explore/${post.userId}`}>
               <Typography sx={{ "&:hover": { color: "white", cursor: "pointer", }, }} variant="body1">
-                {user && user.name}
+                {post.user && post.user.name}
               </Typography>
             </Link>
             <Link to={`/home/explore/${post.userId}`}>
               <Typography sx={{ "&:hover": { cursor: "pointer", textDecoration: "underline" }, }} variant="body2">
-                {user && `@${user.username}`}
+                {post.user && `@${post.user.username}`}
               </Typography>
             </Link>
           </Grid>
@@ -332,6 +291,7 @@ export default function Post({ post, comments, margin, border }) {
                   handleCloseDelete()
                   dispatch(deletePost(post.id))
                   handleCloseMore()
+                  dispatch(removeTrack(post))
                 }} className={style.button}>
                   Accept
                 </Button>
@@ -344,10 +304,10 @@ export default function Post({ post, comments, margin, border }) {
         <Typography variant="h6">{post.title}</Typography>
         <Typography variant="body1">{post.description}</Typography>
       </Grid>
-      {user?.name && post?.type === 'video'
+      {post.user?.name && post?.type === 'video'
         ? <Video song={post} />
         : post?.type === 'audio'
-        && <Audio song={post} artist={user} />
+        && <Audio song={post} artist={post.user} />
       }
       <Grid item container justifyContent="space-between">
         <Grid item>
@@ -360,26 +320,9 @@ export default function Post({ post, comments, margin, border }) {
           </Typography>
         </Grid>
         <Grid item container xs={5} justifyContent="flex-end" spacing={2}>
-          {/* <Grid item>
-            <Typography>
-              {likes?.filter((likes) => likes.isActive).length === 0
-                ? ""
-                : likes?.filter((likes) => likes.isActive).length}
-            </Typography>
-          </Grid> */}
           <Grid item>
-            {/* <button onClick={handleLike}>
-              <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
-                {like ? (
-                  <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
-                ) : (
-                  <path d="M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z" />
-                )}
-              </SvgIcon>
-            </button> */}
             <LikeButton post={post} />
           </Grid>
-          {/* <LikeButton post={post}/> */}
           <Grid item>
             <button onClick={handleClickOpen}>
               <SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 512" className={style.icon}>
@@ -434,8 +377,12 @@ export default function Post({ post, comments, margin, border }) {
                       </Button>
                       <Button onClick={() => {
                         handleCloseShareInMyProfile()
+<<<<<<< HEAD
                         dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
                         notification()
+=======
+                        dispatch(createdPost({ title: '', description: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+>>>>>>> development
                         handleClose()
                         setDescriptionShare('')
                       }} className={style.button}>
@@ -483,6 +430,19 @@ export default function Post({ post, comments, margin, border }) {
               </Link>
             )}
           </Grid>
+          <Grid item>
+            <button onClick={() => {
+              dispatch(addTrack(post))
+              setOpenAlertAddPlaylist(true)
+            }}>
+              <PlaylistAddRoundedIcon className={style.icon} style={{ fontSize: '29px', marginLeft: '-40%' }} />
+            </button>
+          </Grid>
+          <Snackbar open={openAlertAddPlaylist} autoHideDuration={4000} onClose={handleCloseAlertAddPlaylist} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+            <Alert onClose={handleCloseAlertAddPlaylist} severity="success" sx={{ width: '100%' }}>
+              Added to playlist successfully!
+            </Alert>
+          </Snackbar>
         </Grid>
       </Grid>
       {comments ? <CommentsContainer post={post} /> : ""}
@@ -505,23 +465,18 @@ export default function Post({ post, comments, margin, border }) {
           }}
         >
           <h2>Report this post</h2>
-
-          {/* <DialogContent className={style.dialogContent}> */}
           {errors.motiveReport ?
             <div className={styleTooltip.tooltip}>
               <span className={styleTooltip.tooltiptext}>{errors.motiveReport}</span>
             </div>
             : ''}
           <TextField name="motiveReport" label="Motive" variant="standard" fullWidth value={input['motiveReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
-          {/* </DialogContent>
-                                <DialogContent className={style.dialogContent}> */}
           <TextField name="detailsReport" label="Details" variant="standard" multiline rows={4} fullWidth value={input['detailsReport']} onChange={handleInputChange} style={{ marginTop: '1.5%' }} required />
           {errors.detailsReport ?
             <div className={styleTooltip.tooltip}>
               <span className={styleTooltip.tooltiptextBottom}>{errors.detailsReport}</span>
             </div>
             : ''}
-          {/* </DialogContent> */}
           <DialogActions>
             <Button onClick={handleCloseReport} className={style.button}>
               Close
@@ -529,7 +484,7 @@ export default function Post({ post, comments, margin, border }) {
             <Button onClick={async () => {
               if (input.motiveReport && input.detailsReport) {
                 handleCloseReport()
-                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: user.id, idPost: post.id })
+                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: post.user.id, idPost: post.id })
                 setInput({
                   detailsReport: '',
                   motiveReport: ''

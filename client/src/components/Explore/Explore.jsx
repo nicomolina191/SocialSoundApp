@@ -41,6 +41,7 @@ import { useAuth } from "../../context";
 import Loading from "../loading/Loading";
 import PostShared from "../postShared/PostShared";
 import PlayAllButton from "../PlayAllButton/PlayAllButton";
+import PlayButton from "../PlayButton/PlayButton";
 
 const Explore = () => {
   const dispatch = useDispatch();
@@ -250,6 +251,7 @@ const Explore = () => {
     <ThemeProvider theme={theme}>
       <Stack direction="row">
         <div className={styles.fondo}></div>
+        <div className={styles.filter}></div>
         <div style={{ minWidth: "266px" }}>
           <SideBar userDB={userDB} />
         </div>
@@ -260,7 +262,7 @@ const Explore = () => {
               component="h1"
               sx={{ fontWeight: "700", color: "white", paddingTop: "30px" }}
             >
-              Explore.
+              Explore
             </Typography>
             <Stack
               direction="row"
@@ -689,10 +691,7 @@ const Explore = () => {
                         flexWrap="wrap"
                       >
                         <Stack direction="row" flexWrap="wrap">
-                          {currentSongs.map((results) => {
-                            {
-                              console.log(results);
-                            }
+                          {currentSongs.map((results, index) => {
                             return (
                               <Stack
                                 direction="row"
@@ -707,11 +706,11 @@ const Explore = () => {
                                 >
                                   <img src={logoIcon} alt="" />
                                   <div className={styles.playButton}>
-                                    <PlayAllButton songs={[results]} />
+                                  <PlayButton tracks={currentSongs} track={results} trackIndex={index}/>
                                   </div>
                                 </div>
                                 <div>
-                                  <p>{results.title}</p>
+                                  <p>{results?.title}</p>
 
                                   <Link
                                     className={styles.artistSong}
@@ -724,7 +723,6 @@ const Explore = () => {
                                       }}
                                     >
                                       {results.user?.username}
-                                      {console.log(results)}
                                     </p>
                                   </Link>
                                 </div>

@@ -21,18 +21,20 @@ export default function PostContainer() {
         dispatch(getPostById(idPost))
         
     }, [])
-    console.log();
+    
     return (
-        <Grid container className={style.postContainer} p={`2%`} pl={`4%`} pr={`4%`}>
+        <Grid container className={style.postContainer} p={`1%`} pl={`4%`} pr={`4%`}>
+            <Grid container>
             <Grid item className={style.back}>
                 <Link to='/home'>
                     <Arrow />
                 </Link>
             </Grid>
-            <Grid item xs={12} className={style.divPost}>
+            <Grid item xs={12} className={style.divPost} style={post?.type==='audio'?{height:'75%'}:{}}>
                 {
-                    Object.keys(post).length !== 0 ? <Post post={post} comments={true} margin={0} /> : ''
+                    Object.keys(post).length !== 0 ? <Post post={post} comments={true} margin={0} height={'100%'} /> : ''
                 }
+            </Grid>
             </Grid>
         </Grid>
     )
