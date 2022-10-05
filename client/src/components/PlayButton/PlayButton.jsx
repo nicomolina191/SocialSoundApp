@@ -19,7 +19,6 @@ const PlayButton = ({trackIndex, tracks, track}) => {
     }
     return (
         <div className={s.playBtn} onClick={songs[currentTrackIndex]?.id === track?.id ? handleToggle : handleClick}>
-            {console.log(track?.id, songs[currentTrackIndex]?.id, isPlaying)}
             { !isPlaying
                 ? <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 39L39.375 28.5L21 18V39Z" fill="#000A1F"/>
