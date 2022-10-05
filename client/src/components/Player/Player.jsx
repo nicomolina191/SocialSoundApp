@@ -19,7 +19,7 @@ function Player() {
   const { currentTrackIndex } = useSelector(state => state.player)
 
   useEffect(() => {
-    isPlaying ? playerRef.current.audio.current.play() : playerRef.current.audio.current.pause()
+    isPlaying ? playerRef.current?.audio.current.play() : playerRef.current?.audio.current.pause()
   }, [isPlaying]);
 
   const handlePlay = () => {
