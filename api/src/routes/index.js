@@ -43,6 +43,7 @@ const getReports = require("../Controller/Reports/getReports.js");
 const createReport = require("../Controller/Reports/createReport.js");
 const getPopular = require("../Controller/Filters/getPopular.js");
 const getByGenreWithAll = require("../Controller/Filters/getByGenreWithAll.js");
+const removeFollower = require("../Controller/Follows/removeFollower.js");
 
 
 const router = Router();
@@ -99,6 +100,7 @@ router.put("/users/set/plan", changePlanUser);
 router.put("/users/set/genres", setUserGenres);
 router.put("/users/set/update-ban", updateBanUser);
 router.put("/users/set/role", updateRoleUser);
+router.put("/users/follow", removeFollower);
 
 
 module.exports = router;
