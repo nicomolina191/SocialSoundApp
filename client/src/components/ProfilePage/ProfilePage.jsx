@@ -23,6 +23,8 @@ import EditProfile from "./EditProfile";
 import Upload from "../Upload/Upload";
 import { changeUserChat } from "../../redux/features/chat/chatGetSlice";
 import PlayAllButton from "../PlayAllButton/PlayAllButton";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { db } from '../../firebase'
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -118,12 +120,36 @@ const ProfilePage = () => {
     },
   });
 
-  const sendMessage = async () => {
-    const combinedId =
-      currentUser.idgoogle > profileUser.idgoogle
-        ? currentUser.idgoogle + profileUser.idgoogle
-        : profileUser.idgoogle + currentUser.idgoogle;
-    dispatch(changeUserChat({ destination: profileUser, chatId: combinedId }));
+  const handleOnSelect = async() => {
+    const combinedId = currentUser.idgoogle > profileUser.idgoogle ? currentUser.idgoogle + profileUser.idgoogle : profileUser.idgoogle + currentUser.idgoogle;
+    dispatch(changeUserChat({destination: profileUser, chatId: combinedId}))
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+
+      if (!res.exists()) {
+        //create a chat in chats collection
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+
+        //create user chats
+        await updateDoc(doc(db, "userConversations", currentUser.idgoogle), {
+          [combinedId + ".userInfo"]: {
+            uid: profileUser.idgoogle,
+            displayName: profileUser.name,
+            photoURL: profileUser.avatar,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+
+        await updateDoc(doc(db, "userConversations", profileUser.idgoogle), {
+          [combinedId + ".userInfo"]: {
+            uid: currentUser.idgoogle,
+            displayName: currentUser.name,
+            photoURL: currentUser.avatar,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+      }
+    } catch (err){console.log(err)}
   };
 
   return (
@@ -268,7 +294,7 @@ const ProfilePage = () => {
                   >
                     <Link to="/messages">
                       <FontAwesomeIcon
-                        onClick={sendMessage}
+                        onClick={handleOnSelect}
                         icon={faEnvelope}
                       />
                     </Link>
