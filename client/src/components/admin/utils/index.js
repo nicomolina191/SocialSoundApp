@@ -60,20 +60,25 @@ export const arrayToDataGraphsUser = (array) => {
 }
 
 export const arrayToDataGraphsPosts = (array) => {
-    let months = {"Jan": 0,"Feb":0,"Mar":0,"Apr":0,"May":0,"Jun":0,"Jul":0,"Aug":0,"Sep":0,"Oct":0,"Nov":0,"Dec":0}
+    if(array.length < 1) return "No Post Data"
+    //let months = {Jan: 0,Feb:0,Mar:0,Apr:0,May:0,Jun:0,Jul:0,Aug:0,Sep:0,Oct:0,Nov:0,Dec:0}
     let datesArr = array.map(post => {
         let date = new Date(post.postDate)
         date = date.toDateString().split(" ").splice(1)
         return date
     })
     let postedIn = []
-    let findedDate
+    let indexFinded
 
 datesArr.map(date => {
-    findedDate = postedIn.find((act) => act[date[2]])
-   !findedDate? postedIn.push({[`${date[2]}`]: months}) && postedIn[postedIn.length-1][date[2]][date[0]]++ : 
-   findedDate[date[2]][date[0]]++
+    indexFinded = postedIn.findIndex((act) => act[date[2]])
+   if(indexFinded < 0){
+    postedIn.push({[`${date[2]}`]: {Jan: 0,Feb:0,Mar:0,Apr:0,May:0,Jun:0,Jul:0,Aug:0,Sep:0,Oct:0,Nov:0,Dec:0}})
+    postedIn[postedIn.length-1][date[2]][date[0]]++
+   }else{
+    postedIn[indexFinded][date[2]][date[0]]++
+   }
+   return 
 })
-
     return postedIn
 }

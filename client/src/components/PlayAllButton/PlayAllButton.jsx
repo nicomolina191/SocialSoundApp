@@ -1,16 +1,17 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom';
 import { setTracks, togglePlay } from '../../redux/features/player/playerGetSlice'
 import s from './PlayAllButton.module.css'
 
 function PlayAllButton({songs}) {
   const dispatch = useDispatch();
+
   const { isPlaying, tracks } = useSelector(state => state.player);
   
   const localPlaying = () => {
     return JSON.stringify(songs) === JSON.stringify(tracks)
-  }
+  };
+
   const handleClick = () => {
     ! localPlaying()
     ? dispatch(setTracks(songs))
