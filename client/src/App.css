@@ -91,6 +91,10 @@ html::-webkit-scrollbar {
   scroll-behavior: smooth;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 body::-webkit-scrollbar {
   width: 12px;
   background-color: #00000000 !important;

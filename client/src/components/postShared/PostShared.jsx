@@ -14,7 +14,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function PostShared({ postShared, margin }) {
     const [openDelete, setOpenDelete] = useState(false);
-    const [user, setUser] = useState();
+    // const [user, setUser] = useState();
     const [post, setPost] = useState();
     const [date, setDate] = useState();
     const currentUser = useSelector((state) => state.users.currentUser);
@@ -67,11 +67,11 @@ export default function PostShared({ postShared, margin }) {
     }
 
     useEffect(() => {
-        async function getUser() {
-            const res = await axios.get(`/users/${postShared.userId}`);
-            setUser(res.data);
-        }
-        getUser();
+        // async function getUser() {
+        //     const res = await axios.get(`/users/${postShared.userId}`);
+        //     setUser(res.data);
+        // }
+        // getUser();
         getPost();
     }, []);
 
@@ -93,18 +93,18 @@ export default function PostShared({ postShared, margin }) {
                 <Grid item container spacing={2} className={style.avatarName}>
                     <Grid item>
                         <Link to={`/home/explore/${postShared.userId}`}>
-                            <Avatar src={user && user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
+                            <Avatar src={postShared.user && postShared.user.avatar} sx={{ "&:hover": { filter: "brightness(70%)", }, }} />
                         </Link>
                     </Grid>
                     <Grid item container xs={4} direction="column">
                         <Link to={`/home/explore/${postShared.userId}`}>
                             <Typography sx={{ "&:hover": { color: "white", cursor: "pointer", }, }} variant="body1">
-                                {user && user.name}
+                                {postShared.user && postShared.user.name}
                             </Typography>
                         </Link>
                         <Link to={`/home/explore/${postShared.userId}`}>
                             <Typography sx={{ "&:hover": { cursor: "pointer", textDecoration: "underline" }, }} variant="body2">
-                                {user && `@${user.username}`}
+                                {postShared.user && `@${postShared.user.username}`}
                             </Typography>
                         </Link>
                     </Grid>
@@ -178,7 +178,7 @@ export default function PostShared({ postShared, margin }) {
                                     </Button>
                                     <Button onClick={async () => {
                                         handleCloseReport()
-                                        await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: user.id, idPost: postShared.id })
+                                        await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: postShared.user.id, idPost: postShared.id })
                                         setMotiveReport('')
                                         setDetailsReport('')
                                         handleCloseMore()
@@ -234,7 +234,7 @@ export default function PostShared({ postShared, margin }) {
                 <Typography variant="body1">{postShared.description}</Typography>
             </Grid>
             <Grid item className={`${style2.postShared}`}>
-                {post ? <Post post={post} border={{ border: '1px solid #02b599' }} margin={'0px'} /> : 'This post is not longer available.'}
+                {post ? <Post post={post} border={ '1px solid #02b599' } margin={'0px'} /> : 'This post is not longer available.'}
             </Grid>
             <Grid item style={post && { marginTop: '-30px' }}>
                 <Typography variant="body2">
