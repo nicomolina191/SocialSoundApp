@@ -3,6 +3,7 @@ import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { Link } from "react-router-dom";
 import style from './comment.module.css'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -34,6 +35,11 @@ export default function Comment({ content, userId, commentId, getComments, curre
         <Grid container item p={`1%`} pb={`1.5%`} className={style.comment}>
             <Grid item>
                 <Avatar src={user && user.avatar} sx={{ width: 24, height: 24 }} />
+            </Grid>
+            <Grid item>
+                <Link to={`/home/explore/${post.userId}`} >
+                    <p className={style.userName}>{user?.name}</p>
+                </Link>
             </Grid>
             <Grid item ml={`3%`} style={{ width: '85%' }}>
                 <Typography>{content}</Typography>
