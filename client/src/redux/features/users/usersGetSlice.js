@@ -150,7 +150,7 @@ export const createUserNotification = (value) => {
   return async (dispatch) => {
     try {
     const response = await axios.post('/notifications/create', value)
-    // dispatch(createNotification(response.data))
+    //  dispatch(createNotification(response.data))
   } catch (error) {
     console.log(error);
   }

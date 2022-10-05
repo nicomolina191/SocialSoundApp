@@ -114,11 +114,11 @@ export default function Post({ post, comments, margin, border }) {
     if (currentUser.id !== post.userId) {
       await dispatch(createUserNotification({
         title: JSON.stringify({
-          name: `${currentUser.username} liked your post`,
+          name: `${currentUser.username} has shared your post`,
           img: currentUser.avatar,
           post: post.title,
         }),
-        content: post.content,
+        content: `/home/explore/${currentUser.id}`,
         userId: post.userId,
         fromUser: currentUser.id,
       }));
@@ -435,6 +435,7 @@ export default function Post({ post, comments, margin, border }) {
                       <Button onClick={() => {
                         handleCloseShareInMyProfile()
                         dispatch(createdPost({ title: descriptionShare, content: post.content, type: post.type, idUser: currentUser.id, idShared: post.id, genres: post.genres.map(genre => genre.name) }))
+                        notification()
                         handleClose()
                         setDescriptionShare('')
                       }} className={style.button}>

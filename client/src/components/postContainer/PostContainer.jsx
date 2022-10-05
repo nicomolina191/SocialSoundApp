@@ -19,6 +19,7 @@ export default function PostContainer() {
     useEffect(() => {
         dispatch(getUserByFirebaseId(userFirebase.uid))
         dispatch(getPostById(idPost))
+        
     }, [])
     console.log();
     return (

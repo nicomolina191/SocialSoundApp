@@ -97,9 +97,12 @@ const userSlice = createSlice({
         userNotifications: action.payload
       }
     },
-    createNotification: (state, action)=> {
-        state.userNotifications.push(action.payload)    
-    },
+    // createNotification: (state, action)=> {
+    //    return{
+    //     ...state,
+    //     userNotifications: [...state.userNotifications, action.payload]
+    //    }  
+    // },
 
     watchedNotification: (state, action) => {
       return {
