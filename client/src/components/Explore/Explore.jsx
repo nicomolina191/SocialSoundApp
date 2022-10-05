@@ -41,6 +41,7 @@ import { useAuth } from "../../context";
 import Loading from "../loading/Loading";
 import PostShared from "../postShared/PostShared";
 import PlayAllButton from "../PlayAllButton/PlayAllButton";
+import PlayButton from "../PlayButton/PlayButton";
 
 const Explore = () => {
   const dispatch = useDispatch();
@@ -689,10 +690,7 @@ const Explore = () => {
                         flexWrap="wrap"
                       >
                         <Stack direction="row" flexWrap="wrap">
-                          {currentSongs.map((results) => {
-                            {
-                              console.log(results);
-                            }
+                          {currentSongs.map((results, index) => {
                             return (
                               <Stack
                                 direction="row"
@@ -707,11 +705,11 @@ const Explore = () => {
                                 >
                                   <img src={logoIcon} alt="" />
                                   <div className={styles.playButton}>
-                                    <PlayAllButton songs={[results]} />
+                                  <PlayButton tracks={currentSongs} track={results} trackIndex={index}/>
                                   </div>
                                 </div>
                                 <div>
-                                  <p>{results.title}</p>
+                                  <p>{results?.title}</p>
 
                                   <Link
                                     className={styles.artistSong}
@@ -724,7 +722,6 @@ const Explore = () => {
                                       }}
                                     >
                                       {results.user?.username}
-                                      {console.log(results)}
                                     </p>
                                   </Link>
                                 </div>

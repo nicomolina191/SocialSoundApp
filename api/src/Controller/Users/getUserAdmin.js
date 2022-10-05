@@ -15,6 +15,11 @@ const getUsersAdmin = async (req, res) => {
         as: 'FollowingUsers',
         attributes: ['id', 'username', 'avatar'],
         through: { attributes: [] }
+      },
+      {
+        model: Users,
+        as: 'FollowerUsers',
+        through: { attributes: [] }
       }],
       paranoid: false,
     });

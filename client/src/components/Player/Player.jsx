@@ -40,7 +40,7 @@ function Player() {
     } else{
       let persistentTracks = localStorage.getItem("tracks");
       let parsedTracks = JSON.parse(persistentTracks);
-      parsedTracks.length && dispatch(setStoredTracks(parsedTracks))
+      parsedTracks?.length && dispatch(setStoredTracks(parsedTracks))
     };
     const func = (function(){
       setMusicTracks(tracks)

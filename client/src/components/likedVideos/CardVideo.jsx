@@ -4,13 +4,15 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import LikeButton from '../post/LikeButton';
 import Post from '../post/Post';
+import PlayButton from '../PlayButton/PlayButton'
 import styles from '../ProfilePage/PopularPost.module.css'
+import style from './cardVideo.module.css'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CardVideo({ post, index }) {
+export default function CardVideo({ post, index, allPosts }) {
     const [user, setUser] = useState()
     const [open, setOpen] = React.useState(false);
 
@@ -30,14 +32,16 @@ export default function CardVideo({ post, index }) {
         getUser();
     }, [])
 
+    console.log(post);
+
     return (
-        <div className={styles.containerSong} style={{ height: '50px' }}>
+        <div className={`${styles.containerSong} ${style.containerSong}`} style={{ height: '50px', padding: '0.5%', borderRadius: '6px' }}>
             <div className={styles.songFirstHalf}>
-                <div className={styles.songFirstHalfIndex} style={{marginRight:'20%'}}>
+                <div className={styles.songFirstHalfIndex} style={{ marginRight: '20%' }}>
                     <p>{index + 1}</p>
                 </div>
                 <button onClick={handleClickOpen}>
-                    <img src={post.cover} alt="" style={{height:'40px', borderRadius:'6px'}} />
+                    <img src={post.cover} alt="" style={{ height: '40px', borderRadius: '6px' }} />
                 </button>
                 <button style={{ width: '20px', fontWeight: '600', color: 'white', fontSize: '18px' }} onClick={handleClickOpen}>
                     <p style={{ cursor: "pointer" }}>{post.title}</p>
@@ -63,7 +67,7 @@ export default function CardVideo({ post, index }) {
                             Let Google help apps determine location. This means sending anonymous
                             location data to Google, even when no apps are running.
                         </DialogContentText> */}
-                        <Post post={post} />
+                        <Post post={post} margin={0} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Close</Button>
@@ -78,6 +82,7 @@ export default function CardVideo({ post, index }) {
                     </Typography>
                 </Link>
                 <LikeButton post={post} />
+                <PlayButton tracks={allPosts} track={post} trackIndex={index} />
             </div>
         </div>
     )

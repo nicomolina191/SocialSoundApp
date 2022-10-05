@@ -72,6 +72,7 @@ router.post("/posts", createPost);
 router.post("/likes", createLike);
 router.post("/comments", createComment);
 router.post("/users/follow", addFollower);
+router.post("/users/unfollow", removeFollower);
 router.post('/notifications/create', createNoti);
 router.post('/create-checkout-session', payment);
 router.post("/reviews", createReview);
@@ -100,7 +101,5 @@ router.put("/users/set/plan", changePlanUser);
 router.put("/users/set/genres", setUserGenres);
 router.put("/users/set/update-ban", updateBanUser);
 router.put("/users/set/role", updateRoleUser);
-router.put("/users/follow", removeFollower);
-
 
 module.exports = router;
