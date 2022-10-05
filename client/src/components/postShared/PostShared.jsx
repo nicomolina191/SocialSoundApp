@@ -222,7 +222,7 @@ export default function PostShared({ postShared, margin }) {
             <Grid item className={`${style2.postShared}`}>
                 {post ? <Post post={post} border={ '1px solid #02b599' } margin={'0px'} /> : 'This post is not longer available.'}
             </Grid>
-            <Grid item style={post && { marginTop: '-30px' }}>
+            <Grid item style={post && post.type==='audio'?{ marginTop: '15px' }:{ marginTop: '-30px' }}>
                 <Typography variant="body2">
                     {date &&
                         `${date.split(" ")[1].split(":")[0]}:${date.split(" ")[1].split(":")[1]
