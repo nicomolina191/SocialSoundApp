@@ -33,14 +33,16 @@ export default function LikedVideos() {
         }
     }, [userDB])
 
+    console.log(likesCurrentUser);
+
     return (
         <Grid container className={style.likedVideos} xs={12}>
             <Grid item container xs={2.5}>
                 <SideBar userDB={userDB} />
             </Grid>
-            <Grid item container xs={9.5} p={`2%`} style={{height:'10px'}}>
-                <PlayAllButton songs={likesCurrentUser}/>
-                {likesCurrentUser?.map((post, index) => <CardVideo post={post} index={index} />)}
+            <Grid item xs={9.5} p={`2%`}>
+                <PlayAllButton songs={likesCurrentUser} />
+                {likesCurrentUser?.map((post, index) => <CardVideo key={index} post={post} index={index} allPosts={likesCurrentUser} />)}
             </Grid>
         </Grid>
     )

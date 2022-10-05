@@ -47,7 +47,7 @@ import { createUserNotification } from "../../redux/features/users/usersGetSlice
 import Video from "../Video/Video";
 import LikeButton from "./LikeButton";
 import PlaylistAddRoundedIcon from '@mui/icons-material/PlaylistAddRounded';
-import { addTrack } from "../../redux/features/player/playerGetSlice";
+import { addTrack, removeTrack } from "../../redux/features/player/playerGetSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -339,6 +339,7 @@ export default function Post({ post, comments, margin, border }) {
                   handleCloseDelete()
                   dispatch(deletePost(post.id))
                   handleCloseMore()
+                  dispatch(removeTrack(post))
                 }} className={style.button}>
                   Accept
                 </Button>
@@ -495,7 +496,7 @@ export default function Post({ post, comments, margin, border }) {
               <PlaylistAddRoundedIcon className={style.icon} style={{ fontSize: '29px', marginLeft: '-40%' }} />
             </button>
           </Grid>
-          <Snackbar open={openAlertAddPlaylist} autoHideDuration={4000} onClose={handleCloseAlertAddPlaylist} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Snackbar open={openAlertAddPlaylist} autoHideDuration={4000} onClose={handleCloseAlertAddPlaylist} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
             <Alert onClose={handleCloseAlertAddPlaylist} severity="success" sx={{ width: '100%' }}>
               Added to playlist successfully!
             </Alert>
