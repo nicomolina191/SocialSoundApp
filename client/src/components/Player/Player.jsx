@@ -4,7 +4,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { changeIndex, nextTrack, previousTrack, togglePlay } from '../../redux/features/player/playerGetSlice';
+import { nextTrack, previousTrack, setStoredTracks, togglePlay } from '../../redux/features/player/playerGetSlice';
 import s from './Player.module.css';
 import defaultImg from './default.png'
 import { motion } from 'framer-motion/dist/framer-motion'
@@ -33,7 +33,18 @@ function Player() {
   const [musicTracks, setMusicTracks] = useState([])
 
   useEffect(() => {
-    setMusicTracks(tracks)
+    if(tracks?.length){
+      let tracksCopy = [...tracks];
+      let stringTracks = JSON.stringify(tracksCopy);
+      localStorage.setItem("tracks", stringTracks);
+    } else{
+      let persistentTracks = localStorage.getItem("tracks");
+      let parsedTracks = JSON.parse(persistentTracks);
+      parsedTracks.length && dispatch(setStoredTracks(parsedTracks))
+    };
+    const func = (function(){
+      setMusicTracks(tracks)
+    })();
   }, [tracks])
 
   const handleClickPrevious = () => {
@@ -47,7 +58,6 @@ function Player() {
   
   return (
     <div className={s.container}>
-      {console.log(currentTrackIndex)}
       {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/home/sucess' && !location.pathname.includes('admin') &&
         <motion.div
           drag
