@@ -108,7 +108,7 @@ export const getPostByRelevance = (order) => {
       const response = await axios.post(`/posts/genres/with-all`, order);
       let array = response.data
       let hash = {};
-      array = array.filter(o => hash[o.id] ? false : hash[o.id] = true);
+      array.posts = array.posts?.filter(o => hash[o.id] ? false : hash[o.id] = true);
       dispatch(getAllPostByRelevance(array))
     } catch (error) {
       console.log(error);
