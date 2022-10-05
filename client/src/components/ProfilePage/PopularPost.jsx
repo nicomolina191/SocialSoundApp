@@ -27,7 +27,6 @@ const PopularPost = (post) => {
           <FontAwesomeIcon icon={faHeart} />{" "}
           {likes?.filter((likes) => likes.isActive).length}
         </p>
-        <p>03:66</p>
       </div>
     </div>
   );
