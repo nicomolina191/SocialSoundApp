@@ -38,7 +38,7 @@ export default function LikedSongs() {
             <PlayAllButton songs={likesCurrentUser} />
             <div style={{marginTop: "30px"}}>
               {likesCurrentUser?.map((post, index) => (
-                <CardSong post={post} index={index} />
+                <CardSong arrayMap={likesCurrentUser} post={post} index={index} />
               ))}
             </div>
           </div>

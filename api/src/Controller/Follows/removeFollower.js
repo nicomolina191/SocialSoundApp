@@ -6,11 +6,27 @@ const removeFollower = async (req, res) => {
     try {
 
         const user = await Users.findByPk(idUser);
-        const userToFollow = await Users.findByPk(followTo);
+        let userToFollow = await Users.findByPk(followTo, {
+            include: [
+            {
+              model: Users,
+              as: 'FollowerUsers',
+              through: { attributes: [] }
+            }]
+        });
 
         await user.removeFollowingUser(userToFollow);
 
-        return res.send('Follower removed');
+        userToFollow = await Users.findByPk(followTo, {
+            include: [
+            {
+              model: Users,
+              as: 'FollowerUsers',
+              through: { attributes: [] }
+            }]
+        });
+
+        return res.json(userToFollow);
 
     } catch (err) {
         console.log(err.message);
