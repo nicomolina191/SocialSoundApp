@@ -59,11 +59,17 @@ export const playerSlice = createSlice({
           isPlaying: true,
           nowPlaying: [...state.tracks][action.payload]
         }
+      },
+      setStored: (state, action) => {
+        return {
+          ...state,
+          tracks: action.payload
+        }
       }
   }
 });
 
 
-export const { next, previous, add, remove, set, toggle, change } = playerSlice.actions;
+export const { next, previous, add, remove, set, toggle, change, setStored } = playerSlice.actions;
 
 export default playerSlice.reducer;
