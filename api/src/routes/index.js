@@ -43,6 +43,7 @@ const getReports = require("../Controller/Reports/getReports.js");
 const createReport = require("../Controller/Reports/createReport.js");
 const getPopular = require("../Controller/Filters/getPopular.js");
 const getByGenreWithAll = require("../Controller/Filters/getByGenreWithAll.js");
+const getCountUserGraphs = require("../Controller/Users/getCountUserGraphs.js");
 const removeFollower = require("../Controller/Follows/removeFollower.js");
 
 
@@ -64,6 +65,8 @@ router.get("/likes/:postId/:userId", getLikesByPostandUserId);
 router.get("/comments/:postId", getByPostId);
 router.get("/reviews", getReview);
 router.get("/reports", getReports); //Only for admin!
+router.get("/posts/order/popular", getPopular);
+router.get("/users/data/graphs", getCountUserGraphs)
 
 router.post("/posts/order", getByTime);
 router.post("/posts/genres", getByGenre);
