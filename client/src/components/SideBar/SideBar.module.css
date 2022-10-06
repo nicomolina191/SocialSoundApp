@@ -53,6 +53,7 @@ a{
     gap: 15px;
 }
 .profilePic{
+    cursor: pointer;
     object-fit: cover;
     border-radius: 50%;
     height: 40px;
@@ -163,6 +164,16 @@ a{
 
 .reviewText textarea {
     color: black !important;
+}
+
+.dotsMenu {
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+}
+
+.dotsMenu:hover {
+    color: #00E2BE; 
 }
 
 /* .buttonCancel {
