@@ -1,11 +1,27 @@
 .customDialog div[role=dialog]{
     background-color: transparent !important;
 }
-
+.allContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.155);
+}
+.allContainer svg path{
+    transition: 0.3s;
+    fill: white;
+}
+.allContainer svg:hover path{
+    fill: aqua;
+}
+.allContainer div[role=button]{
+    width: calc(100% - 60px);
+}
 .queueItem{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    align-items: center;
+    gap: 20px;
     width: 100%;
 }
 .queueItem img{

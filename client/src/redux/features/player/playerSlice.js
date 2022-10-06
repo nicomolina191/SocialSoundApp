@@ -37,13 +37,17 @@ export const playerSlice = createSlice({
       add: (state, action) => {
         return {
             ...state,
-            tracks: [...state.tracks, action.payload]
+            tracks: [...state.tracks].some(t => t.id === action.payload.id)
+            ? [...state.tracks]
+            : [...state.tracks, action.payload]
         }
       },
       remove: (state, action) => {
         return {
             ...state,
-            tracks: [...state.tracks].filter(t => t.id !== action.payload.id)
+            tracks: [...state.tracks].length 
+              ? [...state.tracks].filter(t => t.id !== action.payload)
+              : []
         }
       },
       toggle: (state) => {

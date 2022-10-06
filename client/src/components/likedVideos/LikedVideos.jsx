@@ -1,49 +1,56 @@
-import { Grid } from '@mui/material'
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useAuth } from '../../context';
-import { getUserByFirebaseId } from '../../redux/features/users/usersGetSlice';
-import SideBar from '../SideBar/SideBar'
-import style from './likedVideos.module.css'
-import styles from '../ProfilePage/Popular.module.css'
-import CardVideo from './CardVideo';
-import { getLikesByUserId } from '../../redux/features/like/likeGetSlice';
+import { Grid } from "@mui/material";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "../../context";
+import { getUserByFirebaseId } from "../../redux/features/users/usersGetSlice";
+import SideBar from "../SideBar/SideBar";
+import style from "./likedVideos.module.css";
+import CardVideo from "./CardVideo";
+import { getLikesByUserId } from "../../redux/features/like/likeGetSlice";
 import PlayAllButton from "../PlayAllButton/PlayAllButton";
 
 export default function LikedVideos() {
-    const dispatch = useDispatch();
-    const userDB = useSelector((state) => state.users.currentUser);
-    const likesCurrentUser = useSelector((state) => state.likes.likesVideoCurrentUser)
-    // const [likedPosts, setLikedPosts] = useState()
-    const { userFirebase } = useAuth();
+  const dispatch = useDispatch();
+  const userDB = useSelector((state) => state.users.currentUser);
+  const likesCurrentUser = useSelector(
+    (state) => state.likes.likesVideoCurrentUser
+  );
+  const { userFirebase } = useAuth();
 
-    useEffect(() => {
-        dispatch(getUserByFirebaseId(userFirebase.uid))
-    }, []);
+  useEffect(() => {
+    dispatch(getUserByFirebaseId(userFirebase.uid));
+  }, []);
 
-    useEffect(() => {
-        if (Object.keys(userDB).length > 0) {
-            // async function getLikedPosts() {
-            //     const res = await axios.get(`/likes/users/${userDB.id}`)
-            //     setLikedPosts(res.data.filter(like => like.isActive).map(like => like.post).filter(post => post.type === 'video'))
-            // }
-            // getLikedPosts()
-            dispatch(getLikesByUserId(userDB.id))
-        }
-    }, [userDB])
+  useEffect(() => {
+    if (Object.keys(userDB).length > 0) {
+      dispatch(getLikesByUserId(userDB.id));
+    }
+  }, [userDB]);
 
-    console.log(likesCurrentUser);
-
-    return (
-        <Grid container className={style.likedVideos} xs={12}>
-            <Grid item container xs={2.5}>
-                <SideBar userDB={userDB} />
-            </Grid>
-            <Grid item xs={9.5} p={`2%`}>
-                <PlayAllButton songs={likesCurrentUser} />
-                {likesCurrentUser?.map((post, index) => <CardVideo key={index} post={post} index={index} allPosts={likesCurrentUser} />)}
-            </Grid>
-        </Grid>
-    )
+  return (
+    <Grid container className={style.likedVideos} xs={12}>
+      <Grid style={{maxWidth: "266px"}} item container xs={2.5}>
+        <SideBar userDB={userDB} />
+      </Grid>
+      <Grid item xs={9.5} p={`2%`}>
+        {likesCurrentUser.length > 0 ? (
+          <div style={{ width: "100%" }}>
+            <PlayAllButton songs={likesCurrentUser} />
+            <div style={{ marginTop: "30px" }}>
+              {likesCurrentUser?.map((post, index) => (
+                <CardVideo
+                  key={index}
+                  post={post}
+                  index={index}
+                  allPosts={likesCurrentUser}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p style={{ margin: "auto",textAlign: "center", color: "white" }}>No liked songs yet</p>
+        )}
+      </Grid>
+    </Grid>
+  );
 }

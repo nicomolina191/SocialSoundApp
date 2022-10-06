@@ -24,25 +24,20 @@ export default function Home() {
 console.log(userDB);
 
   return (
-    <Grid container item xs={12} className={style.home} justifyContent="space-between">
-      <Grid
-        item
-        container
-        xs={3}
-        direction="column"
-        className={style.sideBar}
-        p={`1%`}
-      >
-        <SideBar userDB={userDB} />
-      </Grid>
-      <Grid container item xs={9} direction="column" className={style.posts}>
-        <Typography variant="h3" className={style.text}>
-          Home.
+    <div className={style.home}>
+      <SideBar userDB={userDB} />
+      <div className={style.posts}>
+        <Typography
+          variant="h2"
+          component="h1"
+          sx={{ fontWeight: "700", color: "white", paddingTop: "20px", paddingBottom:"10px"}}
+        >
+          Home
         </Typography>
         {/* <PostShared postShared={postShared}/> */}
         {posts.length > 0 &&
           posts.slice(0).reverse().map((post, i) => post.idShared ? <PostShared postShared={post} /> : <Post key={i} post={post} comments={false} />)}
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }

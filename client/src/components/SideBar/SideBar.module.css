@@ -22,7 +22,7 @@ ul{
     padding: 0;
 }
 .sidebar{
-    font-size: 16px;
+    font-size: 14px;
     font-family: 'Inter', sans-serif;
     color: white;
     position: fixed;
@@ -33,12 +33,13 @@ ul{
     align-items: flex-start;
     padding-left: 8px;
     padding-right: 16px;
-    gap: 45px;
+    gap: 25px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.559);
-    backdrop-filter: blur(25px) opacity(0.5) ;
-    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(50px) opacity(0.5) ;
+    -webkit-backdrop-filter: blur(50px);
     border-radius: 0px 10px 10px 0px;
-    background-color: #00061658;
+    background-color: #00071c9a;
+    z-index: 2;
 }
 a{
     color: inherit;
@@ -49,9 +50,10 @@ a{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 15px;
 }
 .profilePic{
+    cursor: pointer;
     object-fit: cover;
     border-radius: 50%;
     height: 40px;
@@ -103,7 +105,7 @@ a{
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
-    gap: 20px;
+    gap: 15px;
 }
 .optionsContainer .optionItem{
     display: flex;
@@ -114,14 +116,31 @@ a{
     opacity: 0.7;
 }
 
-.btn {
+/* .btn {
     background-color: #00FFD6;
     color: black;
     padding: 12px;
     border-radius: 5px;
     margin-top: 30px;
     margin-left: 20px; 
+} */
+
+.btn button {
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
 }
+
+.btn button:hover {
+    color: #00E2BE;
+}
+
 .textReview {
     font-size: 18px;
 }
@@ -145,6 +164,16 @@ a{
 
 .reviewText textarea {
     color: black !important;
+}
+
+.dotsMenu {
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+}
+
+.dotsMenu:hover {
+    color: #00E2BE; 
 }
 
 /* .buttonCancel {

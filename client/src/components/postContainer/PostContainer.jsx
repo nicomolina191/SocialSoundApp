@@ -19,8 +19,9 @@ export default function PostContainer() {
     useEffect(() => {
         dispatch(getUserByFirebaseId(userFirebase.uid))
         dispatch(getPostById(idPost))
+        
     }, [])
-    console.log();
+    
     return (
         <Grid container className={style.postContainer} p={`1%`} pl={`4%`} pr={`4%`}>
             <Grid container>
