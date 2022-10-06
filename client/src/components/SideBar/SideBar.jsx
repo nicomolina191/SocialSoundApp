@@ -15,7 +15,7 @@ import { Badge, MenuItem, Rating, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
-import { getUserDownToRegular } from '../../redux/features/users/usersGetSlice'
+import { getUserDownToRegular, getUserNotification } from '../../redux/features/users/usersGetSlice'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Modal from '@mui/material/Modal';
