@@ -72,12 +72,10 @@ const EditProfile = (close) => {
   }
 
   function handleSubmit() {
-    try {
       dispatch(updateUser(currentUser.id, input));
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+      const func = (function (){
+        window.location.reload();
+      })()
   }
 
   return (
