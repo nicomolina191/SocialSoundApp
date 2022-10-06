@@ -164,7 +164,7 @@ export default function PostShared({ postShared, margin }) {
                                     </Button>
                                     <Button onClick={async () => {
                                         handleCloseReport()
-                                        await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: postShared.user.id, idPost: postShared.id })
+                                        await axios.post('/reports', { content: detailsReport, title: motiveReport, idUser: currentUser.id, idPost: postShared.id })
                                         setMotiveReport('')
                                         setDetailsReport('')
                                         handleCloseMore()

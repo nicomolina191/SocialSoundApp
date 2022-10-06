@@ -462,7 +462,7 @@ export default function Post({ post, comments, margin, border, height }) {
             <Button onClick={async () => {
               if (input.motiveReport && input.detailsReport) {
                 handleCloseReport()
-                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: post.user.id, idPost: post.id })
+                await axios.post('/reports', { content: input.detailsReport, title: input.motiveReport, idUser: currentUser.id, idPost: post.id })
                 setInput({
                   detailsReport: '',
                   motiveReport: ''
