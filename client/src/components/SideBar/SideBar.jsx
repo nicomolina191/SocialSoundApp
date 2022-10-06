@@ -20,14 +20,11 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-<<<<<<< HEAD
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import styles from "../ProfilePage/ProfilePage.module.css";
 import EditProfile from '../ProfilePage/EditProfile'
-=======
 import { Grid, SvgIcon } from '@mui/material'
->>>>>>> development
 
 
 
@@ -39,10 +36,7 @@ const SideBar = ({ userDB }) => {
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
   const dispatch = useDispatch();
-<<<<<<< HEAD
-=======
   const post = useSelector((state) => state.posts.postList)
->>>>>>> development
 
   useEffect(async () => {
     const docRef = doc(db, "userConversations", userFirebase?.uid);
@@ -51,14 +45,11 @@ const SideBar = ({ userDB }) => {
 
   }, [])
 
-<<<<<<< HEAD
-=======
   useEffect(() => {
     dispatch(getUserNotification(user.idgoogle))
 
   }, [post])
 
->>>>>>> development
 
   /*   useEffect(() => {
       if(!role) return setRole(userDB?.role)
