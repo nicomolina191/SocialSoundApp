@@ -11,15 +11,19 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge, Rating, TextField, Typography } from '@mui/material';
+import { Badge, MenuItem, Rating, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
-import { getUserDownToRegular, getUserNotification } from '../../redux/features/users/usersGetSlice'
+import { getUserDownToRegular } from '../../redux/features/users/usersGetSlice'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import styles from "../ProfilePage/ProfilePage.module.css";
+import EditProfile from '../ProfilePage/EditProfile'
 
 
 
@@ -31,7 +35,6 @@ const SideBar = ({userDB}) => {
   const navigate = useNavigate();
   const { logout, loading, userFirebase } = useAuth();
   const dispatch = useDispatch();
-  const post = useSelector((state)=> state.posts.postList)
 
   useEffect(async () => {
     const docRef = doc(db, "userConversations", userFirebase?.uid);
@@ -39,11 +42,6 @@ const SideBar = ({userDB}) => {
     userFirebase?.uid && !docSnap.exists() && await setDoc(doc(db, "userConversations", userFirebase.uid), {})
     
   }, [])
-
-  useEffect(()=>{
-   dispatch(getUserNotification(user.idgoogle))
-  
-  },[post])
 
 
 /*   useEffect(() => {
@@ -137,17 +135,60 @@ const handleButton = (e) => {
     p: 4,
   };
 
-  
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
-  
+  const handleOpenMenu = () => {
+    setOpenMenu(true);
+  };
+
+  const handleCloseMenu = () => {
+    setOpenMenu(false);
+  };
+
+  const handleOpenSettings = () => {
+    setOpenSettings(true);
+  };
+
+  const handleCloseSettings = () => {
+    setOpenSettings(false);
+  };
 
   return (
         <div className={s.sidebar}>
             <ul className={s.routescontainer}>
                 <img width='70px' alt='logo' src={logo} />
+                <div className={s.profileItem}>
                 <Link to={`/home/explore/${user.id}`}>
-                <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/></li>
+                  <img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/>
                 </Link>
+                <FontAwesomeIcon
+                  onClick={handleOpenMenu}
+                  className={s.dotsMenu}
+                  icon={faEllipsis}
+                  />
+                <Menu
+                style={{margin: "125px 0 0 134px"}}
+                open={openMenu}
+                onClose={handleCloseMenu}
+                anchorOrigin={{
+                  horizontal: "left",
+                  vertical: "top",
+                }}
+              >
+                <MenuItem onClick={handleOpenSettings}>Edit profile</MenuItem>
+              </Menu>
+              <Modal
+                open={openSettings}
+                onClose={handleCloseSettings}
+                sx={{ backdropFilter: "blur(3px)" }}
+              >
+                <EditProfile
+                  close={handleCloseSettings}
+                  setOpenSettings={setOpenSettings}
+                />
+              </Modal>
+                </div>
                 <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
                 <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 
