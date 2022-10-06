@@ -138,8 +138,9 @@ export default function SupportForm() {
                             <input name='email' value={user && user.email} />
                             <input name='username' value={user && user.username} />
                             <input type="hidden" name="_subject" value="Support Social Sound" />
-                            <input type="hidden" name="_next" value="www.socialsound.art/support" />
+                            <input type="hidden" name="_next" value="http://www.socialsound.art/support" />
                             <input type="hidden" name="_autoresponse" value="Your message was sent successfully!" />
+                            {/* <input type="hidden" name="_captcha" value="false"></input> */}
                         </div>
                         <Grid item>
                             {
