@@ -14,8 +14,8 @@ import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
 import defaultImg from '../default.png'
 import s from './Queue.module.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeIndex, togglePlay } from '../../../redux/features/player/playerGetSlice';
-
+import { changeIndex, removeTrack, togglePlay } from '../../../redux/features/player/playerGetSlice';
+import PlaylistRemoveRoundedIcon from '@mui/icons-material/PlaylistRemoveRounded';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -75,6 +75,7 @@ return (
         </AppBar>
         <List sx={{ backgroundColor: 'rgba(4, 11, 33, 0.65)', backdropFilter: 'blur(15px)', height: '100vh', overflowY: 'scroll'}}>
           {tracks?.map((t, i) =>
+            <div className={s.allContainer} key={`${i}_${Math.random()}`}>
             <ListItem className={s.queueTrack} sx={{color: 'white', cursor: 'pointer'}} key={`${t}_${Math.random()}`} button onClick={() => handleTrack(i)}>
               <div className={s.queueItem}>
                 <img src={t.cover ? t.cover : defaultImg} alt="not found" />
@@ -91,9 +92,12 @@ return (
                         <path d="M21 39L39.375 28.5L21 18V39Z" fill="#000A1F"/>
                       </svg>
                 }
+                
               </div>
               <Divider />
             </ListItem>
+            {tracks.length > 1 && <PlaylistRemoveRoundedIcon sx={{cursor: "pointer"}} onClick={()=> dispatch(removeTrack(t.id))}/>}
+            </div>
           )}
         </List>
       </Dialog>
