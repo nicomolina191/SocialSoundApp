@@ -11,7 +11,7 @@ import { doc, getDocFromServer, setDoc } from 'firebase/firestore'
 import PayButton from '../pay/PayButton'
 import { KeyIcon } from '../componentsIcons'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge, Rating, TextField, Typography } from '@mui/material';
+import { Badge, MenuItem, Rating, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import axios from 'axios';
 import MailIcon from '@mui/icons-material/Mail';
@@ -20,6 +20,10 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import styles from "../ProfilePage/ProfilePage.module.css";
+import EditProfile from '../ProfilePage/EditProfile'
 import { Grid, SvgIcon } from '@mui/material'
 
 
@@ -138,17 +142,62 @@ const SideBar = ({ userDB }) => {
     p: 4,
   };
 
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
+  const handleOpenMenu = () => {
+    setOpenMenu(true);
+  };
 
+  const handleCloseMenu = () => {
+    setOpenMenu(false);
+  };
 
+  const handleOpenSettings = () => {
+    setOpenSettings(true);
+  };
+
+  const handleCloseSettings = () => {
+    setOpenSettings(false);
+  };
 
   return (
-    <div className={s.sidebar}>
-      <ul className={s.routescontainer}>
-        <img width='70px' alt='logo' src={logo} />
-        <li className={s.profileItem}><img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar} /> <button>...</button></li>
-        <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
-        <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
+        <div className={s.sidebar}>
+            <ul className={s.routescontainer}>
+                <img width='70px' alt='logo' src={logo} />
+                <div className={s.profileItem}>
+                <Link to={`/home/explore/${user.id}`}>
+                  <img className={s.profilePic} width='40px' alt='profile' src={userDB?.avatar}/>
+                </Link>
+                <FontAwesomeIcon
+                  onClick={handleOpenMenu}
+                  className={s.dotsMenu}
+                  icon={faEllipsis}
+                  />
+                <Menu
+                style={{margin: "125px 0 0 134px"}}
+                open={openMenu}
+                onClose={handleCloseMenu}
+                anchorOrigin={{
+                  horizontal: "left",
+                  vertical: "top",
+                }}
+              >
+                <MenuItem onClick={handleOpenSettings}>Edit profile</MenuItem>
+              </Menu>
+              <Modal
+                open={openSettings}
+                onClose={handleCloseSettings}
+                sx={{ backdropFilter: "blur(3px)" }}
+              >
+                <EditProfile
+                  close={handleCloseSettings}
+                  setOpenSettings={setOpenSettings}
+                />
+              </Modal>
+                </div>
+                <li className={s.routeItem}> <Link to='/home'>Home</Link> </li>
+                <li className={s.routeItem}> <Link to='/home/explore'>Explore</Link> </li>
 
         <li className={s.routeItem}><Link to='/messages'>Messages</Link></li>
 
