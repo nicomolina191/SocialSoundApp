@@ -67,7 +67,7 @@ export function validate(input) {
 };
 
 export default function Post({ post, comments, margin, border, height }) {
-  const shareURL = `www.socialsound.art/home/post/${post.id}`;
+  const shareURL = `https://www.socialsound.art/home/post/${post.id}`;
   const dispatch = useDispatch();
   const monthNames = [
     "Jan",
