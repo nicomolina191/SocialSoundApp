@@ -24,7 +24,7 @@ import {
   getUser,
   getUserByFirebaseId,
   getUserById,
-  getUserNotification,
+  getUserNotification
 } from "../../redux/features/users/usersGetSlice";
 import { getGenre } from "../../redux/features/genres/genreGetSlice";
 import {

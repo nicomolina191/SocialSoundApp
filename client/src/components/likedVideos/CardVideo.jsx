@@ -32,18 +32,16 @@ export default function CardVideo({ post, index, allPosts }) {
         getUser();
     }, [])
 
-    console.log(post);
-
     return (
         <div className={`${styles.containerSong} ${style.containerSong}`} style={{ height: '50px', padding: '0.5%', borderRadius: '6px' }}>
             <div className={styles.songFirstHalf}>
-                <div className={styles.songFirstHalfIndex} style={{ marginRight: '3%' }}>
+                <div className={styles.songFirstHalfIndex} style={{ marginRight: '20%' }}>
                     <p>{index + 1}</p>
                 </div>
                 <button onClick={handleClickOpen}>
                     <img src={post.cover} alt="" style={{ height: '40px', borderRadius: '6px' }} />
                 </button>
-                <button style={{ width: '100%', fontWeight: '600', color: 'white', fontSize: '18px' }} onClick={handleClickOpen}>
+                <button style={{ width: '20px', fontWeight: '600', color: 'white', fontSize: '18px' }} onClick={handleClickOpen}>
                     <p style={{ cursor: "pointer" }}>{post.title}</p>
                 </button>
                 <Dialog

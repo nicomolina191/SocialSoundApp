@@ -43,7 +43,7 @@ export default function LikedSongs() {
             </div>
           </div>
         ) : (
-          <p style={{ margin: "auto", color: "white" }}>No liked songs yet</p>
+          <p style={{ margin: "0 auto", color: "white" }}>No liked songs yet</p>
         )}
       </Grid>
     </Grid>
