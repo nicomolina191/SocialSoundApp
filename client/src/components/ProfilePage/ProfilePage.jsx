@@ -6,6 +6,7 @@ import {
   getUserLikes,
   setUserFollow,
   setUserUnfollow,
+  createUserNotification,
   cleanUserState
 } from "../../redux/features/users/usersGetSlice";
 import { getPost } from "../../redux/features/post/postGetSlice";
@@ -72,6 +73,22 @@ const ProfilePage = () => {
     return check
   }
 
+  const notification = async() => {
+    if (currentUser.id !== profileUser.id) {
+      await dispatch(createUserNotification({
+          title: JSON.stringify({
+            name:`${currentUser.username} has started following you.`,
+            img: currentUser.avatar,
+            post: '',
+          }),
+          content: '',
+          userId: profileUser.id,
+          fromUser: currentUser.id,
+
+      }));
+        console.log("notification created!")
+      }};
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -88,13 +105,14 @@ const ProfilePage = () => {
     setOpenSettings(false);
   };
 
-  const handleFollow = () => {
-    dispatch(
+  const handleFollow = async() => {
+  await  dispatch(
       setUserFollow({
         idUser: currentUser.id,
         followTo: profileUser.id,
       })
     );
+    await notification()
     setFollowed(true);
   };
 
